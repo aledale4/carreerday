@@ -4,7 +4,7 @@
     $env = parse_ini_file("../.env");
     $conn = mysqli_connect($env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"]);
 ?>
-
+//test
 <!DOCTYPE html>
 <html lang="en">
 <head>
