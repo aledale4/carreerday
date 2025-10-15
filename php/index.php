@@ -92,21 +92,21 @@
         exit();
     }
 
-      if($_POST["pag"]="login" && !isset($_SESSION["user"])){
-          $q= "select * from studenti where usernameStu='".mysqli_real_escape_string($conn, $_POST["username"])."'";
-          $ris= mysqli_query($conn, $q)or die("errore durante la verifica dell'username");
-          $num= mysqli_query($ris);
-          if($num==1){
-              $riga = mysqli_fetch_assoc($ris);
-              if(password_verify($_POST["password"],$riga["passwordStu"])){
-                  //login effettuato con successo
-                  $_SESSION["user"]=$riga;
-                  session_regenerate_id();
-                  header("Location: index.php");
-                  exit();
-              }
-          }
-      }
+    if($_POST["pag"]="login" && !isset($_SESSION["user"])){
+        $q= "select * from studenti where usernameStu='".mysqli_real_escape_string($conn, $_POST["username"])."'";
+        $ris= mysqli_query($conn, $q)or die("errore durante la verifica dell'username");
+        $num= mysqli_query($ris);
+        if($num==1){
+            $riga = mysqli_fetch_assoc($ris);
+            if(password_verify($_POST["password"],$riga["passwordStu"])){
+                //login effettuato con successo
+                $_SESSION["user"]=$riga;
+                session_regenerate_id();
+                header("Location: index.php");
+                exit();
+            }
+        }
+    }
     //funzione di login
     if(isset($_POST["pag"]) && $_POST["pag"]=="login" && !isset($_SESSION["user"])){
         $username=mysqli_real_escape_string($conn, $_POST["username"]);
