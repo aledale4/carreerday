@@ -15,7 +15,7 @@
 <body>
     <?php
     //funzione di logout
-    if(isset($_POST["pag"]) && $_POST["pag"]=="logout" && isset($_SESSION["username"])){
+    if(isset($_POST["pag"]) && $_POST["pag"]=="logout" && isset($_SESSION["user"])){
         session_unset();
         session_destroy();
         header("Location: index.php");
