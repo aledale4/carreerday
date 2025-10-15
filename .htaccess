@@ -1,0 +1,18 @@
+# Enable Rewrite Engine
+RewriteEngine On
+
+# Set the base directory (optional, adjust if needed)
+RewriteBase /
+
+# Allow access to index.php explicitly
+RewriteCond %{REQUEST_URI} ^/php/index\.php$ [OR]
+
+# Allow access to files within css/, js/, or static/ directories
+RewriteCond %{REQUEST_URI} ^/(css|js|static)/
+
+# If the request matches one of the allowed paths, allow it
+RewriteRule ^ - [L]
+
+# Deny everything else with a 403 Forbidden
+RewriteRule ^ - [F]
+

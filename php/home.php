@@ -1,0 +1,43 @@
+<div class="home-container">
+<div class="navbar">
+    <div class="left-side">
+        <img src="../static/logo.svg" alt="" srcset="" class="logo">
+        <p>Portale Studenti</p>
+    </div>
+    <div class="right-side">
+        <p>Benvenuto, <span>Simeone</span></p>
+        <div class="user-pic"></div>
+    </div>
+</div>
+
+<section id="prossimi-eventi">
+    <h1>Prossimi Eventi</h1>
+    <div class="scrollable-container">
+        <div class="element">
+            <img src="" alt="logo evento">
+            <p>Nome Evento</p>
+        </div>
+        <div class="element">
+            <img src="" alt="logo evento">
+            <p>Nome Evento</p>
+        </div>
+    </div>
+</section>
+
+<section id="colloqui">
+    <h1>Prossimi Colloqui</h1>
+    <div class="scrollable-container">
+        <div class="element">
+            <img src="" alt="logo evento">
+            <p>Nome Azienda</p>
+            <p>10 ott - 12:40</p>
+        </div>
+        <div class="element">
+            <img src="" alt="logo evento">
+            <p>Nome Azienda</p>
+            <p>10 ott - 12:50</p>
+        </div>
+    </div>
+</section>
+
+</div>
