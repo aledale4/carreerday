@@ -15,14 +15,18 @@
 <body>
 
     <?php
-    if($_POST["pag"]=="logout" && isset($_SESSION["username"])){
+    //funzione di logout
+    if(isset($_POST["pag"]) && $_POST["pag"]=="logout" && isset($_SESSION["username"])){
         session_unset();
         session_destroy();
         header("Location: index.php");
     }
 
-    if($_POST["pag"]="register" && !isset($_SESSION["user"])){
-        $q ="select * from studenti where usernameStu='".mysqli_real_escape_string($conn, $_POST["username"])."'";
+    //funzione di registrazione
+    if(isset($_POST["pag"]) && $_POST["pag"]=="register" && !isset($_SESSION["user"])){
+        //controllo username
+        $username=mysqli_real_escape_string($conn, $_POST["username"]);
+        $q ="select * from studenti where usernameStu='".$username."'";
         $ris = mysqli_query($conn, $q)or die("errore durante la verifica dell'username");
         $num = mysqli_num_rows($ris);
         if($num>0){
@@ -30,7 +34,9 @@
             header("Location: index.php?error=0");
             exit();
         }
-        $q ="select * from studenti where emailStu='".mysqli_real_escape_string($conn, $_POST["email"])."'";
+        //controllo email
+        $email=mysqli_real_escape_string($conn, $_POST["email"]);
+        $q ="select * from studenti where emailStu='".$email."'";
         $ris = mysqli_query($conn, $q)or die("errore durante la verifica della mail");
         $num = mysqli_num_rows($ris);
         if($num>0){
@@ -52,8 +58,10 @@
         exit();
     }
 
-    if($_POST["pag"]="login" && !isset($_SESSION["user"])){
-        $q= "select * from studenti where usernameStu='".mysqli_real_escape_string($conn, $_POST["username"])."'";
+    //funzione di login
+    if(isset($_POST["pag"]) && $_POST["pag"]=="login" && !isset($_SESSION["user"])){
+        $username=mysqli_real_escape_string($conn, $_POST["username"]);
+        $q= "select * from studenti where usernameStu='".$username."'";
         $ris= mysqli_query($conn, $q)or die("errore durante la verifica dell'username");
         $num= mysqli_query($ris);
         if($num==1){
