@@ -1,0 +1,82 @@
+.event{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.event .event-title{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 40px;
+    gap:20px;
+}
+
+.event .event-title span{
+    font-size: 40px;
+}
+.event .event-title p{
+    font-size: 40px;
+    font-weight: 600;
+}
+
+.event .event-info{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    /* gap: 20px; */
+    font-size: 20px;
+}
+
+.event .event-info .event-date{
+    margin-left: 60px;
+}
+.event .event-info span{
+    margin-left: 20px;
+    font-size: 20px;
+}
+.event .event-info .event-location{
+    margin-left: 5px;
+    /* font-size: 20px; */
+}
+.event .event-desc{
+    margin-top:20px;
+    margin-left: 60px;
+    margin-right: 60px;
+    font-size: 20px;
+}
+
+.event .event-participants{
+    margin-top:20px;
+    margin-left: 60px;
+    margin-right: 60px;
+    width: var(100% - 120px);
+}
+
+.event .event-participants p {
+    font-size: 32px;
+    font-weight: 600;
+}
+.event .event-participants .participants {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.event .event-participants .participants .participant {
+    margin-top: 20px;
+    width: 30%;
+}
+
+.event .event-participants .participants .participant p{
+    font-size: 20px;
+    font-weight: 400;
+}
+.event .event-participants .participants .participant img{
+    background-color: lightgray;
+    width: 100%;
+    aspect-ratio: 2.5;
+    border-radius: var(--buttons-border-radius);
+}
