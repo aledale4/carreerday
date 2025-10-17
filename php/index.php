@@ -3,9 +3,15 @@
     session_start();
     $env = parse_ini_file("../.env");
     $conn = mysqli_connect($env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"]);
-    
+    // $ssl_ca = '../ca.pem';
+    // $conn = mysqli_init();
+    // mysqli_ssl_set($conn, NULL, NULL, $ssl_ca, "", NULL);
+
+    // if (!mysqli_real_connect($conn, $env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"], NULL, MYSQLI_CLIENT_SSL)) {
+    //     die("". mysqli_connect_error());
+    // }
     //funzione di logout
-    if(isset($_POST["pag"]) && $_POST["pag"]=="logout" && isset($_SESSION["user"])){
+    if(isset($_GET["pag"]) && $_GET["pag"]=="logout" && isset($_SESSION["user"])){
         session_unset();
         session_destroy();
         header("Location: index.php");
@@ -13,6 +19,13 @@
     //funzione di registrazione
     if(isset($_POST["pag"]) && $_POST["pag"]=="register" && !isset($_SESSION["user"])){
         //controllo username
+        $required = ["username","email","nome","cognome","password","password2"];
+        foreach($required as $r){
+            if(!isset($_POST[$r])) {
+                header("Location: index.php?pag=register&error=3");
+                exit();
+            }
+        } 
         $username=mysqli_real_escape_string($conn, $_POST["username"]);
         $q ="select * from studenti where usernameStu='".$username."'";
         $ris = mysqli_query($conn, $q)or die("errore durante la verifica dell'username");
@@ -35,13 +48,12 @@
         if($_POST["password"]!=$_POST["password2"]){
             //password non corrispondenti
             header("Location: index.php?pag=register&error=2");
+            exit();
         }
         //username e email disponibili
         $nome= mysqli_real_escape_string($conn, $_POST["nome"]);
         $cognome= mysqli_real_escape_string($conn, $_POST["cognome"]);
-        $username= mysqli_real_escape_string($conn, $_POST["username"]);
-        $password= password_hash($conn, $_POST["password"]);
-        $mail= mysqli_real_escape_string($conn, $_POST["email"]);
+        $password= password_hash($_POST["password"],PASSWORD_DEFAULT);
         $q ="insert into studenti (nomeStu,cognomeStu,usernameStu,passwordStu,emailStu) values('".$nome."','".$cognome."','".$username."','".$password."','".$email."')";
         $ris= mysqli_query($conn, $q)or die("errore durante la registrazione");
         //registrazione effettuata con successo
@@ -51,9 +63,10 @@
     }
     //funzione di login
     if(isset($_POST["pag"]) && $_POST["pag"]=="login" && !isset($_SESSION["user"])){
-        $username=mysqli_real_escape_string($conn, $_POST["username"]);
-        $q= "select * from studenti where usernameStu='".$username."'";
-        $ris= mysqli_query($conn, $q)or die("errore durante la verifica dell'username");
+        if (!isset($_POST["email"]) or !isset($_POST["password"])) header("Location: index.php?pag=login&error=2");
+        $email=mysqli_real_escape_string($conn, $_POST["email"]);
+        $q= "select * from studenti where emailStu='".$email."'";
+        $ris= mysqli_query($conn, $q)or die("errore durante la verifica dell'email");
         $num= mysqli_num_rows($ris);
         if($num==1){
             $riga = mysqli_fetch_assoc($ris);
@@ -92,15 +105,25 @@
 <body>
     <?php
     if(isset($_SESSION["user"])){
-        include("home.php");
+        if($_GET["pag"] == "settings"){
+            include("settings.php");
+        }else include("home.php");
     }
     else if(isset($_GET["pag"])){
         if($_GET["pag"] == "login"){
             include("login.php");
         }else if($_GET["pag"] == "register"){
             include("register.php");
+        }else{
+            include("login.php");
         }
+    }else{
+        include("login.php");
     }
     ?>
 </body>
 </html>
+
+<?php
+    mysqli_close($conn);
+?>

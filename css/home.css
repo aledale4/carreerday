@@ -42,6 +42,11 @@
 .navbar .right-side span {
     font-weight: 500;
 }
+.navbar .right-side a{
+    height: 100%;
+    aspect-ratio: 1;
+}
+
 
 .navbar .right-side .user-pic{
     height: 100%;
