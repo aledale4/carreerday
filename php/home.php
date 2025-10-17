@@ -5,8 +5,8 @@
         <p>Portale Studenti</p>
     </div>
     <div class="right-side">
-        <p>Benvenuto, <span>Simeone</span></p>
-        <div class="user-pic"></div>
+        <p>Benvenuto, <span><?php echo $_SESSION["user"]["nomeStu"]; ?></span></p>
+        <a href="index.php?pag=settings"><div class="user-pic"></div></a>
     </div>
 </div>
 
