@@ -13,14 +13,18 @@
 <section id="prossimi-eventi">
     <h1>Prossimi Eventi</h1>
     <div class="scrollable-container">
-        <div class="element">
-            <img src="" alt="logo evento">
-            <p>Nome Evento</p>
-        </div>
-        <div class="element">
-            <img src="" alt="logo evento">
-            <p>Nome Evento</p>
-        </div>
+        <a href="index.php?pag=event">
+            <div class="element">
+                <img src="" alt="logo evento">
+                <p>Nome Evento</p>
+            </div>
+        </a>
+        <a href="index.php?pag=event">
+            <div class="element">
+                <img src="" alt="logo evento">
+                <p>Nome Evento</p>
+            </div>
+        </a>
     </div>
 </section>
 
