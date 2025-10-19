@@ -1,21 +1,20 @@
-.paolo {
+.title-bar{
+    width: 100%;
     display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: space-between;
-    margin-top: 80px;
+    margin-top: 40px;
+    gap:20px;
 }
-.paolo p {
+
+.title-bar span{
+    font-size: 40px;
+}
+.title-bar p{
     font-size: 40px;
     font-weight: 600;
 }
-.paolo span {
-    font-size: 40px;
-}
-.paolo a{
-    color: black;
-    text-decoration: none;
-}
-.navbar-set {
+/* .navbar-set {
     width: 100%;
     height: 60px;
     background-color: var(--background-color);
@@ -44,16 +43,72 @@
 .logo-set img {
     height: 60px;
     width: auto;
+} */
+
+form{
+    width: 100%;
+    margin-top: 40px;
 }
 
 .card {
+    width: 100%;
     display: flex;
-    align-items: flex-start;
+    align-items: start;
+    justify-content: space-between;
+    gap:20px;
+}
+.card .side{
+    width: 50%;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap:20px;
+}
+.card .side .inputs{
+    height: 100%;
+    width: 100%;
+    /* float: right; */
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+}
+.card .side .inputs p{
+    font-size: 18px;
+    font-weight: 600;
+    width: 100%;
+    display: flex;
     justify-content: space-between;
 }
-.card .img{
+.card .side .img{
     width: 200px;
     height: 200px;
     border-radius: 100px;
     background-color:var(--secondary-color);
+}
+
+.card .side.additional{
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: start;
+    gap:0;
+}
+
+.card .side.additional h1{
+    margin: 0;
+    margin-bottom: 20px;
+}
+
+.card .side .img img{
+    width: 200px;
+    height: 200px;
+    border-radius: 100px;
+    object-fit: cover;
+}
+
+.card input {
+  border:none;
+  border-radius: var(--buttons-border-radius);
+  background-color: lightgrey;
+  height: 30px;
+  padding-inline: 10px;
 }
