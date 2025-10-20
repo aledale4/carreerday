@@ -1,0 +1,103 @@
+.event-data-inputs {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-top: 20px;
+}
+
+.event-data-inputs input {
+    width: 50%;
+    border:none;
+    border-radius: var(--buttons-border-radius);
+    background-color: lightgrey;
+    height: 30px;
+    padding: 0;
+    padding-inline: 10px;
+    margin-bottom: 20px;
+}
+
+.event-data-inputs input[type="submit"]{
+    border: none;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: var(--buttons-border-radius);
+    /* padding-inline: 10px; */
+    width: calc(50% + 20px);
+}
+
+.event-data-inputs p {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.event-data-inputs textarea {
+    width: calc(50%);
+    margin: 0;
+    height: 100px;
+    border:none;
+    border-radius: var(--buttons-border-radius);
+    background-color: lightgrey;
+    padding: 10px;
+    resize: none;
+    margin-bottom: 20px;
+}
+
+.event.edit input[type="text"] {
+    padding: 0;
+    margin: 0;
+    font-size: 40px;
+    font-weight: 600;
+    height: 100%;
+    width: fit-content;
+    font-family: "Inter", sans-serif;
+}
+
+.event.edit .event-info input[type="text"] {
+    padding: 0;
+    margin: 0;
+    font-size: 20px;
+    font-weight: 400;
+    height: 100%;
+    width: fit-content;
+    font-family: "Inter", sans-serif;
+}
+
+.event.edit input[type="submit"] {
+    background-color: var(--primary-color);
+    border: none;
+    color: var(--text-color);
+    font-weight: bold;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: var(--buttons-border-radius);
+    margin: 0;
+    padding-inline: 20px;
+    height: 60px;
+}
+
+.companies-choice-table{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.companies-choice-table tr{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 20px;
+}
+.companies-choice-table th{
+    width: 50%;;
+}
+
+.companies-choice-table td{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 50%;
+}
