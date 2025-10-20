@@ -185,6 +185,27 @@
         header("Location: index.php?pag=login");
         exit();
     }
+
+    //funzione per controllare se la password è "scaduta"
+    //non fate niente la funzione non funziona
+    function psw_expired($id, $tabella){
+        $q="select date_format(data, '%g/%m/%Y') as data_formattata from".$tabella."where id='".$id."'";
+        $ris= mysqli_query($conn, $q)or die("errore durante il controllo password");
+        $num= mysqli_num_rows($ris);
+        $today= date('Y/m/d');
+        if($num==1){
+            $date=mysqli_fetch_assoc($ris);
+            if($date == $today){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            exit("errore duante la verifica della password");
+        }
+    }
 ?>
 
 <!DOCTYPE html>
