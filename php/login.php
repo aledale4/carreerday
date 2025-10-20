@@ -1,9 +1,47 @@
 <div class="container">
     <img src="../static/logo.svg" alt="">
     <div class="centered">
-        <h1>Portale Studenti - Login</h1>
+        <p class="user-type-title">Che utente sei?</p>
+        <div class="user-type-select">
+            <a href="index.php?usertype=1">
+                <div class="user-type-button <?php echo $_SESSION["user-type"]==1?"selected":"" ?>">
+                    <p>Admin</p>
+                </div>
+            </a>
+            <a href="index.php?usertype=2">
+                <div class="user-type-button <?php echo $_SESSION["user-type"]==2?"selected":"" ?>">
+                    <p>Studente</p>
+                </div>
+            </a>
+            <a href="index.php?usertype=3">
+                <div class="user-type-button <?php echo $_SESSION["user-type"]==3?"selected":"" ?>">
+                    <p>Azienda</p>
+                </div>
+            </a>
+        </div>
+        <h1>Portale <?php switch($_SESSION["user-type"]){
+            case 1:
+                echo "Admin";
+                break;
+            case 2:
+                echo "Studenti";
+                break;
+            case 3:
+                echo "Aziende";
+                break;
+        } ?> - Login</h1>
         <form class="input-form" action="index.php" method="post">
-            <input type="hidden" name="pag" value="login">
+            <input type="hidden" name="pag" value="<?php switch($_SESSION["user-type"]){
+                case 1:
+                    echo "login_admin";
+                    break;
+                case 2:
+                    echo "login";
+                    break;
+                case 3:
+                    echo "login_soc";
+                    break;
+            } ?>">
             <input type="email" name="email" id="" placeholder="Email" required>
             <input type="password" name="password" id="" placeholder="Password" required>
             <input type="submit" value="Accedi">

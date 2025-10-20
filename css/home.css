@@ -9,7 +9,7 @@
 
 .navbar{
     width: 100%;
-    height: 60px;
+    height: fit-content;
     background-color: var(--background-color);
     display: flex;
     align-items: center;
@@ -17,7 +17,7 @@
 }
 
 .navbar .left-side{
-    height: 100%;
+    height: 60px;
     width: fit-content;
     display: flex;
     align-items: center;
@@ -30,8 +30,8 @@
 }
 
 .navbar .right-side{
-    width: 50%;
-    height: 100%;
+    width: fit-content;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: end;
@@ -54,6 +54,67 @@
     background-color: grey;
     border-radius: 50%;
 }
+
+.navbar .middle-nav{
+    width: fit-content;
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbar .middle-nav .nav-page p{
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+}
+.navbar .middle-nav .nav-page{
+    height: 100%;
+    position: relative;
+    border-top-left-radius: var(--buttons-border-radius);
+    border-top-right-radius: var(--buttons-border-radius);
+    padding-inline: 20px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.navbar .middle-nav .nav-page.selected{
+    background-color: var(--primary-color);
+}
+
+.navbar .middle-nav .nav-page.selected::after{
+    display: block;
+    position: absolute;
+    content: "";
+    width: calc(2 * var(--buttons-border-radius));
+    height: calc(2 * var(--buttons-border-radius));
+    bottom: 0;
+    right: -20px;
+    border-radius: 0 0 0 var(--buttons-border-radius);
+    -moz-border-radius: 0 0 0 var(--buttons-border-radius);
+    -webkit-border-radius: 0 0 0 var(--buttons-border-radius);
+
+    -webkit-box-shadow: calc(-1* var(--buttons-border-radius)) 0 0 0 var(--primary-color);
+    box-shadow: calc(-1* var(--buttons-border-radius)) 0 0 0 var(--primary-color);
+}
+
+.navbar .middle-nav .nav-page.selected::before{
+    display: block;
+    position: absolute;
+    content: "";
+    width: calc(2 * var(--buttons-border-radius));
+    height: calc(2 * var(--buttons-border-radius));
+    bottom: 0;
+    left: -20px;
+    border-radius: 0 0 var(--buttons-border-radius) 0;
+    -moz-border-radius: 0 0 var(--buttons-border-radius) 0;
+    -webkit-border-radius: 0 0 var(--buttons-border-radius) 0;
+
+    -webkit-box-shadow: calc(var(--buttons-border-radius)) 0 0 0 var(--primary-color);
+    box-shadow: calc(var(--buttons-border-radius)) 0 0 0 var(--primary-color);
+}
+
 
 section{
     margin-top: 40px;

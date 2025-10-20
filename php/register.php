@@ -1,13 +1,36 @@
 <div class="container">
     <img src="../static/logo.svg" alt="">
     <div class="centered">
-        <h1>Portale Studenti - Registrazione</h1>
+        <p class="user-type-title">Che utente sei?</p>
+        <div class="user-type-select">
+            <a href="index.php?pag=register&usertype=2">
+                <div class="user-type-button <?php echo $_SESSION["user-type"]==2?"selected":"" ?>">
+                    <p>Studente</p>
+                </div>
+            </a>
+            <a href="index.php?pag=register&usertype=3">
+                <div class="user-type-button <?php echo $_SESSION["user-type"]==3?"selected":"" ?>">
+                    <p>Azienda</p>
+                </div>
+            </a>
+        </div>
+        <h1>Portale <?php switch($_SESSION["user-type"]){
+            case 1:
+                echo "Admin";
+                break;
+            case 2:
+                echo "Studenti";
+                break;
+            case 3:
+                echo "Aziende";
+                break;
+        } ?> - Registrazione</h1>
             <form class="input-form" action="index.php" method="post">
-                <input type="hidden" name="pag" value="register">
-                <input type="text" name="nome" id="" placeholder="Nome" required>
-                <input type="text" name="cognome" id="" placeholder="Cognome" required>
-                <input type="text" name="username" id="" placeholder="Username" required>
-                <input type="email" name="email" id="" placeholder="Email" required>
+                <?php
+                    if($_SESSION["user-type"]==2){
+                        include("register-user-form.php");
+                    }else include("register-company-form.php"); 
+                ?>
                 <input type="password" name="password" id="" placeholder="Password" required>
                 <input type="password" name="password2" id="" placeholder="Conferma Password" required>
                 <input type="submit" value="Registrati">

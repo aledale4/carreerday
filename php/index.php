@@ -16,6 +16,17 @@
         session_destroy();
         header("Location: index.php");
     }
+    if((isset($_GET["pag"]) && $_GET["pag"] == "register" && $_SESSION["user-type"] == 1 && !isset($_SESSION["user"])) || (!isset($_SESSION["user-type"]) && !isset($_SESSION["user"]))){
+        $_SESSION["user-type"] = 2;
+    }
+    if(isset($_GET["usertype"]) && !isset($_SESSION["user"]) && (!isset($_GET["pag"]) || ($_GET["pag"] == "login" || $_GET["pag"] == "register"))){
+        $user_type = filter_input(INPUT_GET,"usertype", FILTER_VALIDATE_INT);
+        if($user_type && $user_type >= 1 && $user_type <=3){
+            $_SESSION["user-type"] = $user_type;
+        }else{
+            $_SESSION["user-type"] = 2;
+        }
+    }
     //funzione di registrazione
     if(isset($_POST["pag"]) && $_POST["pag"]=="register" && !isset($_SESSION["user"])){
         //controllo username
@@ -73,6 +84,7 @@
             if(password_verify($_POST["password"],$riga["passwordStu"])){
                 //login effettuato con successo
                 $_SESSION["user"]=$riga;
+                $_SESSION["user-type"] = 2;
                 session_regenerate_id();
                 header("Location: index.php");
                 exit();
@@ -87,6 +99,92 @@
             header("Location: index.php?pag=login&error=1");
         }
     }
+    if(isset($_POST["pag"]) && $_POST["pag"]=="login_soc" && !isset($_SESSION["user"])){
+        if (!isset($_POST["email"]) or !isset($_POST["password"])) header("Location: index.php?pag=login&error=2");
+        $email=mysqli_real_escape_string($conn, $_POST["email"]);
+        $q= "select * from aziende where email='".$email."'";
+        $ris= mysqli_query($conn, $q)or die("errore durante la verifica dell'email");
+        $num= mysqli_num_rows($ris);
+        if($num==1){
+            $riga = mysqli_fetch_assoc($ris);
+            if(password_verify($_POST["password"],$riga["passwordRef"])){
+                //login effettuato con successo
+                $_SESSION["user"]=$riga;
+                $_SESSION["user-type"] = 3;
+                session_regenerate_id();
+                header("Location: index.php");
+                exit();
+            }
+            else{
+                //password errata
+                header("Location: index.php?pag=login&error=0");
+            }
+        }
+        else{
+            //username errato
+            header("Location: index.php?pag=login&error=1");
+        }
+    }
+    if(isset($_POST["pag"]) && $_POST["pag"]=="register_soc" && !isset($_SESSION["user"])){
+        //controllo username
+        $required = ["ragsoc","piva","indirizzo","cap","loc","prov","username","email","nomeRef","cognomeRef","password","password2"];
+        foreach($required as $r){
+            if(!isset($_POST[$r])) {
+                header("Location: index.php?pag=register&error=3");
+                exit();
+            }
+        }
+        $username=mysqli_real_escape_string($conn, $_POST["username"]);
+        $piva=mysqli_real_escape_string($conn, $_POST["piva"]);
+
+        $q ="select * from aziende where usernameRef='".$username."'";
+        $ris = mysqli_query($conn, $q)or die("errore durante la verifica dell'username");
+        $num = mysqli_num_rows($ris);
+        if($num>0){
+            //username già usato 
+            header("Location: index.php?pag=register&error=0");
+            exit();
+        }
+        $q ="select * from aziende where piva='".$piva."'";
+        $ris = mysqli_query($conn, $q)or die("errore durante la verifica della p.iva");
+        $num = mysqli_num_rows($ris);
+        if($num>0){
+            //p.iva già usatoa
+            header("Location: index.php?pag=register&error=3");
+            exit();
+        }
+        //controllo email
+        $email=mysqli_real_escape_string($conn, $_POST["email"]);
+        $q ="select * from aziende where email='".$email."'";
+        $ris = mysqli_query($conn, $q)or die("errore durante la verifica della mail");
+        $num = mysqli_num_rows($ris);
+        if($num>0){
+            //email già usata
+            header("Location: index.php?pag=register&error=1");
+            exit();
+        }
+        if($_POST["password"]!=$_POST["password2"]){
+            //password non corrispondenti
+            header("Location: index.php?pag=register&error=2");
+            exit();
+        }
+        //username e email disponibili
+        $ragsoc= mysqli_real_escape_string($conn, $_POST["ragsoc"]);
+        $indirizzo= mysqli_real_escape_string($conn, $_POST["indirizzo"]);
+        $cap= mysqli_real_escape_string($conn, $_POST["cap"]);
+        $loc= mysqli_real_escape_string($conn, $_POST["loc"]);
+        $prov= mysqli_real_escape_string($conn, $_POST["prov"]);
+        $nome= mysqli_real_escape_string($conn, $_POST["nomeRef"]);
+        $cognome= mysqli_real_escape_string($conn, $_POST["cognomeRef"]);
+        $password= password_hash($_POST["password"],PASSWORD_DEFAULT);
+        $q ="insert into aziende (ragsoc,ind,cap,loc,prov,piva,email,nomeRef,cognomeRef,usernameRef,passwordRef) values('".$ragsoc."','".$indirizzo."','".$cap."','".$loc."','".$prov."','".$piva."','".$email."','".$nome."','".$cognome."','".$username."','".$password."')";
+        echo $q;
+        $ris= mysqli_query($conn, $q)or die("errore durante la registrazione");
+        //registrazione effettuata con successo
+        session_regenerate_id();
+        header("Location: index.php?pag=login");
+        exit();
+    }
 ?>
 
 <!DOCTYPE html>
@@ -98,6 +196,7 @@
     <link rel="stylesheet" href="../css/login_register.css">
     <link rel="stylesheet" href="../css/home.css">
     <link rel="stylesheet" href="../css/event.css">
+    <link rel="stylesheet" href="../css/company-home.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
@@ -111,7 +210,16 @@
             include("settings.php");
         }else if($_GET["pag"] == "event"){
             include("event.php");
-        }else include("home.php");
+        }else {
+            switch($_SESSION["user-type"]){
+                case 2:
+                    include("home.php");
+                    break;
+                case 3:
+                    include("company-home.php");
+                    break;
+            }
+        }
     }
     else if(isset($_GET["pag"])){
         if($_GET["pag"] == "login"){
