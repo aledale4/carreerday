@@ -45,6 +45,7 @@
             <input type="email" name="email" id="" placeholder="Email" required>
             <input type="password" name="password" id="" placeholder="Password" required>
             <input type="submit" value="Accedi">
+            <a href="index.php?pag=reset_pwd">Password dimenticata?</a>
         </form>
         <p class="change-action-link">Oppure <a href="index.php?pag=register">Registrati</a></p>
         <p class="error"><?php

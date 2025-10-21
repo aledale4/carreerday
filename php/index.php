@@ -185,6 +185,43 @@
         header("Location: index.php?pag=login");
         exit();
     }
+    // funzione di reset password
+    if($_POST["pag"]=="invio_email_reset_pwd" && isset($_POST["pag"]) && !isset($_SESSION["user"])){
+        $q= "select * from user where user='".$_GET["user"]."'";
+        $ris= mysqli_query($conn, $q)or die("utente inesistente");
+        $num = mysqli_num_rows($ris);
+        if($num!=1){
+            $riga = mysqli_fetch_assoc($ris);
+            $token_random = random_bytes(32);
+            $pwd_random = random_bytes(32);
+            $token= bin2hex($token_random);
+            $pwd_pro= bin2hex($pwd_random);
+            $q="update user set passwordut = '".$pwd_random. "' where idut='" . $ris["idut"]. "'";
+            $q2="insert into token (idut,number) values('".$riga["idut"]."' , '".$token."')";
+            mysqli_query($conn,$q); // da rivdere pk mi sa che ci va global
+            mysqli_query($conn,$q2);
+            $mitt="mittente.it"; //mittente
+            $dst="dst.it"; //destinatario
+            $ogg="Reset password Carreday";
+            $mess="Clicca su questo link per resettare a tua password : \nrequest_password_reset.php?token=" .$token . "\n Inserisci questa password provvisoria nel campo: Password provvisoria. \n" . $pwd_pro ; // link da inserire
+            $header="From: ".$mitt."\r\nReply-To:".$mitt."\r\nContent-type: text/html; charset=utf-8\r\n";
+            if(mail($dst, $ogg, $mess, $header)){
+                //"email mandata"
+            }else{
+                //"non funziona"
+            }
+        }else{} //inserire l'errore
+
+    }
+    if($_POST["pag"]=="reset_pwd" && isset($_POST["pag"]) && !isset($_SESSION["user"])){
+
+        $q= "select * from user where user='".$_GET["user"]."'";
+        $ris= mysqli_query($conn, $q)or die("utente inesistente");
+        $num = mysqli_num_rows($ris);
+        if($num!=1){
+
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -226,6 +263,8 @@
             include("login.php");
         }else if($_GET["pag"] == "register"){
             include("register.php");
+        }else if($_GET["pag"] == "reset_pwd"){
+            include("password_reset.php");
         }else{
             include("login.php");
         }
