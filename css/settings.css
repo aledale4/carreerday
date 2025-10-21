@@ -106,9 +106,65 @@ form{
 }
 
 .card input {
+    width: 200px;
+    height: 30px;
   border:none;
   border-radius: var(--buttons-border-radius);
   background-color: lightgrey;
   height: 30px;
   padding-inline: 10px;
+}
+.links {
+    width: 100%;
+    background-color: var(--background-color);
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+}
+.links-section {
+    width: calc(50% - 10px);
+    /*margin: 80px 40px;*/
+}
+
+.links-section h3 {
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.links-section label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.links-section input {
+    width: 400px;
+    height: 30px;
+    border: none;
+    background-color: lightgrey;
+    border-radius: 10px;
+    padding: 0 10px;
+    margin-bottom: 15px;
+}
+
+.links-section .link-item {
+    display: flex;
+    flex-direction: row;
+    gap:20px;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+input[type="submit"]{
+    height: 45px;
+    background-color: rgb(50, 184, 68);
+    border: none;
+    color: var(--text-color);
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 20px;
+    font-size: 20px;
+    padding: 10px;
+    margin-bottom: 30px;
 }

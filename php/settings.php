@@ -10,7 +10,7 @@
         <p>Il tuo profilo</p>
     </div>
     <form action="">
-    <div class="card">
+        <div class="card">
             <div class="side">
                 <div class="img"><img src="" alt=""></div>
                 <div class="inputs">
@@ -19,8 +19,10 @@
                     <p>Cognome:<input type="text" name="cognome" id="" placeholder="Cognome" required></p>
                     <p>Username:<input type="text" name="username" id="" placeholder="Username" required></p>
                     <p>Email:<input type="email" Passwo name="email" id="" placeholder="Email" required></p>
-                    <p>Password Esistente:<input type="password" name="password" id="" placeholder="Password" required></p>
-                    <p>Nuova Password<input type="password" name="newpassword" id="" placeholder="Nuova Password" required></p>
+                    <p>Password Esistente:<input type="password" name="password" id="" placeholder="Password" required>
+                    </p>
+                    <p>Nuova Password<input type="password" name="newpassword" id="" placeholder="Nuova Password"
+                            required></p>
                 </div>
             </div>
             <div class="side additional">
@@ -32,6 +34,28 @@
                     <p>Curriculum:<input type="file" name="CV" id=""></p>
                 </div>
             </div>
+        </div>
+        <div class="links">
+
+            <div class="links-section">
+                <h3>Links</h3>
+                
+                <div class="link-item">
+                    <label>Sito web:</label>
+                    <input type="text">
+                </div>
+                
+                <div class="link-item">
+                    <label>GitHub:</label>
+                    <input type="text">
+                </div>
+                
+                <div class="link-item">
+                    <label>LinkedIn:</label>
+                    <input type="text">
+                </div>
+            </div>
+            <input class="" type="submit" value="Salva modifiche">
         </div>
     </form>
 </div>
