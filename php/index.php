@@ -175,7 +175,7 @@
         $ris = mysqli_query($conn, $q)or die("errore durante la verifica della p.iva");
         $num = mysqli_num_rows($ris);
         if($num>0){
-            //p.iva già usatoa
+            //p.iva già usata
             header("Location: index.php?pag=register&error=3");
             exit();
         }
@@ -210,6 +210,95 @@
         header("Location: index.php?pag=login");
         exit();
     }
+
+    //funzione per l'aggiornamento della password
+    if(isset($_POST["pag"]) && $_POST["pag"]=="pwdUpdate2" && isset($_POST["newpwd"]) && isset($_SESSION["user"])){
+        switch($_SESSION["user-type"]){
+            case 1:
+                $tabella="admins";
+                $campo1="passwordUt";
+                $campo2="lastPwdUt";
+                $campo3="idUt";
+            case 2:
+                $tabella="studenti";
+                $campo1="passwordStu";
+                $campo2="lastPwdStu";
+                $campo3="idStu";
+                break;
+            case 3:
+                $tabella="aziende";
+                $campo1="passwordAz";
+                $campo2="lastPwdAz";
+                $campo3="idAz";
+                break;
+            default:
+                echo "Si è verificato un errore durante il controllo dell'account";
+                exit();
+        }
+        $data = date("%Y-%m-%d");
+        $q="update ".$tabella." set ".$campo1." = ".password_hash($_POST["newpwd"]).", ".$campo2." = ".$data." where ".$campo3." = '".$_SESSION["user"][$campo3]."'";
+        $ris=mysqli_query($conn, $q)or die("Errore nell'aggiornamento della password");
+        $_SESSION["user"][$campo1]=password_hash($_POST["newpwd"]);
+        header("Location: index.php");
+    }
+
+    //funzione per controllare se la password è "scaduta"
+    //restituisce un valore booleano:
+    //- true se la password è scaduta
+    //- false se la password è valida
+    function pwd_expired(){
+        switch($_SESSION["user-type"]){
+            case 1:
+                $tabella="admins";
+                $id=$_SESSION["user"]["idUt"];
+                $campo1="idUt";
+            case 2:
+                $tabella="studenti";
+                $id=$_SESSION["user"]["idStu"];
+                $campo1="idStu";
+                break;
+            case 3:
+                $tabella="aziende";
+                $id=$_SESSION["user"]["idAz"];
+                $campo1="idAz";
+                break;
+            default:
+                echo "Si è verificato un errore durante il controllo dell'account";
+                exit();
+        }
+    	global $conn;
+        $q="select * from `".$tabella."` where ".$campo1." = '".$id."';";
+        $ris= mysqli_query($conn, $q)or die("errore durante il controllo password | ".$q.mysqli_error($conn));
+        $num= mysqli_num_rows($ris);
+        
+        if($num==1){
+        	$today= new DateTime(date('Y-m-d'));
+            $date=mysqli_fetch_assoc($ris);
+            $date2= new DateTime($date["data_formattata"]);
+            $intervallo = $date2->diff($today);
+            echo $intervallo->format("%a giorni");
+            if($intervallo > 183){
+
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            exit("errore duante la verifica della password");
+        }
+    }
+
+    //funzione che conta i giorni da una data fornita in input con formato "%Y-%m-%d", restituisce il numero di giorni
+    function days_counter($value){
+        $today= new DateTime(date("%Y-%m-%d"));
+        $date= new DateTime($value);
+        $days= $today->diff($date);
+        $days->format("%a giorni");
+        return $days;
+    }
+
     if(isset($_POST["pag"]) && $_POST["pag"]=="new_event" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 1){
         $required = ["nome","descrizione","date","start_time","end_time","pos"];
         foreach($required as $r){
@@ -280,6 +369,12 @@
 <body>
     <?php
     if(isset($_SESSION["user"])){
+        if(pwd_expired() && $_GET["pag"]!="pwdUpdate"){
+            header("Location: index.php?pag=pwdUpdate");
+        }
+        if($_GET["pag"]=="pwdUpdate"){
+            include("pwdUpdate.php");
+        }
         if($_GET["pag"] == "settings" ){
             include("settings.php");
         }else if($_GET["pag"] == "event"){
