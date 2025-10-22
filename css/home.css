@@ -30,6 +30,7 @@
 }
 
 .navbar .right-side{
+    position: relative;
     width: fit-content;
     height: 60px;
     display: flex;
@@ -47,6 +48,15 @@
     aspect-ratio: 1;
 }
 
+.navbar .right-side .suggestion{
+    position: absolute;
+    font-size: 16px;
+    /* width: 100%; */
+    font-weight: 200;
+    text-align: center;
+    bottom: -45px;
+    right: 30px;
+}
 
 .navbar .right-side .user-pic{
     height: 100%;
@@ -145,6 +155,15 @@ section{
 .scrollable-container .element img{
     width: 100%;
     height: 100%;
+    border-radius: var(--buttons-border-radius);
+    object-fit: cover;
+}
+
+.scrollable-container .element span{
+    /* width: 100%;
+    height: 100%; */
+    margin: auto;
+    font-size: 50px;
     border-radius: var(--buttons-border-radius);
     object-fit: cover;
 }

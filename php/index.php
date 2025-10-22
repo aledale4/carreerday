@@ -137,6 +137,32 @@
             header("Location: index.php?pag=login&error=1");
         }
     }
+    if(isset($_POST["pag"]) && $_POST["pag"]=="login_admin" && !isset($_SESSION["user"])){
+        if (!isset($_POST["username"]) or !isset($_POST["password"])) header("Location: index.php?pag=login&error=2");
+        $username=mysqli_real_escape_string($conn, $_POST["username"]);
+        $q= "select * from admins where usernameUt='".$username."'";
+        $ris= mysqli_query($conn, $q)or die("errore durante la verifica dell'email");
+        $num= mysqli_num_rows($ris);
+        if($num==1){
+            $riga = mysqli_fetch_assoc($ris);
+            if(password_verify($_POST["password"],$riga["passwordUt"])){
+                //login effettuato con successo
+                $_SESSION["user"]=$riga;
+                $_SESSION["user-type"] = 1;
+                session_regenerate_id();
+                header("Location: index.php");
+                exit();
+            }
+            else{
+                //password errata
+                header("Location: index.php?pag=login&error=0");
+            }
+        }
+        else{
+            //username errato
+            header("Location: index.php?pag=login&error=1");
+        }
+    }
     if(isset($_POST["pag"]) && $_POST["pag"]=="register_soc" && !isset($_SESSION["user"])){
         //controllo username
         $required = ["ragsoc","piva","indirizzo","cap","loc","prov","username","email","nomeRef","cognomeRef","password","password2"];
@@ -190,7 +216,6 @@
         $cognome= mysqli_real_escape_string($conn, $_POST["cognomeRef"]);
         $password= password_hash($_POST["password"],PASSWORD_DEFAULT);
         $q ="insert into aziende (ragsoc,ind,cap,loc,prov,piva,email,nomeRef,cognomeRef,usernameRef,passwordRef) values('".$ragsoc."','".$indirizzo."','".$cap."','".$loc."','".$prov."','".$piva."','".$email."','".$nome."','".$cognome."','".$username."','".$password."')";
-        echo $q;
         $ris= mysqli_query($conn, $q)or die("errore durante la registrazione");
         //registrazione effettuata con successo
         session_regenerate_id();
@@ -284,6 +309,54 @@
         $days->format("%a giorni");
         return $days;
     }
+    
+    if(isset($_POST["pag"]) && $_POST["pag"]=="new_event" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 1){
+        $required = ["nome","descrizione","date","start_time","end_time","pos"];
+        foreach($required as $r){
+            if(!isset($_POST[$r])) {
+                header("Location: index.php?pag=new_event&error=1");
+                exit();
+            }
+        }
+        $nome = mysqli_real_escape_string($conn, $_POST["nome"]);
+        $desc = mysqli_real_escape_string($conn, $_POST["descrizione"]);
+        $date = mysqli_real_escape_string($conn, $_POST["date"]);
+        $start_time = mysqli_real_escape_string($conn, $_POST["start_time"]);
+        $end_time = mysqli_real_escape_string($conn, $_POST["end_time"]);
+        $pos = mysqli_real_escape_string($conn, $_POST["pos"]);
+        $q ="insert into career_day (nameCd,dateCd,fromCd,toCd,locationCd,descCd) values('".$nome."','".$date."','".$start_time."','".$end_time."','".$pos."','".$desc."')";
+        $result = mysqli_query($conn, $q) or die("errore nella query");
+        $id = mysqli_insert_id($conn);
+        $q = "select * from aziende";
+        $r = mysqli_query($conn, $q);
+        while ($row = mysqli_fetch_assoc($r)) {
+           if (isset($_POST[$row["idAz"]]) && $_POST[$row["idAz"]] == "on"){
+                $adQ = "insert into adesioni (rAz,rCd) values ('".$row["idAz"]."','".$id."')";
+                $ad = mysqli_query($conn, $adQ) or die("errore nella query");
+           }
+        }
+
+        header("Location: index.php");
+    }
+    if(isset($_POST["pag"]) && $_POST["pag"]=="edit_event" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 1){
+        $required = ["nome","descrizione","date","start_time","end_time","pos"];
+        foreach($required as $r){
+            if(!isset($_POST[$r])) {
+                header("Location: index.php?pag=new_event&error=1");
+                exit();
+            }
+        }
+        $id = filter_input(INPUT_POST,"id", FILTER_SANITIZE_NUMBER_INT);
+        $nome = mysqli_real_escape_string($conn, $_POST["nome"]);
+        $desc = mysqli_real_escape_string($conn, $_POST["descrizione"]);
+        $date = mysqli_real_escape_string($conn, $_POST["date"]);
+        $start_time = mysqli_real_escape_string($conn, $_POST["start_time"]);
+        $end_time = mysqli_real_escape_string($conn, $_POST["end_time"]);
+        $pos = mysqli_real_escape_string($conn, $_POST["pos"]);
+        $q ="update career_day set nameCd='".$nome."',dateCd='".$date."',fromCd='".$start_time."',toCd='".$end_time."',locationCd='".$pos."',descCd='".$desc."' where idCd=".$id;
+        $result = mysqli_query($conn, $q) or die("errore nella query");
+        header("Location: index.php?pag=event&id=".$id);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -295,22 +368,31 @@
     <link rel="stylesheet" href="../css/login_register.css">
     <link rel="stylesheet" href="../css/home.css">
     <link rel="stylesheet" href="../css/event.css">
+    <link rel="stylesheet" href="../css/new_edit_event.css">
+    <link rel="stylesheet" href="../css/settings.css">
     <link rel="stylesheet" href="../css/company-home.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_back_ios_new,location_on" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,arrow_back_ios_new,edit,location_on" />
     <title>Career Day</title>
 </head>
 <body>
     <?php
     if(isset($_SESSION["user"])){
-        if($_GET["pag"] == "settings"){
+        if($_GET["pag"] == "settings" ){
             include("settings.php");
         }else if($_GET["pag"] == "event"){
             include("event.php");
+        }else if ($_GET["pag"] == "new_event" && $_SESSION["user-type"] == 1){
+            include ("new_event.php");
+        }else if ($_GET["pag"] == "edit_event" && $_SESSION["user-type"] == 1){
+            include ("edit-event.php");
         }else {
             switch($_SESSION["user-type"]){
+                case 1:
+                    include("admin-home.php");
+                    break;
                 case 2:
                     include("home.php");
                     break;

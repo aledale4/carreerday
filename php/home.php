@@ -7,6 +7,7 @@
     <div class="right-side">
         <p>Benvenuto/a, <span><?php echo $_SESSION["user"]["nomeStu"]; ?></span></p>
         <a href="index.php?pag=settings"><div class="user-pic"></div></a>
+        <div class="suggestion">Modifica il tuo profilo <img src="../static/arrow.svg" alt=""></div>
     </div>
 </div>
 
