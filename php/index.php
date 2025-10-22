@@ -16,6 +16,23 @@
         session_destroy();
         header("Location: index.php");
     }
+    if(isset($_GET["pag"]) && $_GET["pag"] == "download_qr" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 3){
+        $id = filter_input(INPUT_GET,"id", FILTER_SANITIZE_NUMBER_INT);
+        $q = "select * from adesioni where idAd = ".$id;
+        $result = mysqli_query($conn, $q);
+        if (mysqli_num_rows($result) == 0) exit("");
+        $row = mysqli_fetch_array($result);
+        $idAz = $row["rAz"];
+        if ($idAz != $_SESSION["user"]["idAz"]) exit("");
+        $file = "../static/qrcodes/".$id.".png";
+        header('Content-Type: application/download');
+        header('Content-Disposition: attachment; filename="qr.png"');
+        header("Content-Length: " . filesize($file));
+        $fp = fopen($file, "r");
+        fpassthru($fp);
+        fclose($fp);
+        exit();
+    }
     if((isset($_GET["pag"]) && $_GET["pag"] == "register" && $_SESSION["user-type"] == 1 && !isset($_SESSION["user"])) || (!isset($_SESSION["user-type"]) && !isset($_SESSION["user"]))){
         $_SESSION["user-type"] = 2;
     }
@@ -229,10 +246,13 @@
         $id = mysqli_insert_id($conn);
         $q = "select * from aziende";
         $r = mysqli_query($conn, $q);
+        include 'phpqrcode/qrlib.php';
         while ($row = mysqli_fetch_assoc($r)) {
            if (isset($_POST[$row["idAz"]]) && $_POST[$row["idAz"]] == "on"){
                 $adQ = "insert into adesioni (rAz,rCd) values ('".$row["idAz"]."','".$id."')";
                 $ad = mysqli_query($conn, $adQ) or die("errore nella query");
+                $id_qr = mysqli_insert_id($conn);
+                QRcode::png($env['BASE_URL']."/php/index.php?pag=adesione&id=".$id_qr, '../static/qrcodes/'.$id_qr.'.png', 'L', 16, 2);
            }
         }
 

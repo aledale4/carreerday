@@ -4,6 +4,37 @@
     flex-direction: column;
 }
 
+.event.company {
+    flex-direction: row;
+}
+
+.event.company .event-main{
+    width: 60%;
+}
+
+.event .event-qr  {
+    width: 40%;
+}
+.event .event-qr img {
+    width: 100%;
+    aspect-ratio: 1;
+}
+.event .event-qr form{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.event .event-qr input[type="submit"]{
+  background-color: var(--primary-color);
+  border: none;
+  color: var(--text-color);
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: var(--buttons-border-radius);
+  padding:20px;
+  padding-inline: 30px;
+  font-size: 20px;
+}
 .event .event-title{
     width: 100%;
     display: flex;
@@ -63,7 +94,8 @@
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: start;
+    gap: 20px;
 }
 .event .event-participants .participants .participant {
     margin-top: 20px;

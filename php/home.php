@@ -14,18 +14,17 @@
 <section id="prossimi-eventi">
     <h1>Prossimi Eventi</h1>
     <div class="scrollable-container">
-        <a href="index.php?pag=event">
-            <div class="element">
-                <img src="" alt="logo evento">
-                <p>Nome Evento</p>
-            </div>
-        </a>
-        <a href="index.php?pag=event">
-            <div class="element">
-                <img src="" alt="logo evento">
-                <p>Nome Evento</p>
-            </div>
-        </a>
+       <?php 
+            $q = "select * from career_day";
+            $r = mysqli_query($conn, $q);
+            while ($row = mysqli_fetch_assoc($r)) {
+                echo '<a href="index.php?pag=event&id='.$row["idCd"].'">';
+                echo '<div class="element">';
+                echo '<img src="" alt="logo evento">';
+                echo '<p>'.$row["nameCd"].'</p>';
+                echo '</div></a>';
+            }
+        ?>
     </div>
 </section>
 
