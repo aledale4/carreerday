@@ -300,7 +300,7 @@
         }
     }
 
-    //funzione che conta i giorni da una data fornita in input con formato "%Y-%m-%d", restituisce il numero di giorni
+    //funzione che conta i giorni da una data fornita in input con formato "Y-m-d", restituisce il numero di giorni
     function days_counter($value){
         $today= new DateTime(date("%Y-%m-%d"));
         $date= new DateTime($value);
