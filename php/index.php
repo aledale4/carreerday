@@ -208,6 +208,7 @@
             if($_SESSION["user_type"== 3]){
                 $q="update aziende set passwordref = '".password_hash($pwd_random,PASSWORD_DEFAULT). "' where idaz='" . $riga["idaz"]. "'";
                 $q2="insert into token (ruser,token,user_type,created) values('".$riga["idaz"]."' , '".$token."' , '" .$_SESSION["user_type"]."','" .date('Y-m-d')."')";
+            }
             mysqli_query($conn,$q); // da rivdere pk mi sa che ci va global
             mysqli_query($conn,$q2);
             $mitt="mittente.it"; //mittente
@@ -215,11 +216,14 @@
             $mess="Clicca su questo link per resettare a tua password : \nreset_passoword.php?token=" .$token . "\n Inserisci questa password provvisoria nel campo: Password provvisoria. \n" . $pwd_pro ; // link da inserire
             $header="From: ".$mitt."\r\nReply-To:".$mitt."\r\nContent-type: text/html; charset=utf-8\r\n";
             if(mail($_POST["email"], $ogg, $mess, $header)){ // destinatario , oggetto , messaggio , invio
-                header("Location:request_password_reset.php");
+                header("Location:email_inviata.php");
+                exit();
             }else{
                 //"non funziona"
             }
-        }else{} //inserire l'errore
+        }else{
+
+        } //inserire l'errore
 
     }
     if(isset($_POST["pag"]) && $_POST["pag"]=="reset_pwd" && !isset($_SESSION["user"])){
@@ -228,12 +232,12 @@
         $num = mysqli_num_rows($ris);
         $riga=mysqli_fetch_assoc($ris);
         if($num == 1){
-            if(calcologiorni($riga["created"]) <=2){ //per vedere se sono passati piu di 2 giorni
-                if($riga["2"]){ // per vedere che tipo di utente è
+            if(days_counter($riga["created"]) <=2){ //per vedere se sono passati piu di 2 giorni
+                if($_SESSION["user_type"] == 2){ // per vedere che tipo di utente è
                     $qut="select * from studenti where idstu='".$riga["ruser"]."'";
                     $tipo_pwd="passwords";
                 }
-                if($riga["3"]){
+                if($_SESSION["user_type"] == 3){
                     $qut="select * from aziende where idaz='".$riga["ruser"]."'";
                     $tipo_pwd="passwordref";
                 }
@@ -241,7 +245,17 @@
                 $rigaut=mysqli_fetch_assoc($risut);
                 if($_POST["password_temp"] == $rigaut["$tipo_pwd"]){ // per vedere se le password temporanee coincidono
                     if($_POST["password1"]==$_POST["password2"]){ // per vedere se le password nuove coincidono
-
+                        if($_SESSION["user_type"] == 2){
+                            $qpass="update studenti set passwords='" .$_POST["password1"]. "' where idstu='".$riga["ruser"]."'";
+                        }
+                        if($_SESSION["user_type"] == 3){
+                            $qpass="update aziende set passwordref='" .$_POST["password1"]. "' where idaz='".$riga["ruser"]."'";
+                        }
+                        $qtoken="delete from token where token='" .$riga["token"]. "'";
+                        mysqli_query($conn, $qpass)or die("errore updating");
+                        mysqli_query($conn, $qtoken)or die("errore delete token");
+                        header("Location:index.php?pag=login");
+                        exit();
                     }else{
                         //password nuove diverse
                     }
@@ -249,6 +263,8 @@
                     //password temporanee diverse
                 }
             }else{
+                $qtoken="delete from token where token='" .$riga["token"]. "'";
+                mysqli_query($conn, $qtoken)or die("errore delete token");
                //"sono passati troppi giorni"
             }
         }else{
