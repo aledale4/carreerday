@@ -85,9 +85,15 @@
                 //login effettuato con successo
                 $_SESSION["user"]=$riga;
                 $_SESSION["user-type"] = 2;
-                session_regenerate_id();
-                header("Location: index.php");
-                exit();
+                if(psw_expired($riga["idStu"], "studenti")){
+                    header("Location: index.php?pswUpdate");
+                    exit();
+                }
+                else{
+                    session_regenerate_id();
+                    header("Location: index.php");
+                    exit();
+                }
             }
             else{
                 //password errata
@@ -111,9 +117,15 @@
                 //login effettuato con successo
                 $_SESSION["user"]=$riga;
                 $_SESSION["user-type"] = 3;
-                session_regenerate_id();
-                header("Location: index.php");
-                exit();
+                if(psw_expired($riga["idAz"],"aziende")){
+                    header("Location: index.php?pag=pswUpdate");
+                    exit();
+                }
+                else{
+                    session_regenerate_id();
+                    header("Location: index.php");
+                    exit();
+                }
             }
             else{
                 //password errata
@@ -149,7 +161,7 @@
         $ris = mysqli_query($conn, $q)or die("errore durante la verifica della p.iva");
         $num = mysqli_num_rows($ris);
         if($num>0){
-            //p.iva già usatoa
+            //p.iva già usata
             header("Location: index.php?pag=register&error=3");
             exit();
         }
@@ -186,16 +198,73 @@
         exit();
     }
 
+    //funzione per l'aggiornamento della password
+    if(isset($_GET["pag"]) && $_GET["pag"]=="pswUpdate2" && isset($_POST["newpsw"]) && isset($_SESSION["user"])){
+        switch($_SESSION["user-type"]){
+            case 1:
+                $tabella="admins";
+                $campo1="passwordUt";
+                $campo2="lastPwdUt";
+                $campo3="idUt";
+            case 2:
+                $tabella="studenti";
+                $campo1="passwordStu";
+                $campo2="lastPwdStu";
+                $campo3="idStu";
+                break;
+            case 3:
+                $tabella="aziende";
+                $campo1="passwordAz";
+                $campo2="lastPwdAz";
+                $campo3="idAz";
+                break;
+            default:
+                echo "Si è verificato un errore durante il controllo dell'account";
+                exit();
+        }
+        $data = date("%Y-%m-%d");
+        $q="update ".$tabella." set ".$campo1." = ".password_hash($_POST["newpsw"]).", ".$campo2." = ".$data." where ".$campo3." = '".$_SESSION["user"][$campo3]."'";
+        $ris=mysqli_query($conn, $q)or die("Errore nell'aggiornamento della password");
+        $_SESSION["user"][$campo1]=password_hash($_POST["newpsw"]);
+        header("Location: index.php");
+    }
+
     //funzione per controllare se la password è "scaduta"
-    //non fate niente la funzione non funziona
-    function psw_expired($id, $tabella){
-        $q="select date_format(data, '%g/%m/%Y') as data_formattata from".$tabella."where id='".$id."'";
-        $ris= mysqli_query($conn, $q)or die("errore durante il controllo password");
+    //restituisce un valore booleano:
+    //- true se la password è scaduta
+    //- false se la password è valida
+    function psw_expired(){
+        switch($_SESSION["user-type"]){
+            case 1:
+                $tabella="admins";
+                $id=$_SESSION["user"]["idUt"];
+                $campo1="idUt";
+            case 2:
+                $tabella="studenti";
+                $id=$_SESSION["user"]["idStu"];
+                $campo1="idStu";
+                break;
+            case 3:
+                $tabella="aziende";
+                $id=$_SESSION["user"]["idAz"];
+                $campo1="idAz";
+                break;
+            default:
+                echo "Si è verificato un errore durante il controllo dell'account";
+                exit();
+        }
+    	global $conn;
+        $q="select * from `".$tabella."` where ".$campo1." = '".$id."';";
+        $ris= mysqli_query($conn, $q)or die("errore durante il controllo password | ".$q.mysqli_error($conn));
         $num= mysqli_num_rows($ris);
-        $today= date('Y/m/d');
+        
         if($num==1){
+        	$today= new DateTime(date('Y-m-d'));
             $date=mysqli_fetch_assoc($ris);
-            if($date == $today){
+            $date2= new DateTime($date["data_formattata"]);
+            $intervallo = $date2->diff($today);
+            echo $intervallo->format("%a giorni");
+            if($intervallo > 183){
                 return true;
             }
             else{
@@ -205,6 +274,15 @@
         else{
             exit("errore duante la verifica della password");
         }
+    }
+
+    //funzione che conta i giorni da una data fornita in input con formato "%Y-%m-%d", restituisce il numero di giorni
+    function days_counter($value){
+        $today= new DateTime(date("%Y-%m-%d"));
+        $date= new DateTime($value);
+        $days= $today->diff($date);
+        $days->format("%a giorni");
+        return $days;
     }
 ?>
 
