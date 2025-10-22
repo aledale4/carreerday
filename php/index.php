@@ -186,40 +186,73 @@
         exit();
     }
     // funzione di reset password
-    if($_POST["pag"]=="invio_email_reset_pwd" && isset($_POST["pag"]) && !isset($_SESSION["user"])){
-        $q= "select * from user where user='".$_GET["user"]."'";
+    if(isset($_POST["pag"]) && $_POST["pag"]=="request_reset_pwd" && !isset($_SESSION["user"])){
+        if($_SESSION["user_type"== 2]){
+            $q= "select * from studenti where emails='".$_POST["email"]."'";
+        }
+        if($_SESSION["user_type"== 3]){
+            $q= "select * from aziende where email='".$_POST["email"]."'";
+        }
         $ris= mysqli_query($conn, $q)or die("utente inesistente");
         $num = mysqli_num_rows($ris);
-        if($num!=1){
+        if($num == 1){
             $riga = mysqli_fetch_assoc($ris);
-            $token_random = random_bytes(32);
+            $token_random = random_bytes(254);
             $pwd_random = random_bytes(32);
             $token= bin2hex($token_random);
             $pwd_pro= bin2hex($pwd_random);
-            $q="update user set passwordut = '".$pwd_random. "' where idut='" . $ris["idut"]. "'";
-            $q2="insert into token (idut,number) values('".$riga["idut"]."' , '".$token."')";
+            if($_SESSION["user_type"== 2]){
+                $q="update studenti set passwords = '".password_hash($pwd_random,PASSWORD_DEFAULT). "' where idtu='" . $riga["idstu"]. "'";
+                $q2="insert into token (ruser,token,user_type,created) values('".$riga["idstu"]."' , '".$token."' , '" .$_SESSION["user_type"]."','" .date('Y-m-d')."')";
+            }
+            if($_SESSION["user_type"== 3]){
+                $q="update aziende set passwordref = '".password_hash($pwd_random,PASSWORD_DEFAULT). "' where idaz='" . $riga["idaz"]. "'";
+                $q2="insert into token (ruser,token,user_type,created) values('".$riga["idaz"]."' , '".$token."' , '" .$_SESSION["user_type"]."','" .date('Y-m-d')."')";
             mysqli_query($conn,$q); // da rivdere pk mi sa che ci va global
             mysqli_query($conn,$q2);
             $mitt="mittente.it"; //mittente
-            $dst="dst.it"; //destinatario
             $ogg="Reset password Carreday";
-            $mess="Clicca su questo link per resettare a tua password : \nrequest_password_reset.php?token=" .$token . "\n Inserisci questa password provvisoria nel campo: Password provvisoria. \n" . $pwd_pro ; // link da inserire
+            $mess="Clicca su questo link per resettare a tua password : \nreset_passoword.php?token=" .$token . "\n Inserisci questa password provvisoria nel campo: Password provvisoria. \n" . $pwd_pro ; // link da inserire
             $header="From: ".$mitt."\r\nReply-To:".$mitt."\r\nContent-type: text/html; charset=utf-8\r\n";
-            if(mail($dst, $ogg, $mess, $header)){
-                //"email mandata"
+            if(mail($_POST["email"], $ogg, $mess, $header)){ // destinatario , oggetto , messaggio , invio
+                header("Location:request_password_reset.php");
             }else{
                 //"non funziona"
             }
         }else{} //inserire l'errore
 
     }
-    if($_POST["pag"]=="reset_pwd" && isset($_POST["pag"]) && !isset($_SESSION["user"])){
-
-        $q= "select * from user where user='".$_GET["user"]."'";
-        $ris= mysqli_query($conn, $q)or die("utente inesistente");
+    if(isset($_POST["pag"]) && $_POST["pag"]=="reset_pwd" && !isset($_SESSION["user"])){
+        $q= "select * from token where token='".$_GET["token"]."'";
+        $ris= mysqli_query($conn, $q)or die("token inesistente");
         $num = mysqli_num_rows($ris);
-        if($num!=1){
+        $riga=mysqli_fetch_assoc($ris);
+        if($num == 1){
+            if(calcologiorni($riga["created"]) <=2){ //per vedere se sono passati piu di 2 giorni
+                if($riga["2"]){ // per vedere che tipo di utente è
+                    $qut="select * from studenti where idstu='".$riga["ruser"]."'";
+                    $tipo_pwd="passwords";
+                }
+                if($riga["3"]){
+                    $qut="select * from aziende where idaz='".$riga["ruser"]."'";
+                    $tipo_pwd="passwordref";
+                }
+                $risut = mysqli_query($conn, $qut)or die("utente inesistente");
+                $rigaut=mysqli_fetch_assoc($risut);
+                if($_POST["password_temp"] == $rigaut["$tipo_pwd"]){ // per vedere se le password temporanee coincidono
+                    if($_POST["password1"]==$_POST["password2"]){ // per vedere se le password nuove coincidono
 
+                    }else{
+                        //password nuove diverse
+                    }
+                }else{
+                    //password temporanee diverse
+                }
+            }else{
+               //"sono passati troppi giorni"
+            }
+        }else{
+            //"piu utenti"
         }
     }
 ?>
@@ -264,7 +297,7 @@
         }else if($_GET["pag"] == "register"){
             include("register.php");
         }else if($_GET["pag"] == "reset_pwd"){
-            include("password_reset.php");
+            include("request_password_reset.php");
         }else{
             include("login.php");
         }
