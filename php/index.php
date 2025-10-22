@@ -212,7 +212,7 @@
     }
 
     //funzione per l'aggiornamento della password
-    if(isset($_GET["pag"]) && $_GET["pag"]=="pwdUpdate2" && isset($_POST["newpwd"]) && isset($_SESSION["user"])){
+    if(isset($_POST["pag"]) && $_POST["pag"]=="pwdUpdate2" && isset($_POST["newpwd"]) && isset($_SESSION["user"])){
         switch($_SESSION["user-type"]){
             case 1:
                 $tabella="admins";
@@ -371,6 +371,9 @@
     if(isset($_SESSION["user"])){
         if(pwd_expired() && $_GET["pag"]!="pwdUpdate"){
             header("Location: index.php?pag=pwdUpdate");
+        }
+        if($_GET["pag"]=="pwdUpdate"){
+            include("pwdUpdate.php");
         }
         if($_GET["pag"] == "settings" ){
             include("settings.php");
