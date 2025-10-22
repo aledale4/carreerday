@@ -1,2 +1,4 @@
 .env
 ca.pem
+php/phpqrcode/cache/
+static/qrcodes/
