@@ -85,15 +85,9 @@
                 //login effettuato con successo
                 $_SESSION["user"]=$riga;
                 $_SESSION["user-type"] = 2;
-                if(psw_expired($riga["idStu"], "studenti")){
-                    header("Location: index.php?pswUpdate");
-                    exit();
-                }
-                else{
-                    session_regenerate_id();
-                    header("Location: index.php");
-                    exit();
-                }
+                session_regenerate_id();
+                header("Location: index.php");
+                exit();
             }
             else{
                 //password errata
@@ -117,15 +111,9 @@
                 //login effettuato con successo
                 $_SESSION["user"]=$riga;
                 $_SESSION["user-type"] = 3;
-                if(psw_expired($riga["idAz"],"aziende")){
-                    header("Location: index.php?pag=pswUpdate");
-                    exit();
-                }
-                else{
-                    session_regenerate_id();
-                    header("Location: index.php");
-                    exit();
-                }
+                session_regenerate_id();
+                header("Location: index.php");
+                exit();
             }
             else{
                 //password errata
@@ -224,7 +212,7 @@
     }
 
     //funzione per l'aggiornamento della password
-    if(isset($_GET["pag"]) && $_GET["pag"]=="pswUpdate2" && isset($_POST["newpsw"]) && isset($_SESSION["user"])){
+    if(isset($_GET["pag"]) && $_GET["pag"]=="pwdUpdate2" && isset($_POST["newpwd"]) && isset($_SESSION["user"])){
         switch($_SESSION["user-type"]){
             case 1:
                 $tabella="admins";
@@ -248,9 +236,9 @@
                 exit();
         }
         $data = date("%Y-%m-%d");
-        $q="update ".$tabella." set ".$campo1." = ".password_hash($_POST["newpsw"]).", ".$campo2." = ".$data." where ".$campo3." = '".$_SESSION["user"][$campo3]."'";
+        $q="update ".$tabella." set ".$campo1." = ".password_hash($_POST["newpwd"]).", ".$campo2." = ".$data." where ".$campo3." = '".$_SESSION["user"][$campo3]."'";
         $ris=mysqli_query($conn, $q)or die("Errore nell'aggiornamento della password");
-        $_SESSION["user"][$campo1]=password_hash($_POST["newpsw"]);
+        $_SESSION["user"][$campo1]=password_hash($_POST["newpwd"]);
         header("Location: index.php");
     }
 
@@ -258,7 +246,7 @@
     //restituisce un valore booleano:
     //- true se la password è scaduta
     //- false se la password è valida
-    function psw_expired(){
+    function pwd_expired(){
         switch($_SESSION["user-type"]){
             case 1:
                 $tabella="admins";
@@ -290,6 +278,7 @@
             $intervallo = $date2->diff($today);
             echo $intervallo->format("%a giorni");
             if($intervallo > 183){
+
                 return true;
             }
             else{
@@ -309,7 +298,7 @@
         $days->format("%a giorni");
         return $days;
     }
-    
+
     if(isset($_POST["pag"]) && $_POST["pag"]=="new_event" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 1){
         $required = ["nome","descrizione","date","start_time","end_time","pos"];
         foreach($required as $r){
@@ -380,6 +369,9 @@
 <body>
     <?php
     if(isset($_SESSION["user"])){
+        if(pwd_expired() && $_GET["pag"]!="pwdUpdate"){
+            header("Location: index.php?pag=pwdUpdate");
+        }
         if($_GET["pag"] == "settings" ){
             include("settings.php");
         }else if($_GET["pag"] == "event"){
