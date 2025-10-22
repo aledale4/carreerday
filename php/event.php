@@ -1,22 +1,21 @@
 <?php
-if (!isset($_GET["id"]))
-    exit(0);
-$id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
-$q = "select * from career_day where idCd = " . $id;
-$result = mysqli_query($conn, $q) or die("errore nella query");
-if (mysqli_num_rows($result) == 0)
-    exit(0);
-$event = mysqli_fetch_assoc($result);
+    if (!isset($_GET["id"]))
+        exit(0);
+    $id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
+    $q = "select * from career_day where idCd = " . $id;
+    $result = mysqli_query($conn, $q) or die("errore nella query");
+    if (mysqli_num_rows($result) == 0)
+        exit(0);
+    $event = mysqli_fetch_assoc($result);
 
-$q2 = "select * from adesioni where rCd = " . $id;
-$adesioni_result = mysqli_query($conn, $q2) or die("errore nella query");
+    $q2 = "select * from adesioni where rCd = " . $id;
+    $adesioni_result = mysqli_query($conn, $q2) or die("errore nella query");
 
-if ($_SESSION["user-type"] == 3){
-    $q = "select * from adesioni where rCd = '" . $id."' and rAz = '".$_SESSION["user"]["idAz"]."'";
-    $r = mysqli_query($conn, $q) or die("errore nella query");
-    $ad = mysqli_fetch_assoc($r);
-}
-
+    if ($_SESSION["user-type"] == 3) {
+        $q = "select * from adesioni where rCd = '" . $id . "' and rAz = '" . $_SESSION["user"]["idAz"] . "'";
+        $r = mysqli_query($conn, $q) or die("errore nella query");
+        $ad = mysqli_fetch_assoc($r);
+    }
 ?>
 
 <div class="home-container">
@@ -91,16 +90,16 @@ if ($_SESSION["user-type"] == 3){
             </div>
         </div>
         <?php
-            if($_SESSION["user-type"] == 3){
-                echo '<div class="event-qr">';
-                echo '<img src="../static/qrcodes/'.$ad["idAd"].'.png">';
-                echo '<form action="index.php">';
-                echo '<input type="hidden" name="pag" value="download_qr">';
-                echo '<input type="hidden" name="id" value="'.$ad["idAd"].'">';
-                echo '<input type="submit" value="Download">';
-                echo '</form>';
-                echo '</div>';
-            }
+        if ($_SESSION["user-type"] == 3) {
+            echo '<div class="event-qr">';
+            echo '<img src="../static/qrcodes/' . $ad["idAd"] . '.png">';
+            echo '<form action="index.php">';
+            echo '<input type="hidden" name="pag" value="download_qr">';
+            echo '<input type="hidden" name="id" value="' . $ad["idAd"] . '">';
+            echo '<input type="submit" value="Download">';
+            echo '</form>';
+            echo '</div>';
+        }
         ?>
     </div>
 
