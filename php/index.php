@@ -243,13 +243,13 @@
                 }
                 $risut = mysqli_query($conn, $qut)or die("utente inesistente");
                 $rigaut=mysqli_fetch_assoc($risut);
-                if($_POST["password_temp"] == $rigaut["$tipo_pwd"]){ // per vedere se le password temporanee coincidono
+                if(password_verify($_POST["password_temp"],$rigaut["$tipo_pwd"])){ // per vedere se le password temporanee coincidono
                     if($_POST["password1"]==$_POST["password2"]){ // per vedere se le password nuove coincidono
                         if($_SESSION["user_type"] == 2){
-                            $qpass="update studenti set passwords='" .$_POST["password1"]. "' where idstu='".$riga["ruser"]."'";
+                            $qpass="update studenti set passwords='" .password_hash($_POST["password1"],PASSWORD_DEFAULT). "'  , lastpwds='".date('Y-m-d')."' where idstu='".$riga["ruser"]."'";
                         }
                         if($_SESSION["user_type"] == 3){
-                            $qpass="update aziende set passwordref='" .$_POST["password1"]. "' where idaz='".$riga["ruser"]."'";
+                            $qpass="update aziende set passwordref='" .password_hash($_POST["password1"],PASSWORD_DEFAULT). "' , lastpwdref='".date('Y-m-d')."' where idaz='".$riga["ruser"]."'";
                         }
                         $qtoken="delete from token where token='" .$riga["token"]. "'";
                         mysqli_query($conn, $qpass)or die("errore updating");
@@ -274,7 +274,7 @@
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
