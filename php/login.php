@@ -42,7 +42,14 @@
                     echo "login_soc";
                     break;
             } ?>">
-            <input type="email" name="email" id="" placeholder="Email" required>
+            <?php
+                if($_SESSION["user-type"] == 1){
+                    echo '<input type="text" name="username" id="" placeholder="Username" required>';
+                }
+                else{
+                    echo '<input type="email" name="email" id="" placeholder="Email" required>';
+                }
+                ?>
             <input type="password" name="password" id="" placeholder="Password" required>
             <input type="submit" value="Accedi">
             <a href="index.php?pag=reset_pwd">Password dimenticata?</a>
@@ -56,7 +63,7 @@
                         echo "Password errata";
                         break;
                     case 1:
-                        echo "Email errata";
+                        echo "Username/Email errata";
                         break;
                     case 2:
                         echo "Input non validi";

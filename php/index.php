@@ -16,6 +16,23 @@
         session_destroy();
         header("Location: index.php");
     }
+    if(isset($_GET["pag"]) && $_GET["pag"] == "download_qr" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 3){
+        $id = filter_input(INPUT_GET,"id", FILTER_SANITIZE_NUMBER_INT);
+        $q = "select * from adesioni where idAd = ".$id;
+        $result = mysqli_query($conn, $q);
+        if (mysqli_num_rows($result) == 0) exit("");
+        $row = mysqli_fetch_array($result);
+        $idAz = $row["rAz"];
+        if ($idAz != $_SESSION["user"]["idAz"]) exit("");
+        $file = "../static/qrcodes/".$id.".png";
+        header('Content-Type: application/download');
+        header('Content-Disposition: attachment; filename="qr.png"');
+        header("Content-Length: " . filesize($file));
+        $fp = fopen($file, "r");
+        fpassthru($fp);
+        fclose($fp);
+        exit();
+    }
     if((isset($_GET["pag"]) && $_GET["pag"] == "register" && $_SESSION["user-type"] == 1 && !isset($_SESSION["user"])) || (!isset($_SESSION["user-type"]) && !isset($_SESSION["user"]))){
         $_SESSION["user-type"] = 2;
     }
@@ -125,6 +142,32 @@
             header("Location: index.php?pag=login&error=1");
         }
     }
+    if(isset($_POST["pag"]) && $_POST["pag"]=="login_admin" && !isset($_SESSION["user"])){
+        if (!isset($_POST["username"]) or !isset($_POST["password"])) header("Location: index.php?pag=login&error=2");
+        $username=mysqli_real_escape_string($conn, $_POST["username"]);
+        $q= "select * from admins where usernameUt='".$username."'";
+        $ris= mysqli_query($conn, $q)or die("errore durante la verifica dell'email");
+        $num= mysqli_num_rows($ris);
+        if($num==1){
+            $riga = mysqli_fetch_assoc($ris);
+            if(password_verify($_POST["password"],$riga["passwordUt"])){
+                //login effettuato con successo
+                $_SESSION["user"]=$riga;
+                $_SESSION["user-type"] = 1;
+                session_regenerate_id();
+                header("Location: index.php");
+                exit();
+            }
+            else{
+                //password errata
+                header("Location: index.php?pag=login&error=0");
+            }
+        }
+        else{
+            //username errato
+            header("Location: index.php?pag=login&error=1");
+        }
+    }
     if(isset($_POST["pag"]) && $_POST["pag"]=="register_soc" && !isset($_SESSION["user"])){
         //controllo username
         $required = ["ragsoc","piva","indirizzo","cap","loc","prov","username","email","nomeRef","cognomeRef","password","password2"];
@@ -149,7 +192,7 @@
         $ris = mysqli_query($conn, $q)or die("errore durante la verifica della p.iva");
         $num = mysqli_num_rows($ris);
         if($num>0){
-            //p.iva già usatoa
+            //p.iva già usata
             header("Location: index.php?pag=register&error=3");
             exit();
         }
@@ -178,7 +221,6 @@
         $cognome= mysqli_real_escape_string($conn, $_POST["cognomeRef"]);
         $password= password_hash($_POST["password"],PASSWORD_DEFAULT);
         $q ="insert into aziende (ragsoc,ind,cap,loc,prov,piva,email,nomeRef,cognomeRef,usernameRef,passwordRef) values('".$ragsoc."','".$indirizzo."','".$cap."','".$loc."','".$prov."','".$piva."','".$email."','".$nome."','".$cognome."','".$username."','".$password."')";
-        echo $q;
         $ris= mysqli_query($conn, $q)or die("errore durante la registrazione");
         //registrazione effettuata con successo
         session_regenerate_id();
@@ -271,6 +313,145 @@
             //"piu utenti"
         }
     }
+
+    //funzione per l'aggiornamento della password
+    if(isset($_POST["pag"]) && $_POST["pag"]=="pwdUpdate2" && isset($_POST["newpwd"]) && isset($_SESSION["user"])){
+        switch($_SESSION["user-type"]){
+            case 1:
+                $tabella="admins";
+                $campo1="passwordUt";
+                $campo2="lastPwdUt";
+                $campo3="idUt";
+            case 2:
+                $tabella="studenti";
+                $campo1="passwordStu";
+                $campo2="lastPwdStu";
+                $campo3="idStu";
+                break;
+            case 3:
+                $tabella="aziende";
+                $campo1="passwordAz";
+                $campo2="lastPwdAz";
+                $campo3="idAz";
+                break;
+            default:
+                echo "Si è verificato un errore durante il controllo dell'account";
+                exit();
+        }
+        $data = date("%Y-%m-%d");
+        $q="update ".$tabella." set ".$campo1." = ".password_hash($_POST["newpwd"]).", ".$campo2." = ".$data." where ".$campo3." = '".$_SESSION["user"][$campo3]."'";
+        $ris=mysqli_query($conn, $q)or die("Errore nell'aggiornamento della password");
+        $_SESSION["user"][$campo1]=password_hash($_POST["newpwd"]);
+        header("Location: index.php");
+    }
+
+    //funzione per controllare se la password è "scaduta"
+    //restituisce un valore booleano:
+    //- true se la password è scaduta
+    //- false se la password è valida
+    function pwd_expired(){
+        switch($_SESSION["user-type"]){
+            case 1:
+                $tabella="admins";
+                $id=$_SESSION["user"]["idUt"];
+                $campo1="idUt";
+            case 2:
+                $tabella="studenti";
+                $id=$_SESSION["user"]["idStu"];
+                $campo1="idStu";
+                break;
+            case 3:
+                $tabella="aziende";
+                $id=$_SESSION["user"]["idAz"];
+                $campo1="idAz";
+                break;
+            default:
+                echo "Si è verificato un errore durante il controllo dell'account";
+                exit();
+        }
+    	global $conn;
+        $q="select * from `".$tabella."` where ".$campo1." = '".$id."';";
+        $ris= mysqli_query($conn, $q)or die("errore durante il controllo password | ".$q.mysqli_error($conn));
+        $num= mysqli_num_rows($ris);
+        
+        if($num==1){
+        	$today= new DateTime(date('Y-m-d'));
+            $date=mysqli_fetch_assoc($ris);
+            $date2= new DateTime($date["data_formattata"]);
+            $intervallo = $date2->diff($today);
+            echo $intervallo->format("%a giorni");
+            if($intervallo > 183){
+
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            exit("errore duante la verifica della password");
+        }
+    }
+
+    //funzione che conta i giorni da una data fornita in input con formato "%Y-%m-%d", restituisce il numero di giorni
+    function days_counter($value){
+        $today= new DateTime(date("%Y-%m-%d"));
+        $date= new DateTime($value);
+        $days= $today->diff($date);
+        $days->format("%a giorni");
+        return $days;
+    }
+
+    if(isset($_POST["pag"]) && $_POST["pag"]=="new_event" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 1){
+        $required = ["nome","descrizione","date","start_time","end_time","pos"];
+        foreach($required as $r){
+            if(!isset($_POST[$r])) {
+                header("Location: index.php?pag=new_event&error=1");
+                exit();
+            }
+        }
+        $nome = mysqli_real_escape_string($conn, $_POST["nome"]);
+        $desc = mysqli_real_escape_string($conn, $_POST["descrizione"]);
+        $date = mysqli_real_escape_string($conn, $_POST["date"]);
+        $start_time = mysqli_real_escape_string($conn, $_POST["start_time"]);
+        $end_time = mysqli_real_escape_string($conn, $_POST["end_time"]);
+        $pos = mysqli_real_escape_string($conn, $_POST["pos"]);
+        $q ="insert into career_day (nameCd,dateCd,fromCd,toCd,locationCd,descCd) values('".$nome."','".$date."','".$start_time."','".$end_time."','".$pos."','".$desc."')";
+        $result = mysqli_query($conn, $q) or die("errore nella query");
+        $id = mysqli_insert_id($conn);
+        $q = "select * from aziende";
+        $r = mysqli_query($conn, $q);
+        include 'phpqrcode/qrlib.php';
+        while ($row = mysqli_fetch_assoc($r)) {
+           if (isset($_POST[$row["idAz"]]) && $_POST[$row["idAz"]] == "on"){
+                $adQ = "insert into adesioni (rAz,rCd) values ('".$row["idAz"]."','".$id."')";
+                $ad = mysqli_query($conn, $adQ) or die("errore nella query");
+                $id_qr = mysqli_insert_id($conn);
+                QRcode::png($env['BASE_URL']."/php/index.php?pag=adesione&id=".$id_qr, '../static/qrcodes/'.$id_qr.'.png', 'L', 16, 2);
+           }
+        }
+
+        header("Location: index.php");
+    }
+    if(isset($_POST["pag"]) && $_POST["pag"]=="edit_event" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 1){
+        $required = ["nome","descrizione","date","start_time","end_time","pos"];
+        foreach($required as $r){
+            if(!isset($_POST[$r])) {
+                header("Location: index.php?pag=new_event&error=1");
+                exit();
+            }
+        }
+        $id = filter_input(INPUT_POST,"id", FILTER_SANITIZE_NUMBER_INT);
+        $nome = mysqli_real_escape_string($conn, $_POST["nome"]);
+        $desc = mysqli_real_escape_string($conn, $_POST["descrizione"]);
+        $date = mysqli_real_escape_string($conn, $_POST["date"]);
+        $start_time = mysqli_real_escape_string($conn, $_POST["start_time"]);
+        $end_time = mysqli_real_escape_string($conn, $_POST["end_time"]);
+        $pos = mysqli_real_escape_string($conn, $_POST["pos"]);
+        $q ="update career_day set nameCd='".$nome."',dateCd='".$date."',fromCd='".$start_time."',toCd='".$end_time."',locationCd='".$pos."',descCd='".$desc."' where idCd=".$id;
+        $result = mysqli_query($conn, $q) or die("errore nella query");
+        header("Location: index.php?pag=event&id=".$id);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -282,22 +463,37 @@
     <link rel="stylesheet" href="../css/login_register.css">
     <link rel="stylesheet" href="../css/home.css">
     <link rel="stylesheet" href="../css/event.css">
+    <link rel="stylesheet" href="../css/new_edit_event.css">
+    <link rel="stylesheet" href="../css/settings.css">
     <link rel="stylesheet" href="../css/company-home.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_back_ios_new,location_on" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,arrow_back_ios_new,edit,location_on" />
     <title>Career Day</title>
 </head>
 <body>
     <?php
     if(isset($_SESSION["user"])){
-        if($_GET["pag"] == "settings"){
+        if(pwd_expired() && $_GET["pag"]!="pwdUpdate"){
+            header("Location: index.php?pag=pwdUpdate");
+        }
+        if($_GET["pag"]=="pwdUpdate"){
+            include("pwdUpdate.php");
+        }
+        if($_GET["pag"] == "settings" ){
             include("settings.php");
         }else if($_GET["pag"] == "event"){
             include("event.php");
+        }else if ($_GET["pag"] == "new_event" && $_SESSION["user-type"] == 1){
+            include ("new_event.php");
+        }else if ($_GET["pag"] == "edit_event" && $_SESSION["user-type"] == 1){
+            include ("edit-event.php");
         }else {
             switch($_SESSION["user-type"]){
+                case 1:
+                    include("admin-home.php");
+                    break;
                 case 2:
                     include("home.php");
                     break;
