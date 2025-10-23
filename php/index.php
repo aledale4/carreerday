@@ -3,13 +3,15 @@
     session_start();
     $env = parse_ini_file("../.env");
     $conn = mysqli_connect($env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"]);
-    // $ssl_ca = '../ca.pem';
-    // $conn = mysqli_init();
-    // mysqli_ssl_set($conn, NULL, NULL, $ssl_ca, "", NULL);
+    //$ssl_ca = '../ca.pem';
+    //$conn = mysqli_init();
+    //mysqli_ssl_set($conn, NULL, NULL, $ssl_ca, "", NULL);
 
-    // if (!mysqli_real_connect($conn, $env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"], NULL, MYSQLI_CLIENT_SSL)) {
-    //     die("". mysqli_connect_error());
-    // }
+    //if (!mysqli_real_connect($conn, $env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"], NULL, MYSQLI_CLIENT_SSL)) {
+    //    die("". mysqli_connect_error());
+    //}
+
+    
     //funzione di logout
     if(isset($_GET["pag"]) && $_GET["pag"]=="logout" && isset($_SESSION["user"])){
         session_unset();
@@ -392,6 +394,24 @@
             exit("errore duante la verifica della password");
         }
     }
+
+    // funzione per vedere le posizioni libere di un azienda deve passare l'id azienda returna un array con tutte le posizioni aperte
+    function posizioni_libere($idaz){
+        $pos = [];
+        $q="select * from posizioni where raz2='" .$idaz. "'";
+        $ris = mysqli_query($conn,$q);
+        $num = mysqli_num_rows($ris);
+        $riga = mysqli_festch_assoc($ris);
+        if($num != 0){
+            for($i=0;$i<$num;$i++){
+                $pos[] = $riga["posizaperte"];
+            }
+        } else if ($num == 0){
+            return;
+        }
+       return $pos;
+    }
+    
 
     //funzione che conta i giorni da una data fornita in input con formato "%Y-%m-%d", restituisce il numero di giorni
     function days_counter($value){
