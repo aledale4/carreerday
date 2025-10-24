@@ -2,10 +2,10 @@
     //per collegare il database e avviare la sessione
     session_start();
     $env = parse_ini_file("../.env");
-    //$conn = mysqli_connect($env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"]);
-    $ssl_ca = '../ca.pem';
-    $conn = mysqli_init();
-    mysqli_ssl_set($conn, NULL, NULL, $ssl_ca, "", NULL);
+    $conn = mysqli_connect($env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"]);
+    //$ssl_ca = '../ca.pem';
+    //$conn = mysqli_init();
+    //mysqli_ssl_set($conn, NULL, NULL, $ssl_ca, "", NULL);
 
     if (!mysqli_real_connect($conn, $env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"], NULL, MYSQLI_CLIENT_SSL)) {
         die("". mysqli_connect_error());
