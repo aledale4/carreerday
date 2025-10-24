@@ -139,7 +139,7 @@
                 $_SESSION["user-type"] = 3;
                 session_regenerate_id();
                 $date=date("Y-m-d");
-                $q="update aziende set lastLoginRef=".$date." where idAz=".$_SESSION["user"]["idAz"];
+                $q="update aziende set lastLoginRef='".$date."' where idAz=".$_SESSION["user"]["idAz"];
                 $ris=mysqli_query($conn, $q)or die("errore durante il salvataggio della data");
                 header("Location: index.php");
                 exit();
@@ -170,7 +170,7 @@
                 $_SESSION["user-type"] = 1;
                 session_regenerate_id();
                 $date=date("Y-m-d");
-                $q="update admins set lastLoginUt=".$date." where idUt=".$_SESSION["user"]["idUt"];
+                $q="update admins set lastLoginUt='".$date."' where idUt=".$_SESSION["user"]["idUt"];
                 $ris=mysqli_query($conn, $q)or die("errore durante il salvataggio della data");
                 header("Location: index.php");
                 exit();
@@ -381,6 +381,7 @@
                 $tabella="admins";
                 $id=$_SESSION["user"]["idUt"];
                 $campo1="idUt";
+                break;
             case 2:
                 $tabella="studenti";
                 $id=$_SESSION["user"]["idStu"];
@@ -396,7 +397,7 @@
                 exit();
         }
     	global $conn;
-        $q="select * from `".$tabella."` where ".$campo1." = '".$id."';";
+        $q="select * from `".$tabella."` where ".$campo1."='".$id."'";
         $ris= mysqli_query($conn, $q)or die("errore durante il controllo password | ".$q.mysqli_error($conn));
         $num= mysqli_num_rows($ris);
         
@@ -414,8 +415,14 @@
                 return false;
             }
         }
-        else{
+        else if($num>1){
             exit("errore duante la verifica della password più di un utente trovato");
+        }
+        else if($num==0){
+            exit("utente non trovato");
+        }
+        else{
+            exit("errore nella funzione di verifica della password");
         }
     }
 
