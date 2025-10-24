@@ -141,6 +141,10 @@ section{
     gap: 20px;
 }
 
+.scrollable-container.company{
+    flex-wrap: wrap;
+}
+
 .scrollable-container .element{
     width: 350px;
     height: 200px;
