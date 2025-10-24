@@ -15,15 +15,17 @@
         </div>
         <div class="right-side">
             <p>Benvenuto/a, <span><?php echo $_SESSION["user"]["nomeRef"]; ?></span></p>
-            <a href="index.php?pag=settings">
-                <div class="user-pic"></div>
+             <a href="index.php?pag=settings">
+                <div class="user-pic"><?php include("defaultUser-pic.php")  ?></div>
             </a>
             <div class="suggestion">Modifica il tuo profilo <img src="../static/arrow.svg" alt=""></div>
+            <a href="index.php?pag=logout" class="logout"><span class="material-symbols-outlined logout-icon">logout</span></a>
         </div>
     </div>
 
     <section id="eventi">
         <h1>Colloqui Prenotati</h1>
+        <div class="colloqui">
             <?php
                 $adesioni = [];
                 $q = "select * from adesioni where rAz = ".$_SESSION["user"]["idAz"];
@@ -35,8 +37,8 @@
                     $q2 = "select * from prenotazioni where rAd=".$adesione["idAd"];
                     $rPren = mysqli_query($conn, $q2) or die();
                     $evento = mysqli_fetch_assoc($rEvPren);
-                    echo "<p>".$evento["nameCd"]."</p>";
-                    echo "<table><tr><th>Completato</th><th>Nome Studente</th><th>Data prenotazione</th></tr>";
+                    echo "<p class='evento-colloquio'>".$evento["nameCd"]."</p>";
+                    echo "<table><tr><th>Completato</th><th>Studente</th><th>Data prenotazione</th></tr>";
                     while ($prenotazione = mysqli_fetch_assoc($rPren)) {
                         $qStu = "select * from studenti where idStu = ".$prenotazione["rStu"];
                         $rStu = mysqli_query($conn, $qStu) or die();
@@ -54,7 +56,7 @@
                     echo "</table>";
                 }
             ?>
-            </table>
+        </div>
     </section>
 
 
