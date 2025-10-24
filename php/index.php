@@ -293,7 +293,7 @@
             $date=mysqli_fetch_assoc($ris);
             $date2= new DateTime($date["data_formattata"]);
             $intervallo = $date2->diff($today);
-            echo $intervallo->format("%a giorni");
+            // echo $intervallo->format("%a giorni");
             if($intervallo > 183){
 
                 return true;
