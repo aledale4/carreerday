@@ -521,12 +521,10 @@
         $id = filter_input(INPUT_POST,"id", FILTER_SANITIZE_NUMBER_INT);
         $completed = filter_input(INPUT_POST,"completed", FILTER_SANITIZE_STRING);
         $q = "select * from prenotazioni where idPren = ".$id;
-        echo $q;
         $prenotazioneQ = mysqli_query($conn, $q) or die();
         if (mysqli_num_rows($prenotazioneQ) == 0) exit();
         $prenotazione = mysqli_fetch_assoc($prenotazioneQ);
         $qIdAd = "select * from adesioni where idAd = ".$prenotazione["rAd"];
-        echo $qIdAd;
         $result = mysqli_query($conn, $qIdAd) or die();
         if (mysqli_num_rows($result) == 0) exit();
         $adesione = mysqli_fetch_assoc($result);
