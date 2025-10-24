@@ -18,10 +18,10 @@
                 <br>
                 <label for="password">Password:</label>
                 
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password1" required>
                 <br>
                 <label for="password-confirm">Password confirm:</label>
-                <input type="password" id="password-confirm" name="password-confirm" required>
+                <input type="password" id="password-confirm" name="password2" required>
                 <br><br>
                 <input type="hidden" name="pag" value="reset_pwd">
                 <input type="hidden" name="token" value="<?php echo $_GET["token"]; ?>">

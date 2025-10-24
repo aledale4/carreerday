@@ -109,7 +109,7 @@
                 session_regenerate_id();
                 $date=date("Y-m-d");
                 $q="update studenti set lastLoginStu=".$date." where idStu=".$_SESSION["user"]["idStu"];
-                $ris=mysqli_query($conn. $ris)or die("errore durante il salvataggio della data");
+                $ris=mysqli_query($conn, $q) or die("errore durante il salvataggio della data");
                 header("Location: index.php");
                 exit();
             }
@@ -256,7 +256,7 @@
         if($_SESSION["user-type"]== 3){
             $q= "select * from aziende where emailref='".$_POST["email"]."'";
         }
-        $ris= mysqli_query($conn, $q)or die("queri di merda");
+        $ris= mysqli_query($conn, $q)or die("queri don't work");
         $num = mysqli_num_rows($ris);
         if($num == 1){
             $riga = mysqli_fetch_assoc($ris);
@@ -276,7 +276,7 @@
             
             $mitt="morganello76@gmail.com"; //mittente
             $ogg="Reset password Carreday";
-            $mess="Clicca su questo link per resettare a tua password : \nreset_passoword.php?token=" .$token . "\n Inserisci questa password provvisoria nel campo: Password provvisoria. \n" . $pwd_pro ; // link da inserire
+            $mess="Clicca su questo link per resettare a tua password : \nreset_pwd.php?token=" .$token . "\n Inserisci questa password provvisoria nel campo: Password provvisoria. \n" . $pwd_pro ; // link da inserire
             $header="From: ".$mitt."\r\nReply-To:".$mitt."\r\nContent-type: text/html; charset=utf-8\r\n";
             if(mail($_POST["email"], $ogg, $mess, $header)){ // destinatario , oggetto , messaggio , invio
                 exit("tutto apposto");
@@ -303,7 +303,7 @@
 
         if($num == 1){
             if(days_counter($riga["created"]) <=2){ //per vedere se sono passati piu di 2 giorni
-                
+                $tipopwd="";
                 if($_SESSION["user-type"] == 2){ // per vedere che tipo di utente è
                     $q="select * from studenti where idStu = '".$riga["rUser"]."'";
                     $tipo_pwd="passwordStu";
@@ -322,7 +322,7 @@
                 echo $_POST["password_temp"] . " \ ";
                 echo $rigaut[$tipo_pwd] . " \ ";
                 //echo $i ;
-                if(password_verify($_POST["password_temp"],$rigaut["$tipo_pwd"])){ // per vedere se le password temporanee coincidono
+                if(password_verify($_POST["password_temp"],$rigaut[$tipo_pwd])){ // per vedere se le password temporanee coincidono
                     echo "pwd temp giuste";
                     if($_POST["password1"]==$_POST["password2"]){ // per vedere se le password nuove coincidono
                         echo "entra pwd uguali \ ";
@@ -338,7 +338,7 @@
                         echo $qtoken ." \ ";
                         
                         mysqli_query($conn, $qpass)or die("errore updating");
-                        //mysqli_query($conn, $qtoken)or die("errore delete token");
+                        mysqli_query($conn, $qtoken)or die("errore delete token");
                         echo $qpass;
                         //header("Location:index.php?pag=login");
                         exit();
