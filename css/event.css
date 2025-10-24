@@ -79,34 +79,35 @@
     font-size: 20px;
 }
 
-.event .event-participants{
+.event-participants{
     margin-top:20px;
     margin-left: 60px;
     margin-right: 60px;
-    width: var(100% - 120px);
+    width: calc(100% - 120px);
 }
 
-.event .event-participants p {
+.event-participants p {
     font-size: 32px;
     font-weight: 600;
 }
-.event .event-participants .participants {
+.event-participants .participants {
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: start;
     gap: 20px;
+    flex-wrap: wrap;
 }
-.event .event-participants .participants .participant {
+.event-participants .participants .participant {
     margin-top: 20px;
     width: 30%;
 }
 
-.event .event-participants .participants .participant p{
+.event-participants .participants .participant p{
     font-size: 20px;
     font-weight: 400;
 }
-.event .event-participants .participants .participant img{
+.event-participants .participants .participant img{
     background-color: lightgray;
     width: 100%;
     aspect-ratio: 2.5;

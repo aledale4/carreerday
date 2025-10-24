@@ -49,7 +49,7 @@
                     break;
             } ?></span></p>
             <a href="index.php?pag=settings">
-                <div class="user-pic"></div>
+                <div class="user-pic"><?php include("defaultUser-pic.php")  ?></div>
             </a>
         </div>
     </div>

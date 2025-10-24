@@ -6,10 +6,11 @@
     $ssl_ca = '../ca.pem';
     $conn = mysqli_init();
     mysqli_ssl_set($conn, NULL, NULL, $ssl_ca, "", NULL);
-
     if (!mysqli_real_connect($conn, $env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"], NULL, MYSQLI_CLIENT_SSL)) {
         die("". mysqli_connect_error());
     }
+    include 'phpqrcode/qrlib.php';
+    // regenerate_qrcodes();
     //funzione di logout
     if(isset($_GET["pag"]) && $_GET["pag"]=="logout" && isset($_SESSION["user"])){
         session_unset();
@@ -453,6 +454,17 @@
         return $days;
     }
 
+    function regenerate_qrcodes(){
+        $q = "select * from adesioni";
+        global $conn;
+        global $env;
+        $ris = mysqli_query($conn,$q);
+        while ($adesione = mysqli_fetch_assoc($ris)){
+        $id_qr = $adesione["idAd"];
+        QRcode::png($env['BASE_URL']."/php/index.php?pag=adesione&id=".$id_qr, '../static/qrcodes/'.$id_qr.'.png', 'L', 16, 2);
+        }
+    }
+
     if(isset($_POST["pag"]) && $_POST["pag"]=="new_event" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 1){
         $required = ["nome","descrizione","date","start_time","end_time","pos"];
         foreach($required as $r){
@@ -472,7 +484,6 @@
         $id = mysqli_insert_id($conn);
         $q = "select * from aziende";
         $r = mysqli_query($conn, $q);
-        include 'phpqrcode/qrlib.php';
         while ($row = mysqli_fetch_assoc($r)) {
            if (isset($_POST[$row["idAz"]]) && $_POST[$row["idAz"]] == "on"){
                 $adQ = "insert into adesioni (rAz,rCd) values ('".$row["idAz"]."','".$id."')";
@@ -509,7 +520,8 @@
             exit();
         }
         $id = filter_input(INPUT_POST,"id", FILTER_SANITIZE_NUMBER_INT);
-        $q ="insert into prenotazioni (rAd,rStu,datapren) values('".$id."','".$_SESSION["user"]["idStu"]."','".date('Y-m-d h:i:s',time())."')";
+        $date = new DateTime("now", new DateTimeZone('Europe/Rome') );
+        $q ="insert into prenotazioni (rAd,rStu,datapren) values('".$id."','".$_SESSION["user"]["idStu"]."','".($date->format('Y-m-d H:i:s'))."')";
         $result = mysqli_query($conn, $q) or die("errore nella query");
         header("Location: index.php?pag=adesione&id=".$id);
     }
@@ -538,6 +550,26 @@
         $result = mysqli_query($conn, $q) or die("errore nella query");
         header("Location: index.php?pag=colloqui");
     }
+    if(isset($_POST["pag"]) && $_POST["pag"]=="remove_adesione" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 1){
+        $id = filter_input(INPUT_POST,"idAd", FILTER_SANITIZE_NUMBER_INT);
+        $idEvento = filter_input(INPUT_POST,"idEvento", FILTER_SANITIZE_NUMBER_INT);
+        if(!$id || !$idEvento) exit();
+        $q = "delete from adesioni where idAd = ".$id;
+        $result = mysqli_query($conn, $q) or die();
+        $q = "delete from prenotazioni where rAd = ".$id;
+        $result = mysqli_query($conn, $q) or die();
+        header("Location: index.php?pag=edit_event&id=".$idEvento);
+    }
+    if(isset($_POST["pag"]) && $_POST["pag"]=="add_adesione" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 1){
+        $id = filter_input(INPUT_POST,"idAz", FILTER_SANITIZE_NUMBER_INT);
+        $idEvento = filter_input(INPUT_POST,"idEvento", FILTER_SANITIZE_NUMBER_INT);
+        if(!$id || !$idEvento) exit();
+        $q = "insert into adesioni (rAz,rCd) values ('".$id."','".$idEvento."')";
+        $result = mysqli_query($conn, $q) or die();
+        $id_qr = mysqli_insert_id($conn);
+        QRcode::png($env['BASE_URL']."/php/index.php?pag=adesione&id=".$id_qr, '../static/qrcodes/'.$id_qr.'.png', 'L', 16, 2);
+        header("Location: index.php?pag=edit_event&id=".$idEvento);
+    }
 ?>
 
 
@@ -558,7 +590,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,arrow_back_ios_new,edit,location_on" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,arrow_back_ios_new,delete_forever,edit,location_on,logout" />
     <title>Career Day</title>
 </head>
 <body>
