@@ -9,7 +9,7 @@ body {
     font-family: "Inter",sans-serif;
 }
 
-.container {
+.container_send_mail {
     background: white;
     padding: 2rem;
     border-radius: 10px;
@@ -25,24 +25,18 @@ h1 {
     font-weight: 600;
 }
 
-.form-container {
+.container_send_mail {
     padding: 1px;
 }
 
-form {
+.form_send_mail {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
 
-label {
-    color: #34495e;
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-}
 
-input[type="email"] {
+.container_form_send_mail input[type="email"] {
     padding: 7px;
     border: 2px solid white;
     border-radius: 10px;
@@ -52,12 +46,12 @@ input[type="email"] {
     font-size: revert-layer;
 }
 
-input[type="email"]:focus {
+.container_form_send_mail input[type="email"]:focus {
     outline: none;
     border-color: black;
 }
 
-input[type="submit"] {
+.container_form_send_mail input[type="submit"] {
     background-color: orange;
     color: black;
     padding:7px;
