@@ -13,9 +13,7 @@
         </h1>
         <div class="form-container">
         <form action="index.php" method="POST">
-            <label for="email"></label>
             <input type="email" id="email" name="email" placeholder="email" required>
-            <br><br>
             <input type="hidden" name="pag" value="request_reset_pwd">
             <input type="submit" value="Send Mail">
         </form>

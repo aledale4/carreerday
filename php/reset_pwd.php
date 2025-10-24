@@ -13,15 +13,10 @@
         </h1>
         <div class="form-container">
             <form action="index.php" method="POST">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-                <br>
-                <label for="password-confirm">Password confirm:</label>
-                <input type="password" id="password-confirm" name="password-confirm" required>
-                <br><br>
+                <input type="password" id="password" name="password" required placeholder="Password">
+                <input type="password" id="password-confirm" name="password-confirm" required placeholder="Password confirm">
                 <input type="hidden" name="pag" value="reset_pwd">
                 <input type="submit" value="Reset Password">
-                
             </form>
         </div>
       

@@ -6,7 +6,7 @@ body {
     justify-content: center;
     align-items: center;
     background-color: white;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Inter",sans-serif;
 }
 
 .container {
@@ -43,12 +43,13 @@ label {
 }
 
 input[type="email"] {
-    padding: 12px;
+    padding: 7px;
     border: 2px solid white;
     border-radius: 10px;
     font-size: 1rem;
     transition: border-color 0.3s ease;
     background-color: lightgrey;
+    font-size: revert-layer;
 }
 
 input[type="email"]:focus {
@@ -59,8 +60,8 @@ input[type="email"]:focus {
 input[type="submit"] {
     background-color: orange;
     color: black;
-    padding: 12px;
-    border: 2px solid white;
+    padding:7px;
+    border: none;
     border-radius: 10px;
     font-size: 1rem;
     cursor: pointer;
