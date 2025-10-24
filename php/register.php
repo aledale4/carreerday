@@ -31,8 +31,8 @@
                         include("register-user-form.php");
                     }else include("register-company-form.php"); 
                 ?>
-                <input type="password" name="password" id="" placeholder="Password" required>
-                <input type="password" name="password2" id="" placeholder="Conferma Password" required>
+                <input type="password" name="password" id="" placeholder="Password*" required>
+                <input type="password" name="password2" id="" placeholder="Conferma Password*" required>
                 <input type="submit" value="Registrati">
             </form>
             <p class="change-action-link">Oppure <a href="index.php?pag=login">Accedi</a></p>

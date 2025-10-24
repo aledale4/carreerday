@@ -2,14 +2,14 @@
     //per collegare il database e avviare la sessione
     session_start();
     $env = parse_ini_file("../.env");
-    $conn = mysqli_connect($env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"]);
-    // $ssl_ca = '../ca.pem';
-    // $conn = mysqli_init();
-    // mysqli_ssl_set($conn, NULL, NULL, $ssl_ca, "", NULL);
+    // $conn = mysqli_connect($env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"]);
+    $ssl_ca = '../ca.pem';
+    $conn = mysqli_init();
+    mysqli_ssl_set($conn, NULL, NULL, $ssl_ca, "", NULL);
 
-    // if (!mysqli_real_connect($conn, $env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"], NULL, MYSQLI_CLIENT_SSL)) {
-    //     die("". mysqli_connect_error());
-    // }
+    if (!mysqli_real_connect($conn, $env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"], NULL, MYSQLI_CLIENT_SSL)) {
+        die("". mysqli_connect_error());
+    }
     //funzione di logout
     if(isset($_GET["pag"]) && $_GET["pag"]=="logout" && isset($_SESSION["user"])){
         session_unset();
@@ -289,18 +289,19 @@
         $num= mysqli_num_rows($ris);
         
         if($num==1){
+            try{
         	$today= new DateTime(date('Y-m-d'));
             $date=mysqli_fetch_assoc($ris);
             $date2= new DateTime($date["data_formattata"]);
             $intervallo = $date2->diff($today);
             // echo $intervallo->format("%a giorni");
             if($intervallo > 183){
-
                 return true;
             }
             else{
                 return false;
             }
+            }catch(Exception $e){}
         }
         else{
             exit("errore duante la verifica della password");
@@ -351,7 +352,7 @@
         $required = ["nome","descrizione","date","start_time","end_time","pos"];
         foreach($required as $r){
             if(!isset($_POST[$r])) {
-                header("Location: index.php?pag=new_event&error=1");
+                header("Location: index.php?pag=edit_event&error=1");
                 exit();
             }
         }
@@ -366,7 +367,47 @@
         $result = mysqli_query($conn, $q) or die("errore nella query");
         header("Location: index.php?pag=event&id=".$id);
     }
+    if(isset($_POST["pag"]) && $_POST["pag"]=="prenotazione" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 2){
+        if(!isset($_POST["id"])) {
+            header("Location: index.php?pag=adesione&error=1");
+            exit();
+        }
+        $id = filter_input(INPUT_POST,"id", FILTER_SANITIZE_NUMBER_INT);
+        $q ="insert into prenotazioni (rAd,rStu,datapren) values('".$id."','".$_SESSION["user"]["idStu"]."','".date('Y-m-d h:i:s',time())."')";
+        $result = mysqli_query($conn, $q) or die("errore nella query");
+        header("Location: index.php?pag=adesione&id=".$id);
+    }
+    if(isset($_POST["pag"]) && $_POST["pag"]=="update_prenotazione" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 3){
+        if(!isset($_POST["id"])) {
+            header("Location: index.php?pag=colloqui&error=1");
+            exit();
+        }
+        $id = filter_input(INPUT_POST,"id", FILTER_SANITIZE_NUMBER_INT);
+        $completed = filter_input(INPUT_POST,"completed", FILTER_SANITIZE_STRING);
+        $q = "select * from prenotazioni where idPren = ".$id;
+        echo $q;
+        $prenotazioneQ = mysqli_query($conn, $q) or die();
+        if (mysqli_num_rows($prenotazioneQ) == 0) exit();
+        $prenotazione = mysqli_fetch_assoc($prenotazioneQ);
+        $qIdAd = "select * from adesioni where idAd = ".$prenotazione["rAd"];
+        echo $qIdAd;
+        $result = mysqli_query($conn, $qIdAd) or die();
+        if (mysqli_num_rows($result) == 0) exit();
+        $adesione = mysqli_fetch_assoc($result);
+
+        if ($adesione["rAz"] != $_SESSION["user"]["idAz"]) die();
+        echo $completed;
+        if ($completed && $completed == "on"){
+            $q ="update prenotazioni set completed = 1 where idPren = ".$id;
+        }else {
+            $q ="update prenotazioni set completed = 0 where idPren = ".$id;
+        }
+        echo $q;
+        $result = mysqli_query($conn, $q) or die("errore nella query");
+        header("Location: index.php?pag=colloqui");
+    }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -380,6 +421,7 @@
     <link rel="stylesheet" href="../css/new_edit_event.css">
     <link rel="stylesheet" href="../css/settings.css">
     <link rel="stylesheet" href="../css/company-home.css">
+    <link rel="stylesheet" href="../css/colloqui.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
@@ -403,6 +445,10 @@
             include ("new_event.php");
         }else if ($_GET["pag"] == "edit_event" && $_SESSION["user-type"] == 1){
             include ("edit-event.php");
+        }else if ($_GET["pag"] == "adesione" && $_SESSION["user-type"] == 2){
+            include ("adesione.php");
+        }else if ($_GET["pag"] == "colloqui" && $_SESSION["user-type"] == 3){
+            include ("colloqui.php");
         }else {
             switch($_SESSION["user-type"]){
                 case 1:
