@@ -270,9 +270,10 @@
                 $q="update aziende set passwordref = '".password_hash($pwd_random,PASSWORD_DEFAULT). "' where idAz='" . $riga["idAz"]. "'";
                 $q2="insert into token (ruser,token,user_type,created) values('".$riga["idAz"]."' , '".$token_random."' , '" .$_SESSION["user-type"]."','" .date('Y-m-d')."')";
             }
+            echo $pwd_random;
             mysqli_query($conn,$q) or die("errore cambio password");
             mysqli_query($conn,$q2) or die("errore cambio token       " . mysqli_error($conn));
-            echo $pwd_random;
+            
             $mitt="morganello76@gmail.com"; //mittente
             $ogg="Reset password Carreday";
             $mess="Clicca su questo link per resettare a tua password : \nreset_passoword.php?token=" .$token . "\n Inserisci questa password provvisoria nel campo: Password provvisoria. \n" . $pwd_pro ; // link da inserire
@@ -302,9 +303,9 @@
 
         if($num == 1){
             if(days_counter($riga["created"]) <=2){ //per vedere se sono passati piu di 2 giorni
-                echo $_SESSION["user-type"];
+                
                 if($_SESSION["user-type"] == 2){ // per vedere che tipo di utente è
-                    $q="select * from studenti where idStu='".$riga["rUser"]."'";
+                    $q="select * from studenti where idStu = '".$riga["rUser"]."'";
                     $tipo_pwd="passwordStu";
                 }
                 if($_SESSION["user-type"] == 3){
@@ -313,28 +314,34 @@
                 }
                 $risut = mysqli_query($conn, $q)or die("utente inesistente ");
                 $rigaut=mysqli_fetch_assoc($risut);
-                echo $q;
-                echo $risut ;
+                echo $_SESSION["user-type" ] . " \ ";
+                echo $riga["rUser"] .  " \ ";
+                echo $q . " \ ";
+                echo $rigaut . " \ ";
                 $i = password_verify($_POST["password_temp"],$rigaut[$tipo_pwd]);
-                echo $_POST["password_temp"];
-                echo $rigaut[$tipo_pwd];
-                echo $i ;
-                exit($i);
+                echo $_POST["password_temp"] . " \ ";
+                echo $rigaut[$tipo_pwd] . " \ ";
+                //echo $i ;
                 if(password_verify($_POST["password_temp"],$rigaut["$tipo_pwd"])){ // per vedere se le password temporanee coincidono
-                    exit("pwd temp giuste");
+                    echo "pwd temp giuste";
                     if($_POST["password1"]==$_POST["password2"]){ // per vedere se le password nuove coincidono
-                        if($_SESSION["user_type"] == 2){
-                            $qpass="update studenti set passwords='" .password_hash($_POST["password1"],PASSWORD_DEFAULT). "'  , lastpwds='".date('Y-m-d')."' where idstu='".$riga["ruser"]."'";
+                        echo "entra pwd uguali \ ";
+                        if($_SESSION["user-type"] == 2){
+                            $qpass="update studenti set passwordstu='" .password_hash($_POST["password1"],PASSWORD_DEFAULT). "'  , lastpwdstu='".date('Y-m-d')."' where idstu='".$riga["rUser"]."'";
+                            echo"entra usertype 2 \ ";
                         }
-                        if($_SESSION["user_type"] == 3){
-                            $qpass="update aziende set passwordref='" .password_hash($_POST["password1"],PASSWORD_DEFAULT). "' , lastpwdref='".date('Y-m-d')."' where idaz='".$riga["ruser"]."'";
+                        if($_SESSION["user-type"] == 3){
+                            $qpass="update aziende set passwordref='" .password_hash($_POST["password1"],PASSWORD_DEFAULT). "' , lastpwdref='".date('Y-m-d')."' where idaz='".$riga["rUser"]."'";
                         }
-                        echo $qpass;
+                        echo $qpass . " \ ";
                         $qtoken="delete from token where token='" .$riga["token"]. "'";
+                        echo $qtoken ." \ ";
+                        
                         mysqli_query($conn, $qpass)or die("errore updating");
-                        mysqli_query($conn, $qtoken)or die("errore delete token");
+                        //mysqli_query($conn, $qtoken)or die("errore delete token");
+                        echo $qpass;
                         //header("Location:index.php?pag=login");
-                        exit("fatto");
+                        exit();
                     }else{
                         //password nuove diverse
                         exit("password nuove diverse");

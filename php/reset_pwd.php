@@ -14,7 +14,7 @@
         <div class="form-container">
             <form action="index.php" method="POST">
                 <p>password temporanea</p>
-                <input type="password" id="password" name="password temporanea" required>
+                <input type="password" id="password" name="password_temp" required>
                 <br>
                 <label for="password">Password:</label>
                 
