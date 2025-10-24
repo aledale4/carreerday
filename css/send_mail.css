@@ -8,7 +8,7 @@
     text-align: center;
 }
 
-h1 {
+.container_send_mail h1 {
     color: black;
     margin-bottom: 2rem;
     font-size: 2rem;

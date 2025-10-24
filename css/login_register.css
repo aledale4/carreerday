@@ -108,3 +108,7 @@
   border-top-right-radius: var(--buttons-border-radius);
   border-bottom-right-radius: var(--buttons-border-radius);
 }
+
+.a_pwd_dimenticata{
+  text-align: center;
+}
