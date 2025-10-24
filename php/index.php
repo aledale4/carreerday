@@ -2,10 +2,10 @@
     //per collegare il database e avviare la sessione
     session_start();
     $env = parse_ini_file("../.env");
-    $conn = mysqli_connect($env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"]);
-    //$ssl_ca = '../ca.pem';
-    //$conn = mysqli_init();
-    //mysqli_ssl_set($conn, NULL, NULL, $ssl_ca, "", NULL);
+    //$conn = mysqli_connect($env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"]);
+    $ssl_ca = '../ca.pem';
+    $conn = mysqli_init();
+    mysqli_ssl_set($conn, NULL, NULL, $ssl_ca, "", NULL);
 
     if (!mysqli_real_connect($conn, $env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"], NULL, MYSQLI_CLIENT_SSL)) {
         die("". mysqli_connect_error());
@@ -85,8 +85,8 @@
         $cognome= mysqli_real_escape_string($conn, $_POST["cognome"]);
         $password= password_hash($_POST["password"],PASSWORD_DEFAULT);
         $data= date("Y-m-d");
-        $q ="insert into studenti (nomeStu,cognomeStu,usernameStu,passwordStu,emailStu,lastPwdStu) values('".$nome."','".$cognome."','".$username."','".$password."','".$email."','".$data."')";
-        $ris= mysqli_query($conn, $q)or die("errore durante la registrazione");
+        $q ="insert into studenti (nomeStu,cognomeStu,usernameStu,passwordStu,emailStu,lastPwdStu,lastLoginStu) values('".$nome."','".$cognome."','".$username."','".$password."','".$email."','".$data."','".$data."')";
+        $ris= mysqli_query($conn, $q)or die("errore durante la registrazione | ".$q." | ".mysqli_error($conn));
         //registrazione effettuata con successo
         session_regenerate_id();
         header("Location: index.php?pag=login");
@@ -108,8 +108,8 @@
                 $_SESSION["user-type"] = 2;
                 session_regenerate_id();
                 $date=date("Y-m-d");
-                $q="update studenti set lastLoginStu=".$date." where idStu=".$_SESSION["user"]["idStu"];
-                $ris=mysqli_query($conn. $ris)or die("errore durante il salvataggio della data");
+                $q="update studenti set lastLoginStu='".$date."' where idStu=".$_SESSION["user"]["idStu"];
+                $ris=mysqli_query($conn, $q)or die("errore durante il salvataggio della data");
                 header("Location: index.php");
                 exit();
             }
@@ -139,8 +139,8 @@
                 $_SESSION["user-type"] = 3;
                 session_regenerate_id();
                 $date=date("Y-m-d");
-                $q="update aziende set lastLoginAz=".$date." where idAz=".$_SESSION["user"]["idAz"];
-                $ris=mysqli_query($conn. $ris)or die("errore durante il salvataggio della data");
+                $q="update aziende set lastLoginRef='".$date."' where idAz=".$_SESSION["user"]["idAz"];
+                $ris=mysqli_query($conn, $q)or die("errore durante il salvataggio della data");
                 header("Location: index.php");
                 exit();
             }
@@ -170,8 +170,8 @@
                 $_SESSION["user-type"] = 1;
                 session_regenerate_id();
                 $date=date("Y-m-d");
-                $q="update admins set lastLoginUt=".$date." where idUt=".$_SESSION["user"]["idUt"];
-                $ris=mysqli_query($conn. $ris)or die("errore durante il salvataggio della data");
+                $q="update admins set lastLoginUt='".$date."' where idUt=".$_SESSION["user"]["idUt"];
+                $ris=mysqli_query($conn, $q)or die("errore durante il salvataggio della data");
                 header("Location: index.php");
                 exit();
             }
@@ -240,8 +240,8 @@
         $cognome= mysqli_real_escape_string($conn, $_POST["cognomeRef"]);
         $password= password_hash($_POST["password"],PASSWORD_DEFAULT);
         $data= date("Y-m-d");
-        $q ="insert into aziende (ragsoc,ind,cap,loc,prov,piva,email,nomeRef,cognomeRef,usernameRef,passwordRef,lastPwdAz) values('".$ragsoc."','".$indirizzo."','".$cap."','".$loc."','".$prov."','".$piva."','".$email."','".$nome."','".$cognome."','".$username."','".$password."','".$data."')";
-        $ris= mysqli_query($conn, $q)or die("errore durante la registrazione");
+        $q ="insert into aziende (ragsoc,ind,cap,loc,prov,piva,email,nomeRef,cognomeRef,usernameRef,passwordRef,lastPwdRef,lastLoginRef) values('".$ragsoc."','".$indirizzo."','".$cap."','".$loc."','".$prov."','".$piva."','".$email."','".$nome."','".$cognome."','".$username."','".$password."','".$data."','".$data."')";
+        $ris= mysqli_query($conn, $q)or die("errore durante la registrazione | ".$q." | ".mysqli_error($conn));
         //registrazione effettuata con successo
         session_regenerate_id();
         header("Location: index.php?pag=login");
@@ -381,6 +381,7 @@
                 $tabella="admins";
                 $id=$_SESSION["user"]["idUt"];
                 $campo1="idUt";
+                break;
             case 2:
                 $tabella="studenti";
                 $id=$_SESSION["user"]["idStu"];
@@ -396,7 +397,7 @@
                 exit();
         }
     	global $conn;
-        $q="select * from `".$tabella."` where ".$campo1." = '".$id."';";
+        $q="select * from `".$tabella."` where ".$campo1."='".$id."'";
         $ris= mysqli_query($conn, $q)or die("errore durante il controllo password | ".$q.mysqli_error($conn));
         $num= mysqli_num_rows($ris);
         
@@ -414,8 +415,14 @@
                 return false;
             }
         }
-        else{
+        else if($num>1){
             exit("errore duante la verifica della password più di un utente trovato");
+        }
+        else if($num==0){
+            exit("utente non trovato");
+        }
+        else{
+            exit("errore nella funzione di verifica della password");
         }
     }
 
