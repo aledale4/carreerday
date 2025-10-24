@@ -3,3 +3,5 @@ ca.pem
 static/pfp/Adm
 static/pfp/AZ
 static/pfp/stu
+php/phpqrcode/cache/
+static/qrcodes/
