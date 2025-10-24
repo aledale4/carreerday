@@ -513,6 +513,7 @@
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/login_register.css">
     <link rel="stylesheet" href="../css/home.css">
+    <link rel="stylesheet" href="../css/settings.css">
     <link rel="stylesheet" href="../css/event.css">
     <link rel="stylesheet" href="../css/new_edit_event.css">
     <link rel="stylesheet" href="../css/settings.css">

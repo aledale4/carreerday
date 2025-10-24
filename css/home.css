@@ -58,13 +58,20 @@
     right: 30px;
 }
 
-.navbar .right-side .user-pic{
-    height: 100%;
-    aspect-ratio: 1;
-    background-color: grey;
+.navbar .right-side .user-pic {
+    width: 60px;          
+    height: 60px;         
     border-radius: 50%;
+    background-color:var(--secondary-color);
+    overflow: hidden;
 }
 
+.navbar .right-side .user-pic img {
+    width: 100%;          
+    height: 100%;         
+    object-fit: cover;    
+    display: block;       
+}
 .navbar .middle-nav{
     width: fit-content;
     display: flex;
