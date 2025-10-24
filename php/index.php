@@ -263,9 +263,11 @@
                 header("Location:email_inviata.php");
                 exit();
             }else{
+                exit("email non inviata: parametri sbagliati");
                 //email non inviata
             }
         }else{
+            exit("email non inviata: ci sono piu utenti con quell'email");
             // ce piu di un utente
         } 
 
@@ -302,16 +304,20 @@
                         exit();
                     }else{
                         //password nuove diverse
+                        exit("password nuove diverse");
                     }
                 }else{
+                    exit("password temporanee diverse");
                     //password temporanee diverse
                 }
             }else{
                 $qtoken="delete from token where token='" .$riga["token"]. "'";
                 mysqli_query($conn, $qtoken)or die("errore delete token");
+                exit("sono passati troppi giorni sulla richiesta");
                //"sono passati troppi giorni"
             }
         }else{
+            exit("ci sono piu utenti con questo token");
             //"piu utenti"
         }
     }
@@ -398,6 +404,7 @@
     // funzione per vedere le posizioni libere di un azienda deve passare l'id azienda returna un array con tutte le posizioni aperte
     function posizioni_libere($idaz){
         $pos = [];
+        global $conn;
         $q="select * from posizioni where raz2='" .$idaz. "'";
         $ris = mysqli_query($conn,$q);
         $num = mysqli_num_rows($ris);
@@ -407,7 +414,7 @@
                 $pos[] = $riga["posizaperte"];
             }
         } else if ($num == 0){
-            return;
+            exit("non ci sono posizioni libere");
         }
        return $pos;
     }
