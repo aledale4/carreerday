@@ -15,7 +15,7 @@
     font-weight: 600;
 }
 
-form{
+.form-set{
     width: 100%;
     margin-top: 40px;
 }
@@ -83,6 +83,9 @@ form{
   background-color: lightgrey;
   height: 30px;
   padding-inline: 10px;
+}
+.card .web-link{
+    width: 400px;
 }
 .links {
     width: 100%;

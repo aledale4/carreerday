@@ -2,10 +2,10 @@
     //per collegare il database e avviare la sessione
     session_start();
     $env = parse_ini_file("../.env");
-    $conn = mysqli_connect($env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"]);
-    //$ssl_ca = '../ca.pem';
-    //$conn = mysqli_init();
-    //mysqli_ssl_set($conn, NULL, NULL, $ssl_ca, "", NULL);
+    //$conn = mysqli_connect($env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"]);
+    $ssl_ca = '../ca.pem';
+    $conn = mysqli_init();
+    mysqli_ssl_set($conn, NULL, NULL, $ssl_ca, "", NULL);
 
     if (!mysqli_real_connect($conn, $env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"], NULL, MYSQLI_CLIENT_SSL)) {
         die("". mysqli_connect_error());
@@ -527,7 +527,19 @@
             include("pwdUpdate.php");
         }
         if($_GET["pag"] == "settings" ){
-            include("settings.php");
+            switch($_SESSION["user-type"]){
+            case 1:
+                
+            case 2:
+                include("settings.php");
+                break;
+            case 3:
+                include("setting-az.php");
+                break;
+            default:
+                echo "Si è verificato un errore durante il controllo dell'account";
+                exit();
+        }
         }else if($_GET["pag"] == "event"){
             include("event.php");
         }else if ($_GET["pag"] == "new_event" && $_SESSION["user-type"] == 1){

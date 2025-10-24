@@ -9,7 +9,7 @@
         <a href="index.php"><span class="material-symbols-outlined">arrow_back_ios_new</span></a>
         <p>Il tuo profilo</p>
     </div>
-    <form action="">
+    <form action="index.php" method="post" class="form-set">
         <div class="card">
             <div class="side">
                 <div class="img"><?php include("defaultUser-pic.php")  ?></div>
