@@ -12,9 +12,6 @@
             <div class="nav-page">
                 <p>Colloqui</p>
             </div>
-            <div class="nav-page">
-                <p>Impostazioni</p>
-            </div>
         </div>
         <div class="right-side">
             <p>Benvenuto/a, <span><?php echo $_SESSION["user"]["nomeRef"]; ?></span></p>
@@ -27,7 +24,7 @@
 
     <section id="eventi">
         <h1>Eventi</h1>
-        <div class="scrollable-container">
+        <div class="scrollable-container company">
             <?php
             $q = "select * from adesioni where rAz=".$_SESSION["user"]["idAz"];
             $r = mysqli_query($conn, $q);
