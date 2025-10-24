@@ -12,7 +12,7 @@
     <form action="">
         <div class="card">
             <div class="side">
-                <div class="img"><img src="" alt=""></div>
+                <div class="img"><?php include("defaultUser-pic.php")  ?></div>
                 <div class="inputs">
                     <input type="hidden" name="pag" value="modifiche">
                     <p>Nome: <input type="text" name="nome" id="" placeholder="Nome" required></p>

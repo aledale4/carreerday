@@ -19,7 +19,7 @@
         <div class="right-side">
             <p>Benvenuto/a, <span><?php echo $_SESSION["user"]["nomeRef"]; ?></span></p>
             <a href="index.php?pag=settings">
-                <div class="user-pic"></div>
+                <div class="user-pic"><?php include("defaultUser-pic.php")  ?></div>
             </a>
         </div>
     </div>
