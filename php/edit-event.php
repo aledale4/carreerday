@@ -1,13 +1,14 @@
 <?php
-if (!isset($_GET["id"]))
-    exit(0);
-$id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
-$q = "select * from career_day where idCd = " . $id;
-$result = mysqli_query($conn, $q) or die("errore nella query");
-$event = mysqli_fetch_assoc($result);
+    if (!isset($_GET["id"]))
+        exit(0);
+    $id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
+    $q = "select * from career_day where idCd = " . $id;
+    $result = mysqli_query($conn, $q) or die("errore nella query");
+    if (mysqli_num_rows($result) == 0) exit();
+    $event = mysqli_fetch_assoc($result);
 
-$q2 = "select * from adesioni where rCd = " . $id;
-$adesioni_result = mysqli_query($conn, $q2) or die("errore nella query");
+    $q2 = "select * from adesioni where rCd = " . $id;
+    $adesioni_result = mysqli_query($conn, $q2) or die("errore nella query");
 ?>
 
 <div class="home-container">

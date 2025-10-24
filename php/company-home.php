@@ -7,10 +7,10 @@
         </div>
         <div class="middle-nav">
             <div class="nav-page selected">
-                <p>Eventi</p>
+                <a href="index.php"><p>Eventi</p></a>
             </div>
             <div class="nav-page">
-                <p>Colloqui</p>
+                <a href="index.php?pag=colloqui"><p>Colloqui</p></a>
             </div>
         </div>
         <div class="right-side">
