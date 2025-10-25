@@ -10,6 +10,7 @@
             <a href="index.php?pag=settings">
                 <div class="user-pic"><?php include("defaultUser-pic.php") ?></div>
             </a>
+            <a href="index.php?pag=logout" class="logout"><span class="material-symbols-outlined logout-icon">logout</span></a>
         </div>
     </div>
 

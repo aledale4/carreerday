@@ -1,3 +1,20 @@
 tr.checked{
     text-decoration: line-through;
 }
+
+.colloqui {
+    width: 100%;
+}
+.colloqui table{
+    width: 100%;
+    text-align: center;
+    background-color: black;
+}
+.colloqui table td, .colloqui table th{
+    background-color: white;
+}
+
+.evento-colloquio{
+    font-size: 20px;
+    font-weight: 500;
+}
