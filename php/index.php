@@ -461,16 +461,10 @@
     function posizioni_libere($idaz){
         $pos = [];
         global $conn;
-        $q="select * from posizioni where raz2='" .$idaz. "'";
+        $q="select * from posizioni where rAz='" .$idaz. "'";
         $ris = mysqli_query($conn,$q);
-        $num = mysqli_num_rows($ris);
-        $riga = mysqli_fetch_assoc($ris);
-        if($num != 0){
-            for($i=0;$i<$num;$i++){
-                $pos[] = $riga["posizaperte"];
-            }
-        } else if ($num == 0){
-            exit("non ci sono posizioni libere");
+        while($row = mysqli_fetch_assoc($ris)){
+            $pos[] = $row;
         }
        return $pos;
     }
@@ -600,6 +594,21 @@
         QRcode::png($env['BASE_URL']."/php/index.php?pag=adesione&id=".$id_qr, '../static/qrcodes/'.$id_qr.'.png', 'L', 16, 2);
         header("Location: index.php?pag=edit_event&id=".$idEvento);
     }
+    if(isset($_POST["pag"]) && $_POST["pag"]=="delete_position" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 3){
+        $id = filter_input(INPUT_POST,"idPos", FILTER_SANITIZE_NUMBER_INT);
+        if(!$id) exit();
+        $q = "delete from posizioni where idPos = ".$id;
+        $result = mysqli_query($conn, $q) or die();
+        header("Location: index.php?pag=posizioni");
+    }
+    if(isset($_POST["pag"]) && $_POST["pag"]=="add_position" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 3){
+        $nome = htmlspecialchars($_POST["nomePos"]);
+        $desc = htmlspecialchars($_POST["descPos"]);
+        if(!$nome || !$desc) exit();
+        $q = "insert into posizioni (rAz,nomePos,descrizionePos) values (".$_SESSION["user"]["idAz"].",'".$nome."','".$desc."')";
+        $result = mysqli_query($conn, $q) or die();
+        header("Location: index.php?pag=posizioni");
+    }
 ?>
 
 
@@ -617,6 +626,7 @@
     <link rel="stylesheet" href="../css/settings.css">
     <link rel="stylesheet" href="../css/company-home.css">
     <link rel="stylesheet" href="../css/colloqui.css">
+    <link rel="stylesheet" href="../css/posizioni.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
@@ -644,6 +654,8 @@
             include ("adesione.php");
         }else if ($_GET["pag"] == "colloqui" && $_SESSION["user-type"] == 3){
             include ("colloqui.php");
+        }else if ($_GET["pag"] == "posizioni" && $_SESSION["user-type"] == 3){
+            include ("posizioni.php");
         }else {
             switch($_SESSION["user-type"]){
                 case 1:
