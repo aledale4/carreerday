@@ -22,7 +22,7 @@
             <div class="event-data-inputs">
                 <input type="hidden" name="pag" value="new_event">
                 <p>Nome dell'evento: <input maxlength="30" type="text" name="nome" id="" placeholder="" required></p>
-                <p>Descrizione: <textarea maxlength="256" name="descrizione" id="" required>Descrizione dell'evento</textarea></p>
+                <p>Descrizione: <textarea maxlength="256" name="descrizione" id="" required></textarea></p>
                 <p>Quando? <input type="date" name="date" id="" required></p>
                 <p>Orario di inizio: <input type="time" name="start_time" id="" required></p>
                 <p>Orario di fine <input type="time" name="end_time" id="" required></p>
