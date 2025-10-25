@@ -12,6 +12,9 @@
             <div class="nav-page selected" >
                 <a href="index.php?pag=colloqui"><p>Colloqui</p></a>
             </div>
+            <div class="nav-page">
+                <a href="index.php?pag=posizioni"><p>Posizioni</p></a>
+            </div>
         </div>
         <div class="right-side">
             <p>Benvenuto/a, <span><?php echo $_SESSION["user"]["nomeRef"]; ?></span></p>

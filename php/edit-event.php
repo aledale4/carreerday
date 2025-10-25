@@ -50,7 +50,7 @@
                 <p class="event-location"><input required name="pos" type="text" maxlength="30" value="<?php echo $event["locationCd"] ?>">
                 </p>
             </div>
-            <textarea name="descrizione" class="event-desc" maxlength="256"><?php echo $event["descCd"] ?></textarea>
+            <textarea name="descrizione" class="event-desc" maxlength="256" placeholder="Descrizione dell'evento"><?php echo $event["descCd"] ?></textarea>
         </div>
         </form>
         <div class="event-participants">
