@@ -109,3 +109,16 @@
   border-top-right-radius: var(--buttons-border-radius);
   border-bottom-right-radius: var(--buttons-border-radius);
 }
+
+.occhio{
+    position: fixed;
+    top: 446px;
+    right: 576px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.occhio button{
+  background-color: inherit;
+  border: none;
+}
