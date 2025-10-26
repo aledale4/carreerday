@@ -671,7 +671,7 @@
         $result = mysqli_query($conn, $q) or die();
         reload_user_data();
 
-        if (isset($_FILES["CV"])){
+        if (isset($_FILES["CV"]) && isset($_FILES["CV"]["filename"])){
             if ($_FILES["CV"]["size"] > 5000000){
                 header("Location: index.php?pag=settings&error=3");
                 exit();

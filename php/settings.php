@@ -71,6 +71,9 @@
                         case 3:
                             echo "File CV troppo grande (>5MB)";
                             break;
+                        case 3:
+                            echo "File CV deve essere un PDF";
+                            break;
                     }
                 }
             ?></p>
