@@ -19,10 +19,22 @@
                     <p>Cognome:<input type="text" name="cognome" id="" placeholder="Cognome" required></p>
                     <p>Username:<input type="text" name="username" id="" placeholder="Username" required></p>
                     <p>Email:<input type="email" Passwo name="email" id="" placeholder="Email" required></p>
-                    <p>Password Esistente:<input type="password" name="password" id="" placeholder="Password" required>
+                    <p>Password Esistente:
+                        <div class="password-container">
+                            <input type="password" name="password" id="password" placeholder="Password">
+                            <div class="occhio">
+                                <span id="tasto" class="material-symbols-outlined">visibility_off</span>
+                            </div>
+                        </div>    
                     </p>
-                    <p>Nuova Password<input type="password" name="newpassword" id="" placeholder="Nuova Password"
-                            required></p>
+                    <p>Nuova Password
+                        <div class="password-container">
+                            <input type="password" name="newpassword" id="password2" placeholder="Nuova Password">
+                            <div class="occhio">
+                                <span id="tasto2" class="material-symbols-outlined">visibility_off</span>
+                            </div>
+                        </div>
+                    </p>
                 </div>
             </div>
             <div class="side additional">
