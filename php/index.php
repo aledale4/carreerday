@@ -11,6 +11,7 @@
     }
     include 'phpqrcode/qrlib.php';
     // regenerate_qrcodes();
+    
     //funzione di logout
     if(isset($_GET["pag"]) && $_GET["pag"]=="logout" && isset($_SESSION["user"])){
         session_unset();
@@ -631,7 +632,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,arrow_back_ios_new,delete_forever,edit,location_on,logout" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,arrow_back_ios_new,delete_forever,edit,location_on,logout,visibility,visibility_off" />
+    <script src="../js/occhiolino.js"></script>
     <title>Career Day</title>
 </head>
 <body>
@@ -662,17 +664,17 @@
                 case 1:
                     include("admin-home.php");
                     break;
-                case 2:
-                    include("home.php");
+                    case 2:
+                        include("home.php");
                     break;
                 case 3:
                     include("company-home.php");
                     break;
+                }
             }
         }
-    }
-    else if(isset($_GET["pag"])){
-        if($_GET["pag"] == "login"){
+        else if(isset($_GET["pag"])){
+            if($_GET["pag"] == "login"){
             include("login.php");
         }else if($_GET["pag"] == "register"){
             include("register.php");

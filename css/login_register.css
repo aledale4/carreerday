@@ -110,15 +110,15 @@
   border-bottom-right-radius: var(--buttons-border-radius);
 }
 
-.occhio{
-    position: fixed;
-    top: 446px;
-    right: 576px;
-    cursor: pointer;
-    z-index: 1;
+.password-container{
+    position: relative;
+    display: flex;
+    align-items: center;
 }
 
-.occhio button{
-  background-color: inherit;
-  border: none;
+.password-container .occhio{
+    position: absolute;
+    right: 7px;
+    top: 5px;
+    cursor: pointer;
 }

@@ -1,11 +1,20 @@
-//codice per far apparire l'icona dell'occhio che permette di far vedere la password inserita
-occhio = document.getElementById("password");
-tasto = document.getElementById("tasto");
+//codice per far vedere la password inserita
+document.addEventListener('DOMContentLoaded', () => {
+    const password = document.getElementById("password");
+    const tasto = document.getElementById("tasto");
 
-toggleButton.addEventListener('click', () => {
-    if(password.type === 'password'){
-        password.type = 'text';
-        tasto.textContent = 'si';
+    if(!password || !tasto){
+        console.error("Elemento password o tasto non trovato.");
+        return;
     }
-    else {}//da finire
-})
+
+    tasto.addEventListener('click', () => {
+        if (password.type === "password") {
+            password.type = "text";
+            tasto.textContent = "visibility";
+        } else if (password.type === "text") {
+            password.type = "password";
+            tasto.textContent = "visibility_off";
+        }
+    });
+});
