@@ -12,7 +12,7 @@
     <form action="index.php" class="form-set" method="$_POST">
         <div class="card">
             <div class="side">
-                <div class="img"><a href=""><?php include("defaultUser-pic.php")  ?>bottone</a></div>
+                <div class="img"><a href="index.php?pag=fotoprofilo"><?php include("defaultUser-pic.php")  ?></a></div>
                 <div class="inputs">
                     <input type="hidden" name="pag" value="modifiche">
                     <p>Ragione sociale: <input type="text" name="ragionesoc" id="" placeholder="Ragione sociale" value="<?php echo $_SESSION["user"]["ragsoc"]?>" required></p>

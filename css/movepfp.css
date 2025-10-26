@@ -1,0 +1,42 @@
+.zap{
+  width: calc(100vw - 40px);
+  height: calc(100vh - 300px);
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.zap form{
+    display: flex;
+    flex-direction: column;
+}
+.zap input[type="submit"]{
+    height: 30px;
+    width: auto;
+    background-color: var(--primary-color);
+    border: none;
+    color: var(--text-color);
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 20px;
+    font-size: 20px;
+    padding: 5px;
+    margin-top: 30px;
+}
+.zap input[type="file"]::-webkit-file-upload-button {
+    background: var(--primary-color);
+    color: var(--text-color);
+    padding: 10px 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.zap input[type="file"]::-webkit-file-upload-button:hover {
+    background: var(--secondary-color);
+}
+.zap h3 {
+    font-size: 30px;
+}
