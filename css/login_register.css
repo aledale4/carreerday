@@ -36,6 +36,7 @@
   border-radius: var(--buttons-border-radius);
   width: 100%;
   padding-inline: 0;
+  height: fit-content;
 }
 
 .user-type-title{
