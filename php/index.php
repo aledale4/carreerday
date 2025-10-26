@@ -56,7 +56,7 @@
                 exit();
             }
         } 
-        $username=mysqli_real_escape_string($conn, $_POST["username"]);
+        $username=trim(mysqli_real_escape_string($conn, $_POST["username"]));
         $q ="select * from studenti where usernameStu='".$username."'";
         $ris = mysqli_query($conn, $q)or die("errore durante la verifica dell'username");
         $num = mysqli_num_rows($ris);
@@ -66,7 +66,7 @@
             exit();
         }
         //controllo email
-        $email=mysqli_real_escape_string($conn, $_POST["email"]);
+        $email=trim(mysqli_real_escape_string($conn, $_POST["email"]));
         $q ="select * from studenti where emailStu='".$email."'";
         $ris = mysqli_query($conn, $q)or die("errore durante la verifica della mail");
         $num = mysqli_num_rows($ris);
@@ -81,9 +81,9 @@
             exit();
         }
         //username e email disponibili
-        $nome= mysqli_real_escape_string($conn, $_POST["nome"]);
-        $cognome= mysqli_real_escape_string($conn, $_POST["cognome"]);
-        $password= password_hash($_POST["password"],PASSWORD_DEFAULT);
+        $nome= trim(mysqli_real_escape_string($conn, $_POST["nome"]));
+        $cognome= trim(mysqli_real_escape_string($conn, $_POST["cognome"]));
+        $password= password_hash(trim($_POST["password"]),PASSWORD_DEFAULT);
         $data= date("Y-m-d");
         $q ="insert into studenti (nomeStu,cognomeStu,usernameStu,passwordStu,emailStu,lastPwdStu,lastLoginStu) values('".$nome."','".$cognome."','".$username."','".$password."','".$email."','".$data."','".$data."')";
         $ris= mysqli_query($conn, $q)or die("errore durante la registrazione | ".$q." | ".mysqli_error($conn));
@@ -96,13 +96,13 @@
     //funzione di login studente
     if(isset($_POST["pag"]) && $_POST["pag"]=="login" && !isset($_SESSION["user"])){
         if (!isset($_POST["email"]) or !isset($_POST["password"])) header("Location: index.php?pag=login&error=2");
-        $email=mysqli_real_escape_string($conn, $_POST["email"]);
+        $email=trim(mysqli_real_escape_string($conn, $_POST["email"]));
         $q= "select * from studenti where emailStu='".$email."'";
         $ris= mysqli_query($conn, $q)or die("errore durante la verifica dell'email");
         $num= mysqli_num_rows($ris);
         if($num==1){
             $riga = mysqli_fetch_assoc($ris);
-            if(password_verify($_POST["password"],$riga["passwordStu"])){
+            if(password_verify(trim($_POST["password"]),$riga["passwordStu"])){
                 //login effettuato con successo
                 $_SESSION["user"]=$riga;
                 $_SESSION["user-type"] = 2;
@@ -127,13 +127,13 @@
     //funzione di login aziende
     if(isset($_POST["pag"]) && $_POST["pag"]=="login_soc" && !isset($_SESSION["user"])){
         if (!isset($_POST["email"]) or !isset($_POST["password"])) header("Location: index.php?pag=login&error=2");
-        $email=mysqli_real_escape_string($conn, $_POST["email"]);
+        $email=trim(mysqli_real_escape_string($conn, $_POST["email"]));
         $q= "select * from aziende where email='".$email."'";
         $ris= mysqli_query($conn, $q)or die("errore durante la verifica dell'email");
         $num= mysqli_num_rows($ris);
         if($num==1){
             $riga = mysqli_fetch_assoc($ris);
-            if(password_verify($_POST["password"],$riga["passwordRef"])){
+            if(password_verify(trim($_POST["password"]),$riga["passwordRef"])){
                 //login effettuato con successo
                 $_SESSION["user"]=$riga;
                 $_SESSION["user-type"] = 3;
@@ -158,13 +158,13 @@
     //funzione di login admin
     if(isset($_POST["pag"]) && $_POST["pag"]=="login_admin" && !isset($_SESSION["user"])){
         if (!isset($_POST["username"]) or !isset($_POST["password"])) header("Location: index.php?pag=login&error=2");
-        $username=mysqli_real_escape_string($conn, $_POST["username"]);
+        $username=trim(mysqli_real_escape_string($conn, $_POST["username"]));
         $q= "select * from admins where usernameUt='".$username."'";
         $ris= mysqli_query($conn, $q)or die("errore durante la verifica dell'email");
         $num= mysqli_num_rows($ris);
         if($num==1){
             $riga = mysqli_fetch_assoc($ris);
-            if(password_verify($_POST["password"],$riga["passwordUt"])){
+            if(password_verify(trim($_POST["password"]),$riga["passwordUt"])){
                 //login effettuato con successo
                 $_SESSION["user"]=$riga;
                 $_SESSION["user-type"] = 1;
@@ -196,8 +196,8 @@
                 exit();
             }
         }
-        $username=mysqli_real_escape_string($conn, $_POST["username"]);
-        $piva=mysqli_real_escape_string($conn, $_POST["piva"]);
+        $username=trim(mysqli_real_escape_string($conn, $_POST["username"]));
+        $piva=trim(mysqli_real_escape_string($conn, $_POST["piva"]));
 
         $q ="select * from aziende where usernameRef='".$username."'";
         $ris = mysqli_query($conn, $q)or die("errore durante la verifica dell'username");
@@ -216,7 +216,7 @@
             exit();
         }
         //controllo email
-        $email=mysqli_real_escape_string($conn, $_POST["email"]);
+        $email=trim(mysqli_real_escape_string($conn, $_POST["email"]));
         $q ="select * from aziende where email='".$email."'";
         $ris = mysqli_query($conn, $q)or die("errore durante la verifica della mail");
         $num = mysqli_num_rows($ris);
@@ -231,14 +231,14 @@
             exit();
         }
         //username e email disponibili
-        $ragsoc= mysqli_real_escape_string($conn, $_POST["ragsoc"]);
-        $indirizzo= mysqli_real_escape_string($conn, $_POST["indirizzo"]);
-        $cap= mysqli_real_escape_string($conn, $_POST["cap"]);
-        $loc= mysqli_real_escape_string($conn, $_POST["loc"]);
-        $prov= mysqli_real_escape_string($conn, $_POST["prov"]);
-        $nome= mysqli_real_escape_string($conn, $_POST["nomeRef"]);
-        $cognome= mysqli_real_escape_string($conn, $_POST["cognomeRef"]);
-        $password= password_hash($_POST["password"],PASSWORD_DEFAULT);
+        $ragsoc= trim(mysqli_real_escape_string($conn, $_POST["ragsoc"]));
+        $indirizzo= trim(mysqli_real_escape_string($conn, $_POST["indirizzo"]));
+        $cap= trim(mysqli_real_escape_string($conn, $_POST["cap"]));
+        $loc= trim(mysqli_real_escape_string($conn, $_POST["loc"]));
+        $prov= trim(mysqli_real_escape_string($conn, $_POST["prov"]));
+        $nome=trim( mysqli_real_escape_string($conn, $_POST["nomeRef"]));
+        $cognome= trim(mysqli_real_escape_string($conn, $_POST["cognomeRef"]));
+        $password= password_hash(trim($_POST["password"]),PASSWORD_DEFAULT);
         $data= date("Y-m-d");
         $q ="insert into aziende (ragsoc,ind,cap,loc,prov,piva,email,nomeRef,cognomeRef,usernameRef,passwordRef,lastPwdRef,lastLoginRef) values('".$ragsoc."','".$indirizzo."','".$cap."','".$loc."','".$prov."','".$piva."','".$email."','".$nome."','".$cognome."','".$username."','".$password."','".$data."','".$data."')";
         $ris= mysqli_query($conn, $q)or die("errore durante la registrazione | ".$q." | ".mysqli_error($conn));
@@ -489,6 +489,25 @@
         }
     }
 
+    function reload_user_data(){
+        global $conn;
+        $q  = "";
+        switch ($_SESSION['user-type']){
+            case 1:
+                $q = "select * from admin where idUt = ".$_SESSION["user"]["idUt"];
+                break;
+            case 2:
+                $q = "select * from studenti where idStu = ".$_SESSION["user"]["idStu"];
+                break;
+            case 3:
+                $q = "select * from aziende where idAz = ".$_SESSION["user"]["idAz"];
+                break;
+        }
+        $res = mysqli_query($conn,$q) or die();
+        $user_data = mysqli_fetch_assoc($res);
+        $_SESSION["user"] = $user_data;
+    }
+
     if(isset($_POST["pag"]) && $_POST["pag"]=="new_event" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 1){
         $required = ["nome","descrizione","date","start_time","end_time","pos"];
         foreach($required as $r){
@@ -497,12 +516,12 @@
                 exit();
             }
         }
-        $nome = mysqli_real_escape_string($conn, $_POST["nome"]);
-        $desc = mysqli_real_escape_string($conn, $_POST["descrizione"]);
-        $date = mysqli_real_escape_string($conn, $_POST["date"]);
-        $start_time = mysqli_real_escape_string($conn, $_POST["start_time"]);
-        $end_time = mysqli_real_escape_string($conn, $_POST["end_time"]);
-        $pos = mysqli_real_escape_string($conn, $_POST["pos"]);
+        $nome = trim(mysqli_real_escape_string($conn, $_POST["nome"]));
+        $desc = trim(mysqli_real_escape_string($conn, $_POST["descrizione"]));
+        $date = trim(mysqli_real_escape_string($conn, $_POST["date"]));
+        $start_time = trim(mysqli_real_escape_string($conn, $_POST["start_time"]));
+        $end_time = trim(mysqli_real_escape_string($conn, $_POST["end_time"]));
+        $pos = trim(mysqli_real_escape_string($conn, $_POST["pos"]));
         $q ="insert into career_day (nameCd,dateCd,fromCd,toCd,locationCd,descCd) values('".$nome."','".$date."','".$start_time."','".$end_time."','".$pos."','".$desc."')";
         $result = mysqli_query($conn, $q) or die("errore nella query");
         $id = mysqli_insert_id($conn);
@@ -528,12 +547,12 @@
             }
         }
         $id = filter_input(INPUT_POST,"id", FILTER_SANITIZE_NUMBER_INT);
-        $nome = mysqli_real_escape_string($conn, $_POST["nome"]);
-        $desc = mysqli_real_escape_string($conn, $_POST["descrizione"]);
-        $date = mysqli_real_escape_string($conn, $_POST["date"]);
-        $start_time = mysqli_real_escape_string($conn, $_POST["start_time"]);
-        $end_time = mysqli_real_escape_string($conn, $_POST["end_time"]);
-        $pos = mysqli_real_escape_string($conn, $_POST["pos"]);
+        $nome = trim(mysqli_real_escape_string($conn, $_POST["nome"]));
+        $desc = trim(mysqli_real_escape_string($conn, $_POST["descrizione"]));
+        $date = trim(mysqli_real_escape_string($conn, $_POST["date"]));
+        $start_time = trim(mysqli_real_escape_string($conn, $_POST["start_time"]));
+        $end_time = trim(mysqli_real_escape_string($conn, $_POST["end_time"]));
+        $pos = trim(mysqli_real_escape_string($conn, $_POST["pos"]));
         $q ="update career_day set nameCd='".$nome."',dateCd='".$date."',fromCd='".$start_time."',toCd='".$end_time."',locationCd='".$pos."',descCd='".$desc."' where idCd=".$id;
         $result = mysqli_query($conn, $q) or die("errore nella query");
         header("Location: index.php?pag=event&id=".$id);
@@ -555,7 +574,7 @@
             exit();
         }
         $id = filter_input(INPUT_POST,"id", FILTER_SANITIZE_NUMBER_INT);
-        $completed = filter_input(INPUT_POST,"completed", FILTER_SANITIZE_STRING);
+        $completed = trim(mysqli_real_escape_string($conn, $_POST["completed"]));
         $q = "select * from prenotazioni where idPren = ".$id;
         $prenotazioneQ = mysqli_query($conn, $q) or die();
         if (mysqli_num_rows($prenotazioneQ) == 0) exit();
@@ -609,6 +628,65 @@
         $result = mysqli_query($conn, $q) or die();
         header("Location: index.php?pag=posizioni");
     }
+    if(isset($_POST["pag"]) && $_POST["pag"]=="edit_user" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 2){
+        $required = ["nome","cognome","username","email"];
+        foreach($required as $r){
+            if(!isset($_POST[$r])) {
+                exit();
+            }
+        }
+        $nome = trim(mysqli_real_escape_string($conn, $_POST["nome"]));
+        $cognome = trim(mysqli_real_escape_string($conn, $_POST["cognome"]));
+        $username = trim(mysqli_real_escape_string($conn, $_POST["username"]));
+        $email = trim(mysqli_real_escape_string($conn, $_POST["email"]));
+
+        $qCheckUsername = "select * from studenti where usernameStu = '".$username."' and idStu != ".$_SESSION["user"]["idStu"];
+        $resultCheckUsername = mysqli_query($conn,$qCheckUsername) or die();
+        if (mysqli_num_rows($resultCheckUsername) !=0){
+            header("Location: index.php?pag=settings&error=1");
+            exit();
+        }
+        $qCheckEmail = "select * from studenti where emailStu = '".$email."' and idStu != ".$_SESSION["user"]["idStu"];
+        $resultCheckEmail = mysqli_query($conn,$qCheckEmail) or die();
+        if (mysqli_num_rows($resultCheckEmail) !=0){
+            header("Location: index.php?pag=settings&error=2");
+            exit();
+        }
+
+        $website = trim(mysqli_real_escape_string($conn, $_POST["website"]));
+        $github = trim(mysqli_real_escape_string($conn, $_POST["github"]));
+        $linkedin = trim(mysqli_real_escape_string($conn, $_POST["linkedin"]));
+
+        $q ="UPDATE studenti SET nomeStu='".$nome."',cognomeStu='".$cognome."',emailStu = '".$email."',usernameStu = '".$username."' WHERE idStu=".$_SESSION["user"]["idStu"];
+        $result = mysqli_query($conn, $q) or die("errore nella query");
+
+        $q = "UPDATE studenti SET websiteStu = '" . $website . "', urlGithubStu = '" . $github . "', urlLinkedinStu = '" . $linkedin . "' WHERE idStu = " . $_SESSION["user"]["idStu"];
+        $result = mysqli_query($conn, $q) or die();
+
+        $tel = filter_input(INPUT_POST,"tel", FILTER_SANITIZE_NUMBER_INT);
+        $loc = trim(mysqli_real_escape_string($conn, $_POST["loc"]));
+        $bio = trim(mysqli_real_escape_string($conn, $_POST["bio"]));
+
+        $q = "UPDATE studenti SET telStu = '" . $tel . "', locStu = '" . $loc . "', bioStu = '" . $bio . "' WHERE idStu = " . $_SESSION["user"]["idStu"];
+        $result = mysqli_query($conn, $q) or die();
+        reload_user_data();
+
+        if (isset($_FILES["CV"])){
+            if ($_FILES["CV"]["size"] > 5000000){
+                header("Location: index.php?pag=settings&error=3");
+                exit();
+            }
+            if (mime_content_type($_FILES["CV"]["tmp_name"]) != "application/pdf"){
+                header("Location: index.php?pag=settings&error=4");
+                exit();
+            }
+            if(move_uploaded_file($_FILES["CV"]["tmp_name"], "../private/cv/".$_SESSION["user"]["idStu"].".pdf")){
+                header("index.php?pag=settings");
+            }
+        }
+
+        header("Location: index.php?pag=settings");
+    }
 ?>
 
 
@@ -652,6 +730,8 @@
             include ("edit-event.php");
         }else if ($_GET["pag"] == "adesione" && $_SESSION["user-type"] == 2){
             include ("adesione.php");
+        }else if ($_GET["pag"] == "mycv" && $_SESSION["user-type"] == 2){
+            include ("mycv.php");
         }else if ($_GET["pag"] == "colloqui" && $_SESSION["user-type"] == 3){
             include ("colloqui.php");
         }else if ($_GET["pag"] == "posizioni" && $_SESSION["user-type"] == 3){
