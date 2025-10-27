@@ -23,9 +23,22 @@
                     <p>Cognome:<input type="text" name="cognome" id="" placeholder="Cognome" required value="<?php echo $_SESSION["user"]["cognomeStu"]?>"></p>
                     <p>Username:<input type="text" name="username" id="" placeholder="Username" required value="<?php echo $_SESSION["user"]["usernameStu"]?>"></p>
                     <p>Email:<input type="email" name="email" id="" placeholder="Email" required value="<?php echo $_SESSION["user"]["emailStu"]?>"></p>
-                    <p>Password Esistente:<input type="password" name="password" id="" placeholder="Password">
+                    <p>Password Esistente:
+                        <div class="password-container">
+                            <input type="password" name="password" id="password" placeholder="Password">
+                            <div class="occhio">
+                                <span id="tasto" class="material-symbols-outlined">visibility_off</span>
+                            </div>
+                        </div>    
                     </p>
-                    <p>Nuova Password<input type="password" name="newpassword" id="" placeholder="Nuova Password"></p>
+                    <p>Nuova Password
+                        <div class="password-container">
+                            <input type="password" name="newpassword" id="password2" placeholder="Nuova Password">
+                            <div class="occhio">
+                                <span id="tasto2" class="material-symbols-outlined">visibility_off</span>
+                            </div>
+                        </div>
+                    </p>
                 </div>
             </div>
             <div class="side additional">

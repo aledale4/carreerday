@@ -109,3 +109,21 @@
   border-top-right-radius: var(--buttons-border-radius);
   border-bottom-right-radius: var(--buttons-border-radius);
 }
+
+.password-container{
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-container .occhio{
+    position: absolute;
+    right: 9px;
+    top: 8px;
+    cursor: pointer;
+}
+
+.password-container .occhio span{
+    font-size: 18px;
+    color: var(--secondary-color);
+}
