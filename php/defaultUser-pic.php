@@ -1,7 +1,7 @@
 <?php
 switch ($_SESSION["user-type"]) {
     case 1:
-        $file = '../static/pfp/Adm/' . $_SESSION["user"]["idUt"] . '.jpeg';
+        $file = '../static/pfp/admin-pic/' . $_SESSION["user"]["idUt"] . '.jpeg';
         if (file_exists($file)) {
             echo '<img src="' . $file . '" alt="">';
         } else {
@@ -9,7 +9,7 @@ switch ($_SESSION["user-type"]) {
         }
         break;
     case 2:
-        $file = '../static/pfp/stu/' . $_SESSION["user"]["idStu"] . '.jpeg';
+        $file = '../static/pfp/studente-pic/' . $_SESSION["user"]["idStu"] . '.jpeg';
         if (file_exists($file)) {
             echo '<img src="' . $file . '" alt="">';
         } else {
@@ -17,7 +17,7 @@ switch ($_SESSION["user-type"]) {
         }
         break;
     case 3:
-        $file = '../static/pfp/AZ/' . $_SESSION["user"]["idAz"] . '.jpeg';
+        $file = '../static/pfp/azienda-pic/' . $_SESSION["user"]["idAz"] . '.jpeg';
         if (file_exists($file)) {
             echo '<img src="' . $file . '" alt="">';
         } else {
