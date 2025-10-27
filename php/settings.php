@@ -13,7 +13,7 @@
         <a href="index.php"><span class="material-symbols-outlined">arrow_back_ios_new</span></a>
         <p>Il tuo profilo</p>
     </div>
-    <form action="index.php" method="post" enctype="multipart/form-data">
+    <form action="index.php" method="post" enctype="multipart/form-data" class="form-set">
         <input type="hidden" name="pag" value="edit_user">
         <div class="card">
             <div class="side">
