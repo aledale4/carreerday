@@ -14,7 +14,7 @@
         <input type="hidden" name="pag" value="edit_user">
         <div class="card">
             <div class="side">
-                <div class="img"><?php include("defaultUser-pic.php")  ?></div>
+                <div class="img"><a href="index.php?pag=fotoprofilo"><?php include("defaultUser-pic.php")  ?></a></div>
                 <div class="inputs">
                     <p>Nome: <input type="text" name="nome" id="" placeholder="Nome" required value="<?php echo $_SESSION["user"]["nomeStu"]?>"></p>
                     <p>Cognome:<input type="text" name="cognome" id="" placeholder="Cognome" required value="<?php echo $_SESSION["user"]["cognomeStu"]?>"></p>
