@@ -563,8 +563,9 @@
             exit();
         }
         $id = filter_input(INPUT_POST,"id", FILTER_SANITIZE_NUMBER_INT);
-        $date = new DateTime("now", new DateTimeZone('Europe/Rome') );
-        $q ="insert into prenotazioni (rAd,rStu,datapren) values('".$id."','".$_SESSION["user"]["idStu"]."','".($date->format('Y-m-d H:i:s'))."')";
+        $pos = filter_input(INPUT_POST,"posizione", FILTER_SANITIZE_NUMBER_INT);
+        $date = new DateTime("now", new DateTimeZone('Europe/Rome'));
+        $q ="insert into prenotazioni (rAd,rStu,datapren,rPos) values('".$id."','".$_SESSION["user"]["idStu"]."','".($date->format('Y-m-d H:i:s'))."','".$pos."')";
         $result = mysqli_query($conn, $q) or die("errore nella query");
         header("Location: index.php?pag=adesione&id=".$id);
     }
@@ -671,7 +672,7 @@
         $result = mysqli_query($conn, $q) or die();
         reload_user_data();
 
-        if (isset($_FILES["CV"]) && isset($_FILES["CV"]["filename"])){
+        if (isset($_FILES["CV"]) && isset($_FILES["CV"]["name"])){
             if ($_FILES["CV"]["size"] > 5000000){
                 header("Location: index.php?pag=settings&error=3");
                 exit();
@@ -705,10 +706,11 @@
     <link rel="stylesheet" href="../css/company-home.css">
     <link rel="stylesheet" href="../css/colloqui.css">
     <link rel="stylesheet" href="../css/posizioni.css">
+    <link rel="stylesheet" href="../css/prenotazione.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,arrow_back_ios_new,delete_forever,edit,location_on,logout" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,arrow_back_ios_new,delete_forever,edit,expand_circle_down,location_on,logout" />
     <title>Career Day</title>
 </head>
 <body>
@@ -736,6 +738,8 @@
             include ("colloqui.php");
         }else if ($_GET["pag"] == "posizioni" && $_SESSION["user-type"] == 3){
             include ("posizioni.php");
+        }else if ($_GET["pag"] == "viewcv" && $_SESSION["user-type"] == 3){
+            include ("viewcv.php");
         }else {
             switch($_SESSION["user-type"]){
                 case 1:

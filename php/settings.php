@@ -5,6 +5,9 @@
             <img src="../static/logo.svg" alt="" srcset="" class="logo">
             <p>Portale Studenti</p>
         </div>
+        <div class="right-side">
+            <a href="index.php?pag=logout" class="logout"><span class="material-symbols-outlined logout-icon">logout</span></a>
+        </div>
     </div>
     <div class="title-bar">
         <a href="index.php"><span class="material-symbols-outlined">arrow_back_ios_new</span></a>

@@ -34,6 +34,7 @@
   padding:20px;
   padding-inline: 30px;
   font-size: 20px;
+  height: fit-content;
 }
 .event .event-title{
     width: 100%;

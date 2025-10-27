@@ -37,24 +37,48 @@
                     $qEv = "select * from career_day where idCd = ".$adesione["rCd"];
                     $rEvPren = mysqli_query($conn, $qEv) or die();
                     if (mysqli_num_rows($rEvPren) == 0) exit();
-                    $q2 = "select * from prenotazioni where rAd=".$adesione["idAd"];
+                    $q2 = "select * from prenotazioni where rAd=".$adesione["idAd"]." order by idPren";;
                     $rPren = mysqli_query($conn, $q2) or die();
                     $evento = mysqli_fetch_assoc($rEvPren);
                     echo "<p class='evento-colloquio'>".$evento["nameCd"]."</p>";
-                    echo "<table><tr><th>Completato</th><th>Studente</th><th>Data prenotazione</th></tr>";
+                    echo "<table><tr><th>Completato</th><th>Studente</th><th>Posizione</th><th>Data prenotazione</th></tr>";
                     while ($prenotazione = mysqli_fetch_assoc($rPren)) {
                         $qStu = "select * from studenti where idStu = ".$prenotazione["rStu"];
                         $rStu = mysqli_query($conn, $qStu) or die();
                         if (mysqli_num_rows($rStu) == 0) continue;
                         $stu = mysqli_fetch_assoc($rStu);
                         $nomeStu = $stu["nomeStu"]." ".$stu["cognomeStu"];
-                        echo "<tr class='".($prenotazione["completed"]==1?"checked":">")."'><td>";
+
+                        $posQ = "select * from posizioni where idPos = ".$prenotazione["rPos"];
+                        $posPren = mysqli_query($conn, $posQ) or die();
+                        $pos = [];
+                        if (mysqli_num_rows($posPren) != 0){
+                            $pos = mysqli_fetch_assoc($posPren);
+                        }
+                        echo "<tr class='".($prenotazione["completed"]==1?"checked":"")."'><td>";
                         echo "<form action='index.php' method='post'>";
                         echo '<input type="hidden" name="id" value="'.$prenotazione["idPren"].'">';
                         echo '<input type="hidden" name="pag" value="update_prenotazione">';
                         echo '<input required type="checkbox" name="completed" onchange="this.form.submit()" '.($prenotazione["completed"]==1?"checked >":">");
                         echo '</form>';
-                        echo "</td><td>".$nomeStu."</td><td>".$prenotazione["datapren"]."</td></tr>";
+                        echo "</td><td>";
+                        echo "<div class='stu-name'>";
+                        echo $nomeStu;
+                        echo "<button class='material-symbols-outlined' onclick='switchInfo(\"".$prenotazione["idPren"]."\")'>expand_circle_down</button>";
+                        echo "</div>";
+                        echo "<div class='info-stu' id='".$prenotazione["idPren"]."'>";
+                        echo "<p>Nome: <span>".$stu["nomeStu"]."</span></p>";
+                        echo "<p>Cognome: <span>".$stu["cognomeStu"]."</span></p>";
+                        echo "<p>Email: <span>".$stu["emailStu"]."</span></p>";
+                        echo "<p>Numero di telefono: <span>".$stu["telStu"]."</span></p>";
+                        echo "<p>Località: <span>".$stu["locStu"]."</span></p>";
+                        echo "<p>Sito web: <span><a target='_blank' href='".$stu["websiteStu"]."'>".$stu["websiteStu"]."</a></span></p>";;
+                        echo "<p>GitHub: <span><a target='_blank' href='".$stu["urlGithubStu"]."'>".$stu["urlGithubStu"]."</a></span></p>";
+                        echo "<p>LinkedIn: <span><a target='_blank' href='".$stu["urlLinkedinStu"]."'>".$stu["urlLinkedinStu"]."</a></span></p>";
+                        echo "<p>Biografia: <span>".$stu["bioStu"]."</span></p>";
+                        echo "<p>CV: ".(file_exists("../private/cv/".$stu["idStu"].".pdf")?("<a href='index.php?pag=viewcv&id=".$stu["idStu"]."'>Apri</a>"):"No CV")."</p>";
+                        echo "</div>";
+                        echo "</td><td>".$pos["nomePos"]."</td><td>".$prenotazione["datapren"]."</td></tr>";
                     }
                     echo "</table>";
                 }
@@ -64,3 +88,11 @@
 
 
 </div>
+
+<script>
+    function switchInfo(id){
+        let info = document.getElementById(id);
+        info.classList.toggle("expanded");
+    }
+
+</script>
