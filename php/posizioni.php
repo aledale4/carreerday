@@ -25,6 +25,7 @@
              <a href="index.php?pag=settings">
                 <div class="user-pic"><?php include("defaultUser-pic.php")  ?></div>
             </a>
+            <div class="suggestion">Modifica il tuo profilo <img src="../static/arrow.svg" alt=""></div>
             <a href="index.php?pag=logout" class="logout"><span class="material-symbols-outlined logout-icon">logout</span></a>
         </div>
     </div>
