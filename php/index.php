@@ -706,7 +706,7 @@
             }
             move_uploaded_file($_FILES["miofile"]["tmp_name"], $dest);
         }
-        // header("Location: index.php?pag=settings");
+        header("Location: index.php?pag=settings");
     }
 ?>
 
