@@ -1,0 +1,65 @@
+.prenotazione{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.prenotazione form{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.prenotazione .nome-evento{
+    font-size: 32px;
+    font-weight: 600;
+}
+.prenotazione .subtitle{
+    font-size: 20px;
+}
+.prenotazione .subtitle .nome-azienda{
+    font-weight: 600;
+}
+
+.posizione-lavorativa{
+    width: fit-content;
+    padding: 10px;
+    border: 2px solid var(--primary-color);
+    border-radius: var(--buttons-border-radius);
+    font-size: 18px;
+}
+
+.posizione-lavorativa select{
+    width: max-content;
+    height: 40px;
+    padding: 10px;
+    margin: 5px;
+    font-size: 18px;
+    border: none;
+    border-radius: var(--buttons-border-radius);
+    outline: none;
+}
+
+.posizione-lavorativa select option{
+    border: none;
+    border-radius: var(--buttons-border-radius);
+    outline: none;
+}
+
+.prenotazione input[type="submit"]{
+    width: max-content;
+    background-color: var(--primary-color);
+    border: none;
+    color: var(--text-color);
+    height: fit-content;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: var(--buttons-border-radius);
+    padding:15px 30px;
+    font-size: 20px;
+}
+
+.prenotazione input[type="submit"]:disabled{
+    background-color: grey;
+    cursor: not-allowed;
+}

@@ -21,6 +21,9 @@
     $resultCheck = mysqli_query($conn, $qCheck) or die("");
     if (mysqli_num_rows($resultCheck) == 0) $already_signed = false;
 
+    $positionsQ = "select * from posizioni where rAz = ".$azienda["idAz"];
+    $resPosQ = mysqli_query($conn, $positionsQ) or die("");
+
 ?>
 
 <div class="home-container">
@@ -38,12 +41,23 @@
         <a href="index.php?pag=logout" class="logout"><span class="material-symbols-outlined logout-icon">logout</span></a>
     </div>
 </div>
-
-<h1><?php echo $evento["nameCd"]?></h1>
-<p>Prenota il tuo colloquio con <span><?php echo $azienda["ragsoc"]?></span></p>
-<form action="index.php" method="post">
-    <input type="hidden" name="pag" value="prenotazione">
-    <input type="hidden" name="id" value="<?php echo $id;?>">
-    <input type="submit" value="Prenotati ora" <?php echo $already_signed?"disabled":""?> >
-</form>
+<div class="prenotazione">
+    <h1 class="nome-evento"><?php echo $evento["nameCd"]?></h1>
+    <p class="subtitle">Prenota il tuo colloquio con <span class="nome-azienda"><?php echo $azienda["ragsoc"]?></span></p>
+    <form action="index.php" method="post">
+        <input type="hidden" name="pag" value="prenotazione">
+        <input type="hidden" name="id" value="<?php echo $id;?>">
+        <div class="posizione-lavorativa">
+            <label for="posizione">Posizione:</label>
+            <select name="posizione">
+                <?php
+                while($pos = mysqli_fetch_assoc($resPosQ)){
+                    echo "<option value='".$pos["idPos"]."'>".$pos["nomePos"]."</option>\n";
+                }
+                ?>
+            </select>
+        </div>
+        <input type="submit" value="Prenotati ora" <?php echo $already_signed?"disabled title='Già prenotato'":""?> >
+    </form>
+</div>
 </div>
