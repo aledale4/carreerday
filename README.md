@@ -33,3 +33,38 @@ creare il proprio profilo, come sopra descritto
 vedere l’elenco delle prenotazioni in occasione del Career Day
 inserire feedback dell’evento
 inserire note specifiche riferite al singolo studente
+
+
+
+
+
+
+
+
+
+
+
+
+
+from PIL import Image
+import io
+
+# Percorso al file PNG che hai caricato
+input_path = "logo-careerday.png"
+
+# Apri l'immagine e ottieni dimensioni
+img = Image.open(input_path)
+width, height = img.size
+
+# Crea un file SVG con un colore uniforme (qui solo come esempio)
+svg_content = f"""<svg width="{width}" height="{height}" xmlns="http://www.w3.org/2000/svg">
+  <rect width="{width}" height="{height}" fill="#FF6600" />
+</svg>
+"""
+
+# Salva il file SVG
+with open("logo-careerday_flat_orange.svg", "w") as f:
+    f.write(svg_content)
+
+print("Creato: logo-careerday_flat_orange.svg")
+
