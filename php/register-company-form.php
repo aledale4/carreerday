@@ -1,6 +1,6 @@
 <input type="hidden" name="pag" value="register_soc">
 <input type="text" name="ragsoc" id="" placeholder="Rag. Sociale*" required>
-<input type="text" name="piva" id="" placeholder="P. IVA*" maxlength="" required>
+<input type="text" name="piva" id="" placeholder="P. IVA*" maxlength="11" required>
 <input type="text" name="indirizzo" id="" placeholder="Indirizzo*" required>
 <input type="text" name="cap" id="" placeholder="CAP*" required>
 <input type="text" name="loc" id="" placeholder="Località*" required>
