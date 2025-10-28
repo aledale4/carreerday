@@ -1,0 +1,13 @@
+{
+    "lang": "it-it",
+    "name": "Career Day",
+    "start_url": "/php/index.php",
+    "orientation": "portrait",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "/static/logo-careerday.png",
+            "sizes": "512x512"
+        }
+    ]
+}

@@ -671,7 +671,7 @@
         $result = mysqli_query($conn, $q) or die();
         reload_user_data();
 
-        if (isset($_FILES["CV"]) && isset($_FILES["CV"]["name"])){
+        if (isset($_FILES["CV"]) && isset($_FILES["CV"]["name"]) && is_uploaded_file($_FILES["CV"]["tmp_name"])){
             if ($_FILES["CV"]["size"] > 5000000){
                 header("Location: index.php?pag=settings&error=3");
                 exit();
@@ -700,13 +700,13 @@
                 $dest = "../static/pfp/azienda-pic/" . $_SESSION["user"]["idAz"] . '.jpeg';
                 break;
         }
-        if(isset($_FILES["miofile"]) && isset($_FILES["miofile"]["name"])){
+        if(isset($_FILES["miofile"]) && isset($_FILES["miofile"]["name"]) && is_uploaded_file( $_FILES["miofile"]["tmp_name"])){
              if (mime_content_type($_FILES["miofile"]["tmp_name"]) != "image/jpeg"){
                 exit();
             }
             move_uploaded_file($_FILES["miofile"]["tmp_name"], $dest);
         }
-        header("Location: index.php?pag=settings");
+        // header("Location: index.php?pag=settings");
     }
 ?>
 
@@ -714,6 +714,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
+    <link rel="manifest" href="../manifest.json" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../static/logo-careerday.png" type="image/x-icon">
@@ -732,7 +733,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,arrow_back_ios_new,delete_forever,edit,expand_circle_down,location_on,logout,visibility,visibility_off" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,arrow_back_ios_new,calendar_today,delete_forever,edit,expand_circle_down,location_on,logout,visibility,visibility_off" />
     <script src="../js/occhiolino.js"></script>
     <title>Career Day</title>
 </head>

@@ -38,7 +38,7 @@
                 $eventRow = mysqli_fetch_assoc($event);
                 echo '<a href="index.php?pag=event&id=' . $eventRow["idCd"] . '">';
                 echo '<div class="element">';
-                echo '<img src="" alt="logo evento">';
+                echo '<img src="../static/pfp/default_evento.svg" alt="">';
                 echo '<p>' . $eventRow["nameCd"] . '</p>';
                 echo '</div></a>';
             }

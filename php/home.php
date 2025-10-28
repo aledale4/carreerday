@@ -6,9 +6,14 @@
     </div>
     <div class="right-side">
         <p>Benvenuto/a, <span><?php echo $_SESSION["user"]["nomeStu"]; ?></span></p>
-        <a href="index.php?pag=settings"><div class="user-pic"><?php include("defaultUser-pic.php") ?></div></a>
-        <div class="suggestion">Modifica il tuo profilo <img src="../static/arrow.svg" alt=""></div>
-        <a href="index.php?pag=logout" class="logout"><span class="material-symbols-outlined logout-icon">logout</span></a>
+        <div class="profile">
+            <a href="index.php?pag=settings">
+                <div class="user-pic"><?php include("defaultUser-pic.php") ?>
+                    <div class="suggestion">Modifica il tuo profilo <img src="../static/arrow.svg" alt=""></div>
+                </div>
+            </a>
+            <a href="index.php?pag=logout" class="logout"><span class="material-symbols-outlined logout-icon">logout</span></a>
+        </div>
     </div>
 </div>
 
@@ -19,11 +24,10 @@
             $q = "select * from career_day";
             $r = mysqli_query($conn, $q) or die("Errore nella query");
             while ($row = mysqli_fetch_assoc($r)) {
-                echo '<a href="index.php?pag=event&id='.$row["idCd"].'">';
-                echo '<div class="element">';
-                echo '<img src="" alt="logo evento">';
+                echo '<a class="element" href="index.php?pag=event&id='.$row["idCd"].'">';
+                echo '<img src="../static/pfp/default_evento.svg" alt="">';
                 echo '<p>'.$row["nameCd"].'</p>';
-                echo '</div></a>';
+                echo '</a>';
             }
         ?>
     </div>
@@ -46,7 +50,7 @@
                 $azienda = mysqli_fetch_assoc($azQ);
 
                 echo '<div class="element">';
-                echo '<img src="" alt="logo azienda">';
+                echo '<img src="../static/pfp/default_azienda.svg" alt="">';
                 echo '<p>'.$azienda["ragsoc"].'</p>';
                 echo '</div></a>';
             }

@@ -1,5 +1,7 @@
 <div class="container">
-    <img src="../static/logo.svg" alt="">
+    <div class="logo-container">
+        <img src="../static/logo.svg" alt="">
+    </div>
     <div class="centered">
         <p class="user-type-title">Che utente sei?</p>
         <div class="user-type-select">
@@ -14,7 +16,7 @@
                 </div>
             </a>
         </div>
-        <h1>Portale <?php switch($_SESSION["user-type"]){
+        <h1>Registrazione <?php switch($_SESSION["user-type"]){
             case 1:
                 echo "Admin";
                 break;
@@ -24,7 +26,7 @@
             case 3:
                 echo "Aziende";
                 break;
-        } ?> - Registrazione</h1>
+        } ?></h1>
             <form class="input-form" action="index.php" method="post">
                 <?php
                     if($_SESSION["user-type"]==2){

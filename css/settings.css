@@ -21,6 +21,7 @@
 }
 
 .card {
+    margin-top: 20px;
     width: 100%;
     display: flex;
     align-items: start;
@@ -62,7 +63,7 @@
 }
 
 .card .side .inputs textarea{
-    width: 200px;
+    width: 50%;
     height: 100px;
     border:none;
     border-radius: var(--buttons-border-radius);
@@ -75,6 +76,9 @@
     height: 200px;
     border-radius: 100px;
     background-color:var(--secondary-color);
+}
+.card .inputs span{
+    text-align: center;
 }
 
 .card .side.additional{
@@ -97,13 +101,13 @@
 }
 
 .card input {
-    width: 200px;
+    width: 50%;
     height: 30px;
-  border:none;
-  border-radius: var(--buttons-border-radius);
-  background-color: lightgrey;
-  height: 30px;
-  padding-inline: 10px;
+    border:none;
+    border-radius: var(--buttons-border-radius);
+    background-color: lightgrey;
+    height: 30px;
+    padding-inline: 10px;
 }
 .card .web-link{
     width: 400px;
@@ -150,7 +154,7 @@
     margin-bottom: 15px;
 }
 
-input[type="submit"]{
+.links input[type="submit"]{
     height: 45px;
     background-color: rgb(50, 184, 68);
     border: none;
@@ -160,5 +164,61 @@ input[type="submit"]{
     border-radius: 20px;
     font-size: 20px;
     padding: 10px;
-    margin-bottom: 30px;
+}
+
+.card input[type="password"]{
+    width: 100%;
+}
+
+.save-button{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: end;
+}
+
+.save-button a{
+    text-align: center;
+    width: fit-content;
+    text-decoration: underline;
+}
+
+@media screen and (max-width: 600px){
+    .card .side{
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 1200px){
+    .title-bar{
+        margin-top: 0;
+    }
+    .card{
+        flex-direction: column;
+    }
+    .card .side{
+        width: 100%;
+        justify-content: center;
+    }
+    .links{
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+        gap: 20px;
+    }
+    .links .save-button{
+        align-items: center;
+    }
+    .links .links-section{
+        width: 100%;
+    }
+    .links-section input {
+        width: 60%;
+    }
+}
+
+@media screen and (min-width: 1000px) and (max-width: 1200px){
+   .title-bar{
+        margin-top: 40px;
+   }
 }
