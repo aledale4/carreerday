@@ -5,9 +5,6 @@
             <img src="../static/logo.svg" alt="" srcset="" class="logo">
             <p>Portale Studenti</p>
         </div>
-        <div class="right-side">
-            <a href="index.php?pag=logout" class="logout"><span class="material-symbols-outlined logout-icon">logout</span></a>
-        </div>
     </div>
     <div class="title-bar">
         <a href="index.php"><span class="material-symbols-outlined">arrow_back_ios_new</span></a>
@@ -71,7 +68,10 @@
                     <input type="text" name="linkedin" value="<?php echo $_SESSION["user"]["urlLinkedinStu"];?>">
                 </div>
             </div>
-            <input class="" type="submit" value="Salva modifiche">
+            <div class="save-button">
+                <input class="" type="submit" value="Salva modifiche">
+                <a href="index.php?pag=logout">Log Out</a>
+            </div>
         </div>
     </form>
     <p class="error"><?php

@@ -12,6 +12,17 @@
     width: 60%;
 }
 
+.event .event-main{
+    width: calc(100% - 4rem - 40px);
+    padding-inline: calc(2rem + 20px);
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    gap: 10px;
+}
+
 .event .event-qr  {
     width: 40%;
 }
@@ -46,45 +57,43 @@
 }
 
 .event .event-title span{
-    font-size: 40px;
+    font-size: 2em;
 }
 .event .event-title p{
-    font-size: 40px;
+    font-size: 2rem;
     font-weight: 600;
 }
 
 .event .event-info{
-    margin-top: 20px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    /* gap: 20px; */
-    font-size: 20px;
+    gap: 20px;
+    font-size: 1.2rem
 }
 
 .event .event-info .event-date{
-    margin-left: 60px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
 }
-.event .event-info span{
-    margin-left: 20px;
-    font-size: 20px;
-}
-.event .event-info .event-location{
-    margin-left: 5px;
+.event .event-info .event-loc{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
     /* font-size: 20px; */
 }
+.event .event-info .event-location{
+    font-size: 1.2rem;
+}
 .event .event-desc{
-    margin-top:20px;
-    margin-left: 60px;
-    margin-right: 60px;
-    font-size: 20px;
+    font-size: 1.2rem
 }
 
 .event-participants{
-    margin-top:20px;
-    margin-left: 60px;
-    margin-right: 60px;
-    width: calc(100% - 120px);
+    width: 100%;
 }
 
 .event-participants p {
@@ -102,6 +111,10 @@
 .event-participants .participants .participant {
     margin-top: 20px;
     width: 30%;
+    max-width: 400px;
+    border: 1px solid var(--primary-color);
+    border-radius: var(--buttons-border-radius);
+    padding: 10px;
 }
 
 .event-participants .participants .participant p{
@@ -111,6 +124,28 @@
 .event-participants .participants .participant img{
     background-color: lightgray;
     width: 100%;
-    aspect-ratio: 2.5;
     border-radius: var(--buttons-border-radius);
+}
+
+@media screen and (max-width: 600px){
+    .event-participants .participants .participant{
+        width: calc(100% - 20px);
+    }
+}
+
+@media screen and (max-width: 1000px) and (min-width: 601px){
+    .event-participants .participants .participant{
+        width: 45%;
+    }
+}
+
+@media screen and (max-width: 1000px){
+    .event-participants .participants{
+        flex-direction: column;
+    }
+    .event .event-info{
+        flex-direction: column;
+        align-items: start;
+        gap: 5px;
+    }
 }

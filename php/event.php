@@ -60,30 +60,35 @@
                         echo $_SESSION["user"]["nomeRef"];
                         break;
                 } ?></span></p>
-            <a href="index.php?pag=settings">
-                <div class="user-pic"><?php include("defaultUser-pic.php")  ?></div>
-            </a>
-            <div class="suggestion">Modifica il tuo profilo <img src="../static/arrow.svg" alt=""></div>
-            <a href="index.php?pag=logout" class="logout"><span class="material-symbols-outlined logout-icon">logout</span></a>
+            <div class="profile">
+                <a href="index.php?pag=settings">
+                    <div class="user-pic"><?php include("defaultUser-pic.php") ?>
+                        <div class="suggestion">Modifica il tuo profilo <img src="../static/arrow.svg" alt=""></div>
+                    </div>
+                </a>
+                <a href="index.php?pag=logout" class="logout"><span class="material-symbols-outlined logout-icon">logout</span></a>
+            </div>
         </div>
     </div>
 
     <div class="event <?php if ($_SESSION["user-type"] == 3) {echo "company";} ?>">
+        <div class="event-title">
+            <a href="index.php"><span class="material-symbols-outlined">arrow_back_ios_new</span></a>
+            <p>Eventi / <?php echo $event["nameCd"] ?></p>
+            <?php if ($_SESSION["user-type"] == 1) {
+                echo '<a href="index.php?pag=edit_event&id=' . $id . '"><span class="material-symbols-outlined">edit</span></a>';
+            } ?>
+        </div>
         <div class="event-main">
-            <div class="event-title">
-                <a href="index.php"><span class="material-symbols-outlined">arrow_back_ios_new</span></a>
-                <p>Eventi / <?php echo $event["nameCd"] ?></p>
-                <?php if ($_SESSION["user-type"] == 1) {
-                    echo '<a href="index.php?pag=edit_event&id=' . $id . '"><span class="material-symbols-outlined">edit</span></a>';
-                } ?>
-            </div>
             <div class="event-info">
-                <p class="event-date"><?php echo date_format(date_create($event["dateCd"]), "d F Y"); ?> /
+                <div class="event-date"><span class="material-symbols-outlined">calendar_today</span><?php echo date_format(date_create($event["dateCd"]), "d F Y"); ?> /
                     <?php echo date_format(date_create(datetime: $event["fromCd"]), "H:i"); ?> -
                     <?php echo date_format(date_create(datetime: $event["toCd"]), "H:i"); ?>
-                </p>
-                <span class="material-symbols-outlined">location_on</span>
-                <p class="event-location"><?php echo $event["locationCd"] ?></p>
+                </div>
+                <div class="event-loc">
+                    <span class="material-symbols-outlined">location_on</span>
+                    <p class="event-location"><?php echo $event["locationCd"] ?></p>
+                </div>
             </div>
             <p class="event-desc"><?php echo $event["descCd"] ?></p>
             <div class="event-participants">
@@ -96,7 +101,7 @@
                         $azienda = mysqli_fetch_assoc($result);
                         echo '<div class="participant">';
                         echo '<p>' . $azienda['ragsoc'] . '</p>';
-                        echo '<img src="" alt="">';
+                        echo '<img src="../static/pfp/default_azienda.svg" alt="">';
                         echo '</div>';
                     }
                     ?>

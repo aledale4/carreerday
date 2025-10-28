@@ -66,7 +66,7 @@
                     $aziende[$azienda["idAz"]] = 1;
                     echo '<div class="participant">';
                     echo '<p>' . $azienda['ragsoc'] . '</p>';
-                    echo '<img src="" alt="">';
+                    echo '<img src="../static/pfp/default_azienda.svg" alt="">';
                     echo '<form action="index.php" method="post" class="delete-form">';
                     echo '<input type="hidden" name="pag" value="remove_adesione">';
                     echo '<input type="hidden" name="idAd" value="'.$adesione["idAd"].'">';
@@ -80,7 +80,7 @@
                     echo $aziende[$azienda["idAz"]];
                     echo '<div class="participant">';
                     echo '<p>' . $azienda['ragsoc'] . '</p>';
-                    echo '<img src="" alt="">';
+                    echo '<img src="../static/pfp/default_azienda.svg" alt="">';
                     echo '<form action="index.php" method="post" class="add-form">';
                     echo '<input type="hidden" name="pag" value="add_adesione">';
                     echo '<input type="hidden" name="idEvento" value="'.$id.'">';

@@ -29,7 +29,7 @@
             while ($row = mysqli_fetch_assoc($r)) {
                 echo '<a href="index.php?pag=event&id='.$row["idCd"].'">';
                 echo '<div class="element">';
-                echo '<img src="" alt="logo evento">';
+                echo '<img src="../static/pfp/default_evento.svg" alt="logo evento">';
                 echo '<p>'.$row["nameCd"].'</p>';
                 echo '</div></a>';
             }
