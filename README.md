@@ -47,24 +47,42 @@ inserire note specifiche riferite al singolo studente
 
 
 from PIL import Image
-import io
+import numpy as np
+import potrace
 
-# Percorso al file PNG che hai caricato
+# 1️⃣ Carica il logo
 input_path = "logo-careerday.png"
+img = Image.open(input_path).convert("L")  # Grayscale
 
-# Apri l'immagine e ottieni dimensioni
-img = Image.open(input_path)
-width, height = img.size
+# 2️⃣ Binarizza (0=nero, 1=bianco)
+threshold = 200  # regola se serve più o meno dettaglio
+bitmap = img.point(lambda x: 0 if x < threshold else 1, '1')
+bitmap_array = np.array(bitmap)
 
-# Crea un file SVG con un colore uniforme (qui solo come esempio)
-svg_content = f"""<svg width="{width}" height="{height}" xmlns="http://www.w3.org/2000/svg">
-  <rect width="{width}" height="{height}" fill="#FF6600" />
-</svg>
-"""
+# 3️⃣ Crea la bitmap per potrace
+bmp = potrace.Bitmap(bitmap_array)
+path = bmp.trace()
 
-# Salva il file SVG
-with open("logo-careerday_flat_orange.svg", "w") as f:
-    f.write(svg_content)
+# 4️⃣ Crea il file SVG con un colore uniforme (arancione #FF6600)
+with open("logo-careerday_vector.svg", "w") as f:
+    f.write('<?xml version="1.0" standalone="no"?>\n')
+    f.write('<svg xmlns="http://www.w3.org/2000/svg" ')
+    f.write(f'width="{img.width}" height="{img.height}" viewBox="0 0 {img.width} {img.height}">\n')
+    f.write('<path d="')
+    
+    # Scrivi tutti i tracciati
+    for curve in path:
+        f.write(f'M {curve.start_point[0]} {curve.start_point[1]} ')
+        for segment in curve:
+            if segment.is_corner:
+                c = segment.c
+                f.write(f'L {c[1][0]} {c[1][1]} ')
+            else:
+                c = segment.c
+                f.write(f'C {c[0][0]} {c[0][1]} {c[1][0]} {c[1][1]} {segment.end_point[0]} {segment.end_point[1]} ')
+        f.write('Z ')
+    
+    f.write('" fill="#FF6600" stroke="none"/>\n')
+    f.write('</svg>')
 
-print("Creato: logo-careerday_flat_orange.svg")
-
+print("✅ File vettoriale creato: logo-careerday_vector.svg")
