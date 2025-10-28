@@ -1,15 +1,5 @@
-body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}   
 
-.container {
+.container_send_mail {
     background: white;
     padding: 2rem;
     border-radius: 10px;
@@ -18,49 +8,44 @@ body {
     text-align: center;
 }
 
-h1 {
+.container_send_mail h1 {
     color: black;
     margin-bottom: 2rem;
     font-size: 2rem;
     font-weight: 600;
 }
 
-.form-container {
+.container_send_mail {
     padding: 1px;
 }
 
-form {
+.form_send_mail {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
 
-label {
-    color: #34495e;
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-}
 
-input[type="email"] {
-    padding: 12px;
+.container_form_send_mail input[type="email"] {
+    padding: 7px;
     border: 2px solid white;
     border-radius: 10px;
     font-size: 1rem;
     transition: border-color 0.3s ease;
     background-color: lightgrey;
+    font-size: revert-layer;
 }
 
-input[type="email"]:focus {
+.container_form_send_mail input[type="email"]:focus {
     outline: none;
     border-color: black;
 }
 
-input[type="submit"] {
+.container_form_send_mail input[type="submit"] {
     background-color: orange;
     color: black;
-    padding: 12px;
-    border: 2px solid white;
+    padding:7px;
+    border: none;
     border-radius: 10px;
     font-size: 1rem;
     cursor: pointer;

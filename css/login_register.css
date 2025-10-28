@@ -110,6 +110,10 @@
   border-bottom-right-radius: var(--buttons-border-radius);
 }
 
+.a_pwd_dimenticata{
+  text-align: center;
+}
+
 .password-container{
     position: relative;
     display: flex;
