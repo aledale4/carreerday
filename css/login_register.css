@@ -36,6 +36,7 @@
   border-radius: var(--buttons-border-radius);
   width: 100%;
   padding-inline: 0;
+  height: fit-content;
 }
 
 .user-type-title{
@@ -111,4 +112,22 @@
 
 .a_pwd_dimenticata{
   text-align: center;
+}
+
+.password-container{
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-container .occhio{
+    position: absolute;
+    right: 9px;
+    top: 8px;
+    cursor: pointer;
+}
+
+.password-container .occhio span{
+    font-size: 18px;
+    color: var(--secondary-color);
 }

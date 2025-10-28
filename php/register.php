@@ -31,8 +31,18 @@
                         include("register-user-form.php");
                     }else include("register-company-form.php"); 
                 ?>
-                <input type="password" name="password" id="" placeholder="Password" required>
-                <input type="password" name="password2" id="" placeholder="Conferma Password" required>
+                <div class="password-container">
+                    <input type="password" name="password" id="password" placeholder="Password*" required>
+                    <div class="occhio">
+                        <span class="material-symbols-outlined" id="tasto">visibility_off</span>
+                    </div>
+                </div>
+                <div class="password-container">
+                    <input type="password" name="password2" id="password" placeholder="Conferma Password*" required>
+                    <div class="occhio">
+                        <span class="material-symbols-outlined" id="tasto">visibility_off</span>
+                    </div>
+                </div>
                 <input type="submit" value="Registrati">
             </form>
             <p class="change-action-link">Oppure <a href="index.php?pag=login">Accedi</a></p>

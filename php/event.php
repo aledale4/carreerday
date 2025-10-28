@@ -35,22 +35,36 @@
                     break;
             } ?></p>
         </div>
+        <?php if ($_SESSION["user-type"] == 3) {
+            echo `<div class="middle-nav">
+                        <div class="nav-page selected">
+                            <a href="index.php"><p>Eventi</p></a>
+                        </div>
+                        <div class="nav-page">
+                            <a href="index.php?pag=colloqui"><p>Colloqui</p></a>
+                        </div>
+                        <div class="nav-page">
+                            <a href="index.php?pag=posizioni"><p>Posizioni</p></a>
+                        </div>
+                    </div>`;}?>
         <div class="right-side">
-            <p>Benvenuto, <span><?php
-            switch ($_SESSION["user-type"]) {
-                case 1:
-                    echo $_SESSION["user"]["nomeUt"];
-                    break;
-                case 2:
-                    echo $_SESSION["user"]["nomeStu"];
-                    break;
-                case 3:
-                    echo $_SESSION["user"]["nomeRef"];
-                    break;
-            } ?></span></p>
+            <p>Benvenuto/a, <span><?php
+                switch ($_SESSION["user-type"]) {
+                    case 1:
+                        echo $_SESSION["user"]["nomeUt"];
+                        break;
+                    case 2:
+                        echo $_SESSION["user"]["nomeStu"];
+                        break;
+                    case 3:
+                        echo $_SESSION["user"]["nomeRef"];
+                        break;
+                } ?></span></p>
             <a href="index.php?pag=settings">
-                <div class="user-pic"></div>
+                <div class="user-pic"><?php include("defaultUser-pic.php")  ?></div>
             </a>
+            <div class="suggestion">Modifica il tuo profilo <img src="../static/arrow.svg" alt=""></div>
+            <a href="index.php?pag=logout" class="logout"><span class="material-symbols-outlined logout-icon">logout</span></a>
         </div>
     </div>
 

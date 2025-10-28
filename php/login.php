@@ -50,7 +50,12 @@
                     echo '<input type="email" name="email" id="" placeholder="Email" required>';
                 }
                 ?>
-            <input type="password" name="password" id="" placeholder="Password" required>
+            <div class="password-container">
+                <input type="password" name="password" id="password" placeholder="Password" required>
+                <div class="occhio">
+                    <span class="material-symbols-outlined" id="tasto">visibility_off</span>
+                </div>
+            </div>
             <input type="submit" value="Accedi">
             <a href="index.php?pag=reset_pwd" class="a_pwd_dimenticata">Password dimenticata?</a>
         </form>

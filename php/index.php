@@ -2,15 +2,15 @@
     //per collegare il database e avviare la sessione
     session_start();
     $env = parse_ini_file("../.env");
-    //$conn = mysqli_connect($env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"]);
+    // $conn = mysqli_connect($env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"]);
     $ssl_ca = '../ca.pem';
     $conn = mysqli_init();
     mysqli_ssl_set($conn, NULL, NULL, $ssl_ca, "", NULL);
-
     if (!mysqli_real_connect($conn, $env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"], NULL, MYSQLI_CLIENT_SSL)) {
         die("". mysqli_connect_error());
     }
-
+    include 'phpqrcode/qrlib.php';
+    // regenerate_qrcodes();
     //funzione di logout
     if(isset($_GET["pag"]) && $_GET["pag"]=="logout" && isset($_SESSION["user"])){
         session_unset();
@@ -56,7 +56,7 @@
                 exit();
             }
         } 
-        $username=mysqli_real_escape_string($conn, $_POST["username"]);
+        $username=trim(mysqli_real_escape_string($conn, $_POST["username"]));
         $q ="select * from studenti where usernameStu='".$username."'";
         $ris = mysqli_query($conn, $q)or die("errore durante la verifica dell'username");
         $num = mysqli_num_rows($ris);
@@ -66,7 +66,7 @@
             exit();
         }
         //controllo email
-        $email=mysqli_real_escape_string($conn, $_POST["email"]);
+        $email=trim(mysqli_real_escape_string($conn, $_POST["email"]));
         $q ="select * from studenti where emailStu='".$email."'";
         $ris = mysqli_query($conn, $q)or die("errore durante la verifica della mail");
         $num = mysqli_num_rows($ris);
@@ -81,9 +81,9 @@
             exit();
         }
         //username e email disponibili
-        $nome= mysqli_real_escape_string($conn, $_POST["nome"]);
-        $cognome= mysqli_real_escape_string($conn, $_POST["cognome"]);
-        $password= password_hash($_POST["password"],PASSWORD_DEFAULT);
+        $nome= trim(mysqli_real_escape_string($conn, $_POST["nome"]));
+        $cognome= trim(mysqli_real_escape_string($conn, $_POST["cognome"]));
+        $password= password_hash(trim($_POST["password"]),PASSWORD_DEFAULT);
         $data= date("Y-m-d");
         $q ="insert into studenti (nomeStu,cognomeStu,usernameStu,passwordStu,emailStu,lastPwdStu,lastLoginStu) values('".$nome."','".$cognome."','".$username."','".$password."','".$email."','".$data."','".$data."')";
         $ris= mysqli_query($conn, $q)or die("errore durante la registrazione | ".$q." | ".mysqli_error($conn));
@@ -96,13 +96,13 @@
     //funzione di login studente
     if(isset($_POST["pag"]) && $_POST["pag"]=="login" && !isset($_SESSION["user"])){
         if (!isset($_POST["email"]) or !isset($_POST["password"])) header("Location: index.php?pag=login&error=2");
-        $email=mysqli_real_escape_string($conn, $_POST["email"]);
+        $email=trim(mysqli_real_escape_string($conn, $_POST["email"]));
         $q= "select * from studenti where emailStu='".$email."'";
         $ris= mysqli_query($conn, $q)or die("errore durante la verifica dell'email");
         $num= mysqli_num_rows($ris);
         if($num==1){
             $riga = mysqli_fetch_assoc($ris);
-            if(password_verify($_POST["password"],$riga["passwordStu"])){
+            if(password_verify(trim($_POST["password"]),$riga["passwordStu"])){
                 //login effettuato con successo
                 $_SESSION["user"]=$riga;
                 $_SESSION["user-type"] = 2;
@@ -127,13 +127,13 @@
     //funzione di login aziende
     if(isset($_POST["pag"]) && $_POST["pag"]=="login_soc" && !isset($_SESSION["user"])){
         if (!isset($_POST["email"]) or !isset($_POST["password"])) header("Location: index.php?pag=login&error=2");
-        $email=mysqli_real_escape_string($conn, $_POST["email"]);
+        $email=trim(mysqli_real_escape_string($conn, $_POST["email"]));
         $q= "select * from aziende where email='".$email."'";
         $ris= mysqli_query($conn, $q)or die("errore durante la verifica dell'email");
         $num= mysqli_num_rows($ris);
         if($num==1){
             $riga = mysqli_fetch_assoc($ris);
-            if(password_verify($_POST["password"],$riga["passwordRef"])){
+            if(password_verify(trim($_POST["password"]),$riga["passwordRef"])){
                 //login effettuato con successo
                 $_SESSION["user"]=$riga;
                 $_SESSION["user-type"] = 3;
@@ -158,13 +158,13 @@
     //funzione di login admin
     if(isset($_POST["pag"]) && $_POST["pag"]=="login_admin" && !isset($_SESSION["user"])){
         if (!isset($_POST["username"]) or !isset($_POST["password"])) header("Location: index.php?pag=login&error=2");
-        $username=mysqli_real_escape_string($conn, $_POST["username"]);
+        $username=trim(mysqli_real_escape_string($conn, $_POST["username"]));
         $q= "select * from admins where usernameUt='".$username."'";
         $ris= mysqli_query($conn, $q)or die("errore durante la verifica dell'email");
         $num= mysqli_num_rows($ris);
         if($num==1){
             $riga = mysqli_fetch_assoc($ris);
-            if(password_verify($_POST["password"],$riga["passwordUt"])){
+            if(password_verify(trim($_POST["password"]),$riga["passwordUt"])){
                 //login effettuato con successo
                 $_SESSION["user"]=$riga;
                 $_SESSION["user-type"] = 1;
@@ -196,8 +196,8 @@
                 exit();
             }
         }
-        $username=mysqli_real_escape_string($conn, $_POST["username"]);
-        $piva=mysqli_real_escape_string($conn, $_POST["piva"]);
+        $username=trim(mysqli_real_escape_string($conn, $_POST["username"]));
+        $piva=trim(mysqli_real_escape_string($conn, $_POST["piva"]));
 
         $q ="select * from aziende where usernameRef='".$username."'";
         $ris = mysqli_query($conn, $q)or die("errore durante la verifica dell'username");
@@ -216,7 +216,7 @@
             exit();
         }
         //controllo email
-        $email=mysqli_real_escape_string($conn, $_POST["email"]);
+        $email=trim(mysqli_real_escape_string($conn, $_POST["email"]));
         $q ="select * from aziende where email='".$email."'";
         $ris = mysqli_query($conn, $q)or die("errore durante la verifica della mail");
         $num = mysqli_num_rows($ris);
@@ -231,14 +231,14 @@
             exit();
         }
         //username e email disponibili
-        $ragsoc= mysqli_real_escape_string($conn, $_POST["ragsoc"]);
-        $indirizzo= mysqli_real_escape_string($conn, $_POST["indirizzo"]);
-        $cap= mysqli_real_escape_string($conn, $_POST["cap"]);
-        $loc= mysqli_real_escape_string($conn, $_POST["loc"]);
-        $prov= mysqli_real_escape_string($conn, $_POST["prov"]);
-        $nome= mysqli_real_escape_string($conn, $_POST["nomeRef"]);
-        $cognome= mysqli_real_escape_string($conn, $_POST["cognomeRef"]);
-        $password= password_hash($_POST["password"],PASSWORD_DEFAULT);
+        $ragsoc= trim(mysqli_real_escape_string($conn, $_POST["ragsoc"]));
+        $indirizzo= trim(mysqli_real_escape_string($conn, $_POST["indirizzo"]));
+        $cap= trim(mysqli_real_escape_string($conn, $_POST["cap"]));
+        $loc= trim(mysqli_real_escape_string($conn, $_POST["loc"]));
+        $prov= trim(mysqli_real_escape_string($conn, $_POST["prov"]));
+        $nome=trim( mysqli_real_escape_string($conn, $_POST["nomeRef"]));
+        $cognome= trim(mysqli_real_escape_string($conn, $_POST["cognomeRef"]));
+        $password= password_hash(trim($_POST["password"]),PASSWORD_DEFAULT);
         $data= date("Y-m-d");
         $q ="insert into aziende (ragsoc,ind,cap,loc,prov,piva,email,nomeRef,cognomeRef,usernameRef,passwordRef,lastPwdRef,lastLoginRef) values('".$ragsoc."','".$indirizzo."','".$cap."','".$loc."','".$prov."','".$piva."','".$email."','".$nome."','".$cognome."','".$username."','".$password."','".$data."','".$data."')";
         $ris= mysqli_query($conn, $q)or die("errore durante la registrazione | ".$q." | ".mysqli_error($conn));
@@ -249,76 +249,98 @@
     }
     // funzione di reset password
     if(isset($_POST["pag"]) && $_POST["pag"]=="request_reset_pwd" && !isset($_SESSION["user"])){
-        if($_SESSION["user_type"== 2]){
-            $q= "select * from studenti where emails='".$_POST["email"]."'";
+        $q="";
+        if($_SESSION["user-type"]== 2){
+            $q= "select * from studenti where emailstu='".$_POST["email"]."'";
         }
-        if($_SESSION["user_type"== 3]){
-            $q= "select * from aziende where email='".$_POST["email"]."'";
+        if($_SESSION["user-type"]== 3){
+            $q= "select * from aziende where emailref='".$_POST["email"]."'";
         }
-        $ris= mysqli_query($conn, $q)or die("utente inesistente");
+        $ris= mysqli_query($conn, $q)or die("queri don't work");
         $num = mysqli_num_rows($ris);
         if($num == 1){
             $riga = mysqli_fetch_assoc($ris);
-            $token_random = random_bytes(254);
-            $pwd_random = random_bytes(32);
-            $token= bin2hex($token_random);
-            $pwd_pro= bin2hex($pwd_random);
-            if($_SESSION["user_type"== 2]){
-                $q="update studenti set passwords = '".password_hash($pwd_random,PASSWORD_DEFAULT). "' where idtu='" . $riga["idstu"]. "'";
-                $q2="insert into token (ruser,token,user_type,created) values('".$riga["idstu"]."' , '".$token."' , '" .$_SESSION["user_type"]."','" .date('Y-m-d')."')";
+            $token_random = random_ascii_string(32);
+            $pwd_random = random_ascii_string(32);
+            if($_SESSION["user-type"] == 2){
+                $q="update studenti set passwordstu = '".password_hash($pwd_random,PASSWORD_DEFAULT). "' where idStu='" . $riga["idStu"]. "'";
+                $q2="insert into token (ruser,token,user_type,created) values('" . $riga["idStu"]. "' , '".$token_random."' , '" .$_SESSION["user-type"]."','" .date('Y-m-d')."')";
             }
-            if($_SESSION["user_type"== 3]){
-                $q="update aziende set passwordref = '".password_hash($pwd_random,PASSWORD_DEFAULT). "' where idaz='" . $riga["idaz"]. "'";
-                $q2="insert into token (ruser,token,user_type,created) values('".$riga["idaz"]."' , '".$token."' , '" .$_SESSION["user_type"]."','" .date('Y-m-d')."')";
+            if($_SESSION["user-type"] == 3){
+                $q="update aziende set passwordref = '".password_hash($pwd_random,PASSWORD_DEFAULT). "' where idAz='" . $riga["idAz"]. "'";
+                $q2="insert into token (ruser,token,user_type,created) values('".$riga["idAz"]."' , '".$token_random."' , '" .$_SESSION["user-type"]."','" .date('Y-m-d')."')";
             }
-            mysqli_query($conn,$q); // da rivdere pk mi sa che ci va global
-            mysqli_query($conn,$q2);
-            $mitt="mittente.it"; //mittente
+            echo $pwd_random;
+            mysqli_query($conn,$q) or die("errore cambio password");
+            mysqli_query($conn,$q2) or die("errore cambio token       " . mysqli_error($conn));
+            
+            $mitt="morganello76@gmail.com"; //mittente
             $ogg="Reset password Carreday";
-            $mess="Clicca su questo link per resettare a tua password : \nreset_passoword.php?token=" .$token . "\n Inserisci questa password provvisoria nel campo: Password provvisoria. \n" . $pwd_pro ; // link da inserire
+            $mess="Clicca su questo link per resettare a tua password : \nreset_pwd.php?token=" .$token . "\n Inserisci questa password provvisoria nel campo: Password provvisoria. \n" . $pwd_pro ; // link da inserire
             $header="From: ".$mitt."\r\nReply-To:".$mitt."\r\nContent-type: text/html; charset=utf-8\r\n";
             if(mail($_POST["email"], $ogg, $mess, $header)){ // destinatario , oggetto , messaggio , invio
+                exit("tutto apposto");
                 header("Location:email_inviata.php");
-                exit();
+                
             }else{
                 exit("email non inviata: parametri sbagliati");
                 //email non inviata
             }
         }else{
-            exit("email non inviata: ci sono piu utenti con quell'email");
+            exit("email non inviata: problemi con il numero di utenti");
             // ce piu di un utente
         } 
 
     }
-    if(isset($_POST["pag"]) && $_POST["pag"]=="reset_pwd" && !isset($_SESSION["user"])){
-        $q= "select * from token where token='".$_GET["token"]."'";
+    if(isset($_POST["pag"]) && $_POST["pag"] == "reset_pwd" && !isset($_GET["pag"]) &&  !isset($_SESSION["user"])){
+        
+        $q= "select * from token where token='".$_POST["token"]."'";
+
         $ris= mysqli_query($conn, $q)or die("token inesistente");
         $num = mysqli_num_rows($ris);
+
         $riga=mysqli_fetch_assoc($ris);
+
         if($num == 1){
             if(days_counter($riga["created"]) <=2){ //per vedere se sono passati piu di 2 giorni
-                if($_SESSION["user_type"] == 2){ // per vedere che tipo di utente è
-                    $qut="select * from studenti where idstu='".$riga["ruser"]."'";
-                    $tipo_pwd="passwords";
+                $tipopwd="";
+                if($_SESSION["user-type"] == 2){ // per vedere che tipo di utente è
+                    $q="select * from studenti where idStu = '".$riga["rUser"]."'";
+                    $tipo_pwd="passwordStu";
                 }
-                if($_SESSION["user_type"] == 3){
-                    $qut="select * from aziende where idaz='".$riga["ruser"]."'";
-                    $tipo_pwd="passwordref";
+                if($_SESSION["user-type"] == 3){
+                    $q="select * from aziende where idAz='".$riga["rUser"]."'";
+                    $tipo_pwd="passwordRef";
                 }
-                $risut = mysqli_query($conn, $qut)or die("utente inesistente");
+                $risut = mysqli_query($conn, $q)or die("utente inesistente ");
                 $rigaut=mysqli_fetch_assoc($risut);
-                if(password_verify($_POST["password_temp"],$rigaut["$tipo_pwd"])){ // per vedere se le password temporanee coincidono
+                echo $_SESSION["user-type" ] . " \ ";
+                echo $riga["rUser"] .  " \ ";
+                echo $q . " \ ";
+                echo $rigaut . " \ ";
+                $i = password_verify($_POST["password_temp"],$rigaut[$tipo_pwd]);
+                echo $_POST["password_temp"] . " \ ";
+                echo $rigaut[$tipo_pwd] . " \ ";
+                //echo $i ;
+                if(password_verify($_POST["password_temp"],$rigaut[$tipo_pwd])){ // per vedere se le password temporanee coincidono
+                    echo "pwd temp giuste";
                     if($_POST["password1"]==$_POST["password2"]){ // per vedere se le password nuove coincidono
-                        if($_SESSION["user_type"] == 2){
-                            $qpass="update studenti set passwords='" .password_hash($_POST["password1"],PASSWORD_DEFAULT). "'  , lastpwds='".date('Y-m-d')."' where idstu='".$riga["ruser"]."'";
+                        echo "entra pwd uguali \ ";
+                        if($_SESSION["user-type"] == 2){
+                            $qpass="update studenti set passwordstu='" .password_hash($_POST["password1"],PASSWORD_DEFAULT). "'  , lastpwdstu='".date('Y-m-d')."' where idstu='".$riga["rUser"]."'";
+                            echo"entra usertype 2 \ ";
                         }
-                        if($_SESSION["user_type"] == 3){
-                            $qpass="update aziende set passwordref='" .password_hash($_POST["password1"],PASSWORD_DEFAULT). "' , lastpwdref='".date('Y-m-d')."' where idaz='".$riga["ruser"]."'";
+                        if($_SESSION["user-type"] == 3){
+                            $qpass="update aziende set passwordref='" .password_hash($_POST["password1"],PASSWORD_DEFAULT). "' , lastpwdref='".date('Y-m-d')."' where idaz='".$riga["rUser"]."'";
                         }
+                        echo $qpass . " \ ";
                         $qtoken="delete from token where token='" .$riga["token"]. "'";
+                        echo $qtoken ." \ ";
+                        
                         mysqli_query($conn, $qpass)or die("errore updating");
                         mysqli_query($conn, $qtoken)or die("errore delete token");
-                        header("Location:index.php?pag=login");
+                        echo $qpass;
+                        //header("Location:index.php?pag=login");
                         exit();
                     }else{
                         //password nuove diverse
@@ -329,15 +351,23 @@
                     //password temporanee diverse
                 }
             }else{
+                exit("sono passati troppi giorni sulla richiesta");
                 $qtoken="delete from token where token='" .$riga["token"]. "'";
                 mysqli_query($conn, $qtoken)or die("errore delete token");
-                exit("sono passati troppi giorni sulla richiesta");
                //"sono passati troppi giorni"
             }
-        }else{
-            exit("ci sono piu utenti con questo token");
+        }else if($num==0){
+            exit("token non trovato");
             //"piu utenti"
         }
+        else{
+            exit("numero token anomalo");
+        }
+    }
+
+    // crea un stringa casuale
+    function random_ascii_string($length) {
+                return substr(bin2hex(random_bytes($length)), 0, $length);
     }
 
     //funzione per l'aggiornamento della password
@@ -402,18 +432,19 @@
         $num= mysqli_num_rows($ris);
         
         if($num==1){
+            try{
         	$today= new DateTime(date('Y-m-d'));
             $date=mysqli_fetch_assoc($ris);
             $date2= new DateTime($date["data_formattata"]);
             $intervallo = $date2->diff($today);
             // echo $intervallo->format("%a giorni");
             if($intervallo > 183){
-
                 return true;
             }
             else{
                 return false;
             }
+            }catch(Exception $e){}
         }
         else if($num>1){
             exit("errore duante la verifica della password più di un utente trovato");
@@ -430,27 +461,51 @@
     function posizioni_libere($idaz){
         $pos = [];
         global $conn;
-        $q="select * from posizioni where raz2='" .$idaz. "'";
+        $q="select * from posizioni where rAz='" .$idaz. "'";
         $ris = mysqli_query($conn,$q);
-        $num = mysqli_num_rows($ris);
-        $riga = mysqli_festch_assoc($ris);
-        if($num != 0){
-            for($i=0;$i<$num;$i++){
-                $pos[] = $riga["posizaperte"];
-            }
-        } else if ($num == 0){
-            exit("non ci sono posizioni libere");
+        while($row = mysqli_fetch_assoc($ris)){
+            $pos[] = $row;
         }
        return $pos;
     }
 
     //funzione che conta i giorni da una data fornita in input con formato "Y-m-d", restituisce il numero di giorni
     function days_counter($value){
-        $today= new DateTime(date("%Y-%m-%d"));
+        $today= new DateTime(date("Y-m-d"));
         $date= new DateTime($value);
         $days= $today->diff($date);
         $days->format("%a giorni");
         return $days;
+    }
+
+    function regenerate_qrcodes(){
+        $q = "select * from adesioni";
+        global $conn;
+        global $env;
+        $ris = mysqli_query($conn,$q);
+        while ($adesione = mysqli_fetch_assoc($ris)){
+        $id_qr = $adesione["idAd"];
+        QRcode::png($env['BASE_URL']."/php/index.php?pag=adesione&id=".$id_qr, '../static/qrcodes/'.$id_qr.'.png', 'L', 16, 2);
+        }
+    }
+
+    function reload_user_data(){
+        global $conn;
+        $q  = "";
+        switch ($_SESSION['user-type']){
+            case 1:
+                $q = "select * from admin where idUt = ".$_SESSION["user"]["idUt"];
+                break;
+            case 2:
+                $q = "select * from studenti where idStu = ".$_SESSION["user"]["idStu"];
+                break;
+            case 3:
+                $q = "select * from aziende where idAz = ".$_SESSION["user"]["idAz"];
+                break;
+        }
+        $res = mysqli_query($conn,$q) or die();
+        $user_data = mysqli_fetch_assoc($res);
+        $_SESSION["user"] = $user_data;
     }
 
     if(isset($_POST["pag"]) && $_POST["pag"]=="new_event" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 1){
@@ -461,18 +516,17 @@
                 exit();
             }
         }
-        $nome = mysqli_real_escape_string($conn, $_POST["nome"]);
-        $desc = mysqli_real_escape_string($conn, $_POST["descrizione"]);
-        $date = mysqli_real_escape_string($conn, $_POST["date"]);
-        $start_time = mysqli_real_escape_string($conn, $_POST["start_time"]);
-        $end_time = mysqli_real_escape_string($conn, $_POST["end_time"]);
-        $pos = mysqli_real_escape_string($conn, $_POST["pos"]);
+        $nome = trim(mysqli_real_escape_string($conn, $_POST["nome"]));
+        $desc = trim(mysqli_real_escape_string($conn, $_POST["descrizione"]));
+        $date = trim(mysqli_real_escape_string($conn, $_POST["date"]));
+        $start_time = trim(mysqli_real_escape_string($conn, $_POST["start_time"]));
+        $end_time = trim(mysqli_real_escape_string($conn, $_POST["end_time"]));
+        $pos = trim(mysqli_real_escape_string($conn, $_POST["pos"]));
         $q ="insert into career_day (nameCd,dateCd,fromCd,toCd,locationCd,descCd) values('".$nome."','".$date."','".$start_time."','".$end_time."','".$pos."','".$desc."')";
         $result = mysqli_query($conn, $q) or die("errore nella query");
         $id = mysqli_insert_id($conn);
         $q = "select * from aziende";
         $r = mysqli_query($conn, $q);
-        include 'phpqrcode/qrlib.php';
         while ($row = mysqli_fetch_assoc($r)) {
            if (isset($_POST[$row["idAz"]]) && $_POST[$row["idAz"]] == "on"){
                 $adQ = "insert into adesioni (rAz,rCd) values ('".$row["idAz"]."','".$id."')";
@@ -488,28 +542,181 @@
         $required = ["nome","descrizione","date","start_time","end_time","pos"];
         foreach($required as $r){
             if(!isset($_POST[$r])) {
-                header("Location: index.php?pag=new_event&error=1");
+                header("Location: index.php?pag=edit_event&error=1");
                 exit();
             }
         }
         $id = filter_input(INPUT_POST,"id", FILTER_SANITIZE_NUMBER_INT);
-        $nome = mysqli_real_escape_string($conn, $_POST["nome"]);
-        $desc = mysqli_real_escape_string($conn, $_POST["descrizione"]);
-        $date = mysqli_real_escape_string($conn, $_POST["date"]);
-        $start_time = mysqli_real_escape_string($conn, $_POST["start_time"]);
-        $end_time = mysqli_real_escape_string($conn, $_POST["end_time"]);
-        $pos = mysqli_real_escape_string($conn, $_POST["pos"]);
+        $nome = trim(mysqli_real_escape_string($conn, $_POST["nome"]));
+        $desc = trim(mysqli_real_escape_string($conn, $_POST["descrizione"]));
+        $date = trim(mysqli_real_escape_string($conn, $_POST["date"]));
+        $start_time = trim(mysqli_real_escape_string($conn, $_POST["start_time"]));
+        $end_time = trim(mysqli_real_escape_string($conn, $_POST["end_time"]));
+        $pos = trim(mysqli_real_escape_string($conn, $_POST["pos"]));
         $q ="update career_day set nameCd='".$nome."',dateCd='".$date."',fromCd='".$start_time."',toCd='".$end_time."',locationCd='".$pos."',descCd='".$desc."' where idCd=".$id;
         $result = mysqli_query($conn, $q) or die("errore nella query");
         header("Location: index.php?pag=event&id=".$id);
     }
+    if(isset($_POST["pag"]) && $_POST["pag"]=="prenotazione" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 2){
+        if(!isset($_POST["id"])) {
+            header("Location: index.php?pag=adesione&error=1");
+            exit();
+        }
+        $id = filter_input(INPUT_POST,"id", FILTER_SANITIZE_NUMBER_INT);
+        $date = new DateTime("now", new DateTimeZone('Europe/Rome') );
+        $q ="insert into prenotazioni (rAd,rStu,datapren) values('".$id."','".$_SESSION["user"]["idStu"]."','".($date->format('Y-m-d H:i:s'))."')";
+        $result = mysqli_query($conn, $q) or die("errore nella query");
+        header("Location: index.php?pag=adesione&id=".$id);
+    }
+    if(isset($_POST["pag"]) && $_POST["pag"]=="update_prenotazione" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 3){
+        if(!isset($_POST["id"])) {
+            header("Location: index.php?pag=colloqui&error=1");
+            exit();
+        }
+        $id = filter_input(INPUT_POST,"id", FILTER_SANITIZE_NUMBER_INT);
+        $completed = trim(mysqli_real_escape_string($conn, $_POST["completed"]));
+        $q = "select * from prenotazioni where idPren = ".$id;
+        $prenotazioneQ = mysqli_query($conn, $q) or die();
+        if (mysqli_num_rows($prenotazioneQ) == 0) exit();
+        $prenotazione = mysqli_fetch_assoc($prenotazioneQ);
+        $qIdAd = "select * from adesioni where idAd = ".$prenotazione["rAd"];
+        $result = mysqli_query($conn, $qIdAd) or die();
+        if (mysqli_num_rows($result) == 0) exit();
+        $adesione = mysqli_fetch_assoc($result);
+
+        if ($adesione["rAz"] != $_SESSION["user"]["idAz"]) die();
+        if ($completed && $completed == "on"){
+            $q ="update prenotazioni set completed = 1 where idPren = ".$id;
+        }else {
+            $q ="update prenotazioni set completed = 0 where idPren = ".$id;
+        }
+        $result = mysqli_query($conn, $q) or die("errore nella query");
+        header("Location: index.php?pag=colloqui");
+    }
+    if(isset($_POST["pag"]) && $_POST["pag"]=="remove_adesione" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 1){
+        $id = filter_input(INPUT_POST,"idAd", FILTER_SANITIZE_NUMBER_INT);
+        $idEvento = filter_input(INPUT_POST,"idEvento", FILTER_SANITIZE_NUMBER_INT);
+        if(!$id || !$idEvento) exit();
+        $q = "delete from adesioni where idAd = ".$id;
+        $result = mysqli_query($conn, $q) or die();
+        $q = "delete from prenotazioni where rAd = ".$id;
+        $result = mysqli_query($conn, $q) or die();
+        header("Location: index.php?pag=edit_event&id=".$idEvento);
+    }
+    if(isset($_POST["pag"]) && $_POST["pag"]=="add_adesione" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 1){
+        $id = filter_input(INPUT_POST,"idAz", FILTER_SANITIZE_NUMBER_INT);
+        $idEvento = filter_input(INPUT_POST,"idEvento", FILTER_SANITIZE_NUMBER_INT);
+        if(!$id || !$idEvento) exit();
+        $q = "insert into adesioni (rAz,rCd) values ('".$id."','".$idEvento."')";
+        $result = mysqli_query($conn, $q) or die();
+        $id_qr = mysqli_insert_id($conn);
+        QRcode::png($env['BASE_URL']."/php/index.php?pag=adesione&id=".$id_qr, '../static/qrcodes/'.$id_qr.'.png', 'L', 16, 2);
+        header("Location: index.php?pag=edit_event&id=".$idEvento);
+    }
+    if(isset($_POST["pag"]) && $_POST["pag"]=="delete_position" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 3){
+        $id = filter_input(INPUT_POST,"idPos", FILTER_SANITIZE_NUMBER_INT);
+        if(!$id) exit();
+        $q = "delete from posizioni where idPos = ".$id;
+        $result = mysqli_query($conn, $q) or die();
+        header("Location: index.php?pag=posizioni");
+    }
+    if(isset($_POST["pag"]) && $_POST["pag"]=="add_position" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 3){
+        $nome = htmlspecialchars($_POST["nomePos"]);
+        $desc = htmlspecialchars($_POST["descPos"]);
+        if(!$nome || !$desc) exit();
+        $q = "insert into posizioni (rAz,nomePos,descrizionePos) values (".$_SESSION["user"]["idAz"].",'".$nome."','".$desc."')";
+        $result = mysqli_query($conn, $q) or die();
+        header("Location: index.php?pag=posizioni");
+    }
+    if(isset($_POST["pag"]) && $_POST["pag"]=="edit_user" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 2){
+        $required = ["nome","cognome","username","email"];
+        foreach($required as $r){
+            if(!isset($_POST[$r])) {
+                exit();
+            }
+        }
+        $nome = trim(mysqli_real_escape_string($conn, $_POST["nome"]));
+        $cognome = trim(mysqli_real_escape_string($conn, $_POST["cognome"]));
+        $username = trim(mysqli_real_escape_string($conn, $_POST["username"]));
+        $email = trim(mysqli_real_escape_string($conn, $_POST["email"]));
+
+        $qCheckUsername = "select * from studenti where usernameStu = '".$username."' and idStu != ".$_SESSION["user"]["idStu"];
+        $resultCheckUsername = mysqli_query($conn,$qCheckUsername) or die();
+        if (mysqli_num_rows($resultCheckUsername) !=0){
+            header("Location: index.php?pag=settings&error=1");
+            exit();
+        }
+        $qCheckEmail = "select * from studenti where emailStu = '".$email."' and idStu != ".$_SESSION["user"]["idStu"];
+        $resultCheckEmail = mysqli_query($conn,$qCheckEmail) or die();
+        if (mysqli_num_rows($resultCheckEmail) !=0){
+            header("Location: index.php?pag=settings&error=2");
+            exit();
+        }
+
+        $website = trim(mysqli_real_escape_string($conn, $_POST["website"]));
+        $github = trim(mysqli_real_escape_string($conn, $_POST["github"]));
+        $linkedin = trim(mysqli_real_escape_string($conn, $_POST["linkedin"]));
+
+        $q ="UPDATE studenti SET nomeStu='".$nome."',cognomeStu='".$cognome."',emailStu = '".$email."',usernameStu = '".$username."' WHERE idStu=".$_SESSION["user"]["idStu"];
+        $result = mysqli_query($conn, $q) or die("errore nella query");
+
+        $q = "UPDATE studenti SET websiteStu = '" . $website . "', urlGithubStu = '" . $github . "', urlLinkedinStu = '" . $linkedin . "' WHERE idStu = " . $_SESSION["user"]["idStu"];
+        $result = mysqli_query($conn, $q) or die();
+
+        $tel = filter_input(INPUT_POST,"tel", FILTER_SANITIZE_NUMBER_INT);
+        $loc = trim(mysqli_real_escape_string($conn, $_POST["loc"]));
+        $bio = trim(mysqli_real_escape_string($conn, $_POST["bio"]));
+
+        $q = "UPDATE studenti SET telStu = '" . $tel . "', locStu = '" . $loc . "', bioStu = '" . $bio . "' WHERE idStu = " . $_SESSION["user"]["idStu"];
+        $result = mysqli_query($conn, $q) or die();
+        reload_user_data();
+
+        if (isset($_FILES["CV"]) && isset($_FILES["CV"]["name"])){
+            if ($_FILES["CV"]["size"] > 5000000){
+                header("Location: index.php?pag=settings&error=3");
+                exit();
+            }
+            if (mime_content_type($_FILES["CV"]["tmp_name"]) != "application/pdf"){
+                header("Location: index.php?pag=settings&error=4");
+                exit();
+            }
+            if(move_uploaded_file($_FILES["CV"]["tmp_name"], "../private/cv/".$_SESSION["user"]["idStu"].".pdf")){
+                header("index.php?pag=settings");
+            }
+        }
+
+        header("Location: index.php?pag=settings");
+    }
+    if ($_POST["pag"] == "fotoprofilo2" && isset($_SESSION["user"]) && isset($_SESSION["user-type"])) {
+        $dest = "";
+        switch ($_SESSION["user-type"]) {
+            case 1:
+                $dest ="../static/pfp/admin-pic/" . $_SESSION["user"]["idUt"] . '.jpeg';
+                break;
+            case 2:
+                $dest="../static/pfp/studente-pic/" . $_SESSION["user"]["idStu"] . '.jpeg';
+                break;
+            case 3:
+                $dest = "../static/pfp/azienda-pic/" . $_SESSION["user"]["idAz"] . '.jpeg';
+                break;
+        }
+        if(isset($_FILES["miofile"]) && isset($_FILES["miofile"]["name"])){
+             if (mime_content_type($_FILES["miofile"]["tmp_name"]) != "image/jpeg"){
+                exit();
+            }
+            move_uploaded_file($_FILES["miofile"]["tmp_name"], $dest);
+        }
+        header("Location: index.php?pag=settings");
+    }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../static/logo-careerday.png" type="image/x-icon">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/login_register.css">
     <link rel="stylesheet" href="../css/home.css">
@@ -520,10 +727,15 @@
     <link rel="stylesheet" href="../css/company-home.css">
     <link rel="stylesheet" href="../css/send_mail.css">
     <link rel="stylesheet" href="../css/reset_password.css">
+    <link rel="stylesheet" href="../css/colloqui.css">
+    <link rel="stylesheet" href="../css/posizioni.css">
+    <link rel="stylesheet" href="../css/prenotazione.css">
+    <link rel="stylesheet" href="../css/movepfp.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,arrow_back_ios_new,edit,location_on" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,arrow_back_ios_new,delete_forever,edit,expand_circle_down,location_on,logout,visibility,visibility_off" />
+    <script src="../js/occhiolino.js"></script>
     <title>Career Day</title>
 </head>
 <body>
@@ -535,14 +747,38 @@
         if($_GET["pag"]=="pwdUpdate"){
             include("pwdUpdate.php");
         }
-        if($_GET["pag"] == "settings" ){
-            include("settings.php");
+        if ($_GET["pag"] == "settings") {
+            switch ($_SESSION["user-type"]) {
+                case 1:
+                    break;
+                case 2:
+                    include("settings.php");
+                    break;
+                case 3:
+                    include("setting-az.php");
+                    break;
+                default:
+                    echo "Si è verificato un errore durante il controllo dell'account";
+                    exit();
+            }
         }else if($_GET["pag"] == "event"){
             include("event.php");
         }else if ($_GET["pag"] == "new_event" && $_SESSION["user-type"] == 1){
             include ("new_event.php");
         }else if ($_GET["pag"] == "edit_event" && $_SESSION["user-type"] == 1){
             include ("edit-event.php");
+        }else if ($_GET["pag"] == "adesione" && $_SESSION["user-type"] == 2){
+            include ("adesione.php");
+        }else if ($_GET["pag"] == "mycv" && $_SESSION["user-type"] == 2){
+            include ("mycv.php");
+        }else if ($_GET["pag"] == "colloqui" && $_SESSION["user-type"] == 3){
+            include ("colloqui.php");
+        }else if ($_GET["pag"] == "posizioni" && $_SESSION["user-type"] == 3){
+            include ("posizioni.php");
+        }else if ($_GET["pag"] == "fotoprofilo") {
+            include("movefile.php");
+        }else if ($_GET["pag"] == "viewcv" && $_SESSION["user-type"] == 3){
+            include ("viewcv.php");
         }else {
             switch($_SESSION["user-type"]){
                 case 1:
@@ -562,8 +798,8 @@
             include("login.php");
         }else if($_GET["pag"] == "register"){
             include("register.php");
-        }else if($_GET["pag"] == "reset_pwd"){
-            include("request_password_reset.php");
+        }else if($_GET["pag"] == "request_reset_pwd"){
+            include("request_reset_pwd.php");
         }else{
             include("login.php");
         }
