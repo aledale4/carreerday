@@ -1,4 +1,6 @@
 <?php
+    // per prendere il fuso orario giusto
+    date_default_timezone_set('Europe/Rome');
     //per collegare il database e avviare la sessione
     session_start();
     $env = parse_ini_file("../.env");
@@ -264,13 +266,14 @@
             $pwd_random = random_ascii_string(32);
             if($_SESSION["user-type"] == 2){
                 $q="update studenti set passwordstu = '".password_hash($pwd_random,PASSWORD_DEFAULT). "' where idStu='" . $riga["idStu"]. "'";
-                $q2="insert into token (ruser,token,user_type,created) values('" . $riga["idStu"]. "' , '".$token_random."' , '" .$_SESSION["user-type"]."','" .date('Y-m-d')."')";
+                $q2="insert into token (ruser,token,user_type,created) values('" . $riga["idStu"]. "' , '".$token_random."' , '" .$_SESSION["user-type"]."','" .date('Y-m-d H:i:s')."')";
             }
             if($_SESSION["user-type"] == 3){
                 $q="update aziende set passwordref = '".password_hash($pwd_random,PASSWORD_DEFAULT). "' where idAz='" . $riga["idAz"]. "'";
-                $q2="insert into token (ruser,token,user_type,created) values('".$riga["idAz"]."' , '".$token_random."' , '" .$_SESSION["user-type"]."','" .date('Y-m-d')."')";
+                $q2="insert into token (ruser,token,user_type,created) values('".$riga["idAz"]."' , '".$token_random."' , '" .$_SESSION["user-type"]."','" .date('Y-m-d H:i:s')."')";
             }
-            echo $pwd_random;
+            echo $pwd_random . " \ ";
+            echo date('d/m/Y H:i:s');
             mysqli_query($conn,$q) or die("errore cambio password");
             mysqli_query($conn,$q2) or die("errore cambio token       " . mysqli_error($conn));
             
@@ -327,11 +330,11 @@
                     if($_POST["password1"]==$_POST["password2"]){ // per vedere se le password nuove coincidono
                         echo "entra pwd uguali \ ";
                         if($_SESSION["user-type"] == 2){
-                            $qpass="update studenti set passwordstu='" .password_hash($_POST["password1"],PASSWORD_DEFAULT). "'  , lastpwdstu='".date('Y-m-d')."' where idstu='".$riga["rUser"]."'";
+                            $qpass="update studenti set passwordstu='" .password_hash($_POST["password1"],PASSWORD_DEFAULT). "'  , lastpwdstu='".date('Y-m-d H:i:s')."' where idstu='".$riga["rUser"]."'";
                             echo"entra usertype 2 \ ";
                         }
                         if($_SESSION["user-type"] == 3){
-                            $qpass="update aziende set passwordref='" .password_hash($_POST["password1"],PASSWORD_DEFAULT). "' , lastpwdref='".date('Y-m-d')."' where idaz='".$riga["rUser"]."'";
+                            $qpass="update aziende set passwordref='" .password_hash($_POST["password1"],PASSWORD_DEFAULT). "' , lastpwdref='".date('Y-m-d H:i:s')."' where idaz='".$riga["rUser"]."'";
                         }
                         echo $qpass . " \ ";
                         $qtoken="delete from token where token='" .$riga["token"]. "'";
@@ -563,8 +566,7 @@
             exit();
         }
         $id = filter_input(INPUT_POST,"id", FILTER_SANITIZE_NUMBER_INT);
-        $date = new DateTime("now", new DateTimeZone('Europe/Rome') );
-        $q ="insert into prenotazioni (rAd,rStu,datapren) values('".$id."','".$_SESSION["user"]["idStu"]."','".($date->format('Y-m-d H:i:s'))."')";
+        $q ="insert into prenotazioni (rAd,rStu,datapren) values('".$id."','".$_SESSION["user"]["idStu"]."','".date('Y-m-d H:i:s')."')";
         $result = mysqli_query($conn, $q) or die("errore nella query");
         header("Location: index.php?pag=adesione&id=".$id);
     }
