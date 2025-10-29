@@ -49,21 +49,22 @@
             </form>
             <p class="change-action-link">Oppure <a href="index.php?pag=login">Accedi</a></p>
             <p class="error"><?php
-                if (!isset($_GET["error"])) exit();
-                $error = filter_input(INPUT_GET,"error", FILTER_SANITIZE_STRING);
-                switch($error){
-                    case 0:
-                        echo "Username già in uso";
-                        break;
-                    case 1:
-                        echo "Email già in uso";
-                        break;
-                    case 2:
-                        echo "Password non corrispondenti";
-                        break;
-                    case 3:
-                        echo "Input non validi";
-                        break;
+                if (isset($_GET["error"])){
+                    $error = filter_input(INPUT_GET,"error", FILTER_SANITIZE_STRING);
+                    switch($error){
+                        case 0:
+                            echo "Username già in uso";
+                            break;
+                        case 1:
+                            echo "Email già in uso";
+                            break;
+                        case 2:
+                            echo "Password non corrispondenti";
+                            break;
+                        case 3:
+                            echo "Input non validi";
+                            break;
+                    }
                 }
             ?></p>
     </div>

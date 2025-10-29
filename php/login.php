@@ -67,18 +67,19 @@
         </form>
         <p class="change-action-link">Oppure <a href="index.php?pag=register">Registrati</a></p>
         <p class="error"><?php
-                if (!isset($_GET["error"])) exit();
-                $error = filter_input(INPUT_GET,"error", FILTER_SANITIZE_STRING);
-                switch($error){
-                    case 0:
-                        echo "Password errata";
-                        break;
-                    case 1:
-                        echo "Username/Email errata";
-                        break;
-                    case 2:
-                        echo "Input non validi";
-                        break;
+                if (isset($_GET["error"])){
+                    $error = filter_input(INPUT_GET,"error", FILTER_SANITIZE_STRING);
+                    switch($error){
+                        case 0:
+                            echo "Password errata";
+                            break;
+                        case 1:
+                            echo "Username/Email errata";
+                            break;
+                        case 2:
+                            echo "Input non validi";
+                            break;
+                    }
                 }
             ?></p>
     </div>
