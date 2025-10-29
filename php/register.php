@@ -45,6 +45,8 @@
                         <span class="material-symbols-outlined" id="tasto">visibility_off</span>
                     </div>
                 </div>
+                <input type="checkbox" id="policy-privacy" name="policy-privacy" value="mio cachbox" required>
+                <label  class="" for="policy-privacy">Accetta la politica della privacy.</label>
                 <input type="submit" value="Registrati">
             </form>
             <p class="change-action-link">Oppure <a href="index.php?pag=login">Accedi</a></p>
