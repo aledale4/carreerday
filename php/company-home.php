@@ -25,6 +25,17 @@
             <a href="index.php?pag=logout" class="logout"><span class="material-symbols-outlined logout-icon">logout</span></a>
         </div>
     </div>
+    <div class="mobile-nav">
+        <div class="nav-page selected">
+            <a href="index.php"><p>Eventi</p></a>
+        </div>
+        <div class="nav-page">
+            <a href="index.php?pag=colloqui"><p>Colloqui</p></a>
+        </div>
+        <div class="nav-page">
+            <a href="index.php?pag=posizioni"><p>Posizioni</p></a>
+        </div>
+    </div>
 
     <section id="eventi">
         <h1>Eventi</h1>
@@ -36,11 +47,10 @@
                 $q2 = "select * from career_day where idCd=".$row["rCd"];
                 $event = mysqli_query($conn, $q2) or die("errore nella query");
                 $eventRow = mysqli_fetch_assoc($event);
-                echo '<a href="index.php?pag=event&id=' . $eventRow["idCd"] . '">';
-                echo '<div class="element">';
+                echo '<a class="element" href="index.php?pag=event&id=' . $eventRow["idCd"] . '">';
                 echo '<img src="../static/pfp/default_evento.svg" alt="">';
                 echo '<p>' . $eventRow["nameCd"] . '</p>';
-                echo '</div></a>';
+                echo '</a>';
             }
             ?>
         </div>

@@ -249,14 +249,14 @@
         header("Location: index.php?pag=login");
         exit();
     }
-    // funzione di reset password
+    // funzione di reset password da login
     if(isset($_POST["pag"]) && $_POST["pag"]=="request_reset_pwd" && !isset($_SESSION["user"])){
         $q="";
         if($_SESSION["user-type"]== 2){
             $q= "select * from studenti where emailstu='".$_POST["email"]."'";
         }
         if($_SESSION["user-type"]== 3){
-            $q= "select * from aziende where emailref='".$_POST["email"]."'";
+            $q= "select * from aziende where email='".$_POST["email"]."'";
         }
         $ris= mysqli_query($conn, $q)or die("queri don't work");
         $num = mysqli_num_rows($ris);
@@ -269,13 +269,14 @@
                 $q2="insert into token (ruser,token,user_type,created) values('" . $riga["idStu"]. "' , '".$token_random."' , '" .$_SESSION["user-type"]."','" .date('Y-m-d H:i:s')."')";
             }
             if($_SESSION["user-type"] == 3){
-                $q="update aziende set passwordref = '".password_hash($pwd_random,PASSWORD_DEFAULT). "' where idAz='" . $riga["idAz"]. "'";
+                $q="update aziende set passwordRef = '".password_hash($pwd_random,PASSWORD_DEFAULT). "' where idAz='" . $riga["idAz"]. "'";
                 $q2="insert into token (ruser,token,user_type,created) values('".$riga["idAz"]."' , '".$token_random."' , '" .$_SESSION["user-type"]."','" .date('Y-m-d H:i:s')."')";
+                echo $q2;
             }
             echo $pwd_random . " \ ";
             echo date('d/m/Y H:i:s');
             mysqli_query($conn,$q) or die("errore cambio password");
-            mysqli_query($conn,$q2) or die("errore cambio token       " . mysqli_error($conn));
+            mysqli_query($conn,$q2) or die("errore cambio token: " . mysqli_error($conn));
             
             $mitt="morganello76@gmail.com"; //mittente
             $ogg="Reset password Carreday";
@@ -303,7 +304,8 @@
         $num = mysqli_num_rows($ris);
 
         $riga=mysqli_fetch_assoc($ris);
-
+        echo $_POST["token"] . " \ ";
+        echo $q;
         if($num == 1){
             if(days_counter($riga["created"]) <=2){ //per vedere se sono passati piu di 2 giorni
                 $tipopwd="";
@@ -317,13 +319,13 @@
                 }
                 $risut = mysqli_query($conn, $q)or die("utente inesistente ");
                 $rigaut=mysqli_fetch_assoc($risut);
-                echo $_SESSION["user-type" ] . " \ ";
+                echo " \ " . $_SESSION["user-type" ] . " \ ";
                 echo $riga["rUser"] .  " \ ";
                 echo $q . " \ ";
                 echo $rigaut . " \ ";
                 $i = password_verify($_POST["password_temp"],$rigaut[$tipo_pwd]);
-                echo $_POST["password_temp"] . " \ ";
-                echo $rigaut[$tipo_pwd] . " \ ";
+                echo "pass temp: " . $_POST["password_temp"] . " \ ";
+                echo "tipo pwd:" .$rigaut[$tipo_pwd] . " \ ";
                 //echo $i ;
                 if(password_verify($_POST["password_temp"],$rigaut[$tipo_pwd])){ // per vedere se le password temporanee coincidono
                     echo "pwd temp giuste";
@@ -334,7 +336,7 @@
                             echo"entra usertype 2 \ ";
                         }
                         if($_SESSION["user-type"] == 3){
-                            $qpass="update aziende set passwordref='" .password_hash($_POST["password1"],PASSWORD_DEFAULT). "' , lastpwdref='".date('Y-m-d H:i:s')."' where idaz='".$riga["rUser"]."'";
+                            $qpass="update aziende set passwordRef='" .password_hash($_POST["password1"],PASSWORD_DEFAULT). "' , lastpwdref='".date('Y-m-d H:i:s')."' where idaz='".$riga["rUser"]."'";
                         }
                         echo $qpass . " \ ";
                         $qtoken="delete from token where token='" .$riga["token"]. "'";
@@ -343,7 +345,8 @@
                         mysqli_query($conn, $qpass)or die("errore updating");
                         mysqli_query($conn, $qtoken)or die("errore delete token");
                         echo $qpass;
-                        //header("Location:index.php?pag=login");
+                        echo "password cambiata con successo";
+                        header("Location:index.php?pag=login");
                         exit();
                     }else{
                         //password nuove diverse
@@ -561,12 +564,13 @@
         header("Location: index.php?pag=event&id=".$id);
     }
     if(isset($_POST["pag"]) && $_POST["pag"]=="prenotazione" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 2){
-        if(!isset($_POST["id"])) {
+        if(!isset($_POST["id"]) || !isset($_POST["posizione"])) {
             header("Location: index.php?pag=adesione&error=1");
             exit();
         }
+        $pos = filter_input(INPUT_POST,"posizione", FILTER_SANITIZE_NUMBER_INT);
         $id = filter_input(INPUT_POST,"id", FILTER_SANITIZE_NUMBER_INT);
-        $q ="insert into prenotazioni (rAd,rStu,datapren) values('".$id."','".$_SESSION["user"]["idStu"]."','".date('Y-m-d H:i:s')."')";
+        $q ="insert into prenotazioni (rAd,rStu,datapren, rPos) values('".$id."','".$_SESSION["user"]["idStu"]."','".date('Y-m-d H:i:s')."',".$pos.")";
         $result = mysqli_query($conn, $q) or die("errore nella query");
         header("Location: index.php?pag=adesione&id=".$id);
     }
@@ -734,6 +738,8 @@
     <link rel="stylesheet" href="../css/posizioni.css">
     <link rel="stylesheet" href="../css/prenotazione.css">
     <link rel="stylesheet" href="../css/movepfp.css">
+    <link rel="stylesheet" href="../css/send_mail.css">
+    <link rel="stylesheet" href="../css/reset_password.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
