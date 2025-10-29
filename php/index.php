@@ -707,7 +707,7 @@
                 break;
         }
         if(isset($_FILES["miofile"]) && isset($_FILES["miofile"]["name"]) && is_uploaded_file( $_FILES["miofile"]["tmp_name"])){
-             if (mime_content_type($_FILES["miofile"]["tmp_name"]) != "image/jpeg"){
+             if (mime_content_type($_FILES["miofile"]["tmp_name"]) != "image/jpeg" && mime_content_type($_FILES["miofile"]["tmp_name"]) != "image/png"){
                 exit();
             }
             move_uploaded_file($_FILES["miofile"]["tmp_name"], $dest);
