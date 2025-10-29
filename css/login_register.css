@@ -158,3 +158,15 @@
     font-size: 18px;
     color: var(--secondary-color);
 }
+.p_di_register{
+  display:flex;
+}
+
+.p_di_register input[type="checkbox"]{
+  margin: 0;
+  padding: 0;
+}
+
+.p_di_register label{
+  text-wrap: no-wrap;
+}
