@@ -53,7 +53,7 @@
                 }
                 ?>
             <div class="password-container">
-                <input type="password" name="password" id="password" placeholder="Password" required>
+                <input type="password" name="password" id="password" placeholder="Password" autocomplete="off" required>
                 <div class="occhio">
                     <span class="material-symbols-outlined" id="tasto">visibility_off</span>
                 </div>

@@ -34,13 +34,13 @@
                     }else include("register-company-form.php"); 
                 ?>
                 <div class="password-container">
-                    <input type="password" name="password" id="password" placeholder="Password*" required>
+                    <input type="password" name="password" id="password" placeholder="Password*" autocomplete="off" required>
                     <div class="occhio">
                         <span class="material-symbols-outlined" id="tasto">visibility_off</span>
                     </div>
                 </div>
                 <div class="password-container">
-                    <input type="password" name="password2" id="password" placeholder="Conferma Password*" required>
+                    <input type="password" name="password2" id="password" placeholder="Conferma Password*" autocomplete="off" required>
                     <div class="occhio">
                         <span class="material-symbols-outlined" id="tasto">visibility_off</span>
                     </div>

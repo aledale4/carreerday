@@ -41,12 +41,12 @@
                 
                 <div class="link-item">
                     <label>Password attuale:</label>
-                    <input type="password" maxlength="30">
+                    <input type="password" maxlength="30" autocomplete="off">
                 </div>
                 
                 <div class="link-item">
                     <label>Nuova password:</label>
-                    <input type="password" maxlength="30">
+                    <input type="password" maxlength="30" autocomplete="off">
                 </div>
             </div>
             <input class="" type="submit" value="Salva modifiche">
