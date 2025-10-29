@@ -49,10 +49,10 @@ $aziendeRes = mysqli_query($conn, $aziendeQ) or die();
                         value="<?php echo date_format(date_create($event["dateCd"]), "Y-m-d"); ?>">
                     /
                     <input required name="start_time" type="time"
-                        value="<?php echo date_format(date_create(datetime: $event["fromCd"]), "H:i"); ?>">
+                        value="<?php echo date_format(date_create($event["fromCd"]), "H:i"); ?>">
                     -
                     <input required name="end_time" type="time"
-                        value="<?php echo date_format(date_create(datetime: $event["toCd"]), "H:i"); ?>">
+                        value="<?php echo date_format(date_create($event["toCd"]), "H:i"); ?>">
                 </div>
                 <div class="event-loc">
                     <span class="material-symbols-outlined">location_on</span>
