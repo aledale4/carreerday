@@ -1,1 +1,1 @@
-<p>politica della privaci non presente, il reparto non ancora ci comunica niente</p>
+<p>Politica della privacy non presente, il reparto non ancora ci comunica niente :(</p>
