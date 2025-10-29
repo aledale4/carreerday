@@ -1,3 +1,11 @@
+.center-body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+}
+
 .container{
   width: calc(100vw - 40px);
   margin: 20px;
@@ -61,7 +69,7 @@
 }
 
 .centered{
-  padding-top: 100px;
+  padding-top: 3rem;
   width: 100%;
   max-width: 400px;
   margin: auto;
