@@ -570,6 +570,13 @@
         }
         $pos = filter_input(INPUT_POST,"posizione", FILTER_SANITIZE_NUMBER_INT);
         $id = filter_input(INPUT_POST,"id", FILTER_SANITIZE_NUMBER_INT);
+        
+        $adQ = "select * from adesioni where enablePren = 1 and idAd = ".$id;
+        $adRes = mysqli_query($conn, $adQ) or die("");
+        if (mysqli_num_rows($adRes) != 1) {
+            header("Location: index.php?pag=adesione&error=1");
+            exit();
+        }
         $q ="insert into prenotazioni (rAd,rStu,datapren, rPos) values('".$id."','".$_SESSION["user"]["idStu"]."','".date('Y-m-d H:i:s')."',".$pos.")";
         $result = mysqli_query($conn, $q) or die("errore nella query");
         header("Location: index.php?pag=adesione&id=".$id);
@@ -713,6 +720,27 @@
             move_uploaded_file($_FILES["miofile"]["tmp_name"], $dest);
         }
         header("Location: index.php?pag=settings");
+    }
+    if(isset($_POST["pag"]) && $_POST["pag"]=="enable_prenotazione" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 3){
+        if(!isset($_POST["id"]) || !isset($_POST["eventId"])) {
+            header("Location: index.php");
+            exit();
+        }
+        $id = filter_input(INPUT_POST,"id", FILTER_SANITIZE_NUMBER_INT);
+        $eventId = filter_input(INPUT_POST,"eventId", FILTER_SANITIZE_NUMBER_INT);
+        $checked = trim(mysqli_real_escape_string($conn, $_POST["enabledCheck"]));
+        $qIdAd = "select * from adesioni where idAd = ".$id;
+        $result = mysqli_query($conn, $qIdAd) or die();
+        if (mysqli_num_rows($result) == 0) exit();
+        $adesione = mysqli_fetch_assoc($result);
+        if ($adesione["rAz"] != $_SESSION["user"]["idAz"]) die();
+        if ($checked && $checked == "on"){
+            $q = "UPDATE adesioni set enablePren = 1 WHERE idAd = ".$id;
+        }else {
+            $q = "UPDATE adesioni set enablePren = 0 WHERE idAd = ".$id;
+        }
+        $result = mysqli_query($conn, $q) or die("errore nella query");
+        header("Location: index.php?pag=event&id=".$eventId);
     }
 ?>
 

@@ -63,10 +63,18 @@
             <input type="hidden" name="id" value="<?php echo $id;?>">
             <div class="posizione-lavorativa">
                 <label for="posizione">Posizione:</label>
-                <select name="posizione">
+                <select name="posizione" <?php echo $already_signed?"disabled":""?>>
                     <?php
+                    $selected = null;
+                    if ($already_signed) {
+                        $selected = mysqli_fetch_assoc($resultCheck)["rPos"];
+                    }
                     while($pos = mysqli_fetch_assoc($resPosQ)){
-                        echo "<option value='".$pos["idPos"]."'>".$pos["nomePos"]."</option>\n";
+                        if ($pos["idPos"] == $selected){
+                            echo "<option value='".$pos["idPos"]."' selected >".$pos["nomePos"]."</option>\n";
+                        }else{
+                            echo "<option value='".$pos["idPos"]."' >".$pos["nomePos"]."</option>\n";
+                        }
                     }
                     ?>
                 </select>
