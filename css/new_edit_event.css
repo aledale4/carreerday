@@ -52,7 +52,7 @@
     font-size: 40px;
     font-weight: 600;
     height: 100%;
-    width: fit-content;
+    width: max-content;
     font-family: "Inter", sans-serif;
 }
 
@@ -64,6 +64,12 @@
     height: 100%;
     width: fit-content;
     font-family: "Inter", sans-serif;
+}
+
+.event-main textarea{
+    width: 100%;
+    height: 100px;
+    resize: none;
 }
 
 .event.edit input[type="submit"] {
@@ -141,4 +147,45 @@ p.sub{
     font-weight: 400;
     color: grey;
     margin-top: 5px;
+}
+
+    .event-title .title-text{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+    }
+
+@media screen and (max-width:1000px) {
+    .event.edit input[type="text"]{
+        width: calc(100% - 40px);;
+        margin-right: 40px;
+    }
+    .event.edit .event-title input[type="submit"]{
+        width: calc(100% - 80px);;
+        margin-inline: 40px;
+    }
+    .event.edit .event-title{
+        margin-top: 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .event .event-info .event-loc {
+        width: 100%;
+    }
+    .event.edit .event-info input[type="text"]{
+        width: 100%;
+    }
+    .event-data-inputs p{
+        width: 100%;
+        flex-direction: column;
+    }
+    .event-data-inputs input[type="submit"]{
+        width: 100%;
+    }
+    .event-data-inputs p input,.event-data-inputs p textarea{
+        width: calc(100% - 20px);
+    }
 }

@@ -30,6 +30,19 @@
         </div>
     </div>
 
+
+    <div class="mobile-nav">
+        <div class="nav-page">
+            <a href="index.php"><p>Eventi</p></a>
+        </div>
+        <div class="nav-page">
+            <a href="index.php?pag=colloqui"><p>Colloqui</p></a>
+        </div>
+        <div class="nav-page selected">
+            <a href="index.php?pag=posizioni"><p>Posizioni</p></a>
+        </div>
+    </div>
+
     <section id="posizioni">
         <h1>Posizioni</h1>
         <div class="posizioni-container">
