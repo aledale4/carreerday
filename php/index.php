@@ -346,7 +346,7 @@
                         mysqli_query($conn, $qtoken)or die("errore delete token");
                         echo $qpass;
                         echo "password cambiata con successo";
-                        //header("Location:index.php?pag=login");
+                        header("Location:index.php?pag=login");
                         exit();
                     }else{
                         //password nuove diverse
