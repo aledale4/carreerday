@@ -46,10 +46,10 @@
             } ?>">
             <?php
                 if($_SESSION["user-type"] == 1){
-                    echo '<input type="text" name="username" id="" placeholder="Username" required>';
+                    echo '<input type="text" name="username" id="" placeholder="Username" maxlength="30" required>';
                 }
                 else{
-                    echo '<input type="email" name="email" id="" placeholder="Email" required>';
+                    echo '<input type="email" name="email" id="" placeholder="Email" maxlength="100" required>';
                 }
                 ?>
             <div class="password-container">
