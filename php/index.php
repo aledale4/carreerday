@@ -693,8 +693,8 @@
                 header("Location: index.php?pag=settings&error=4");
                 exit();
             }
-            if(move_uploaded_file($_FILES["CV"]["tmp_name"], "../private/cv/".$_SESSION["user"]["idStu"].".pdf")){
-                header("index.php?pag=settings");
+            if(!move_uploaded_file($_FILES["CV"]["tmp_name"], "../private/cv/".$_SESSION["user"]["idStu"].".pdf")){
+                header("Location: index.php?pag=settings&error=5");
             }
         }
 
