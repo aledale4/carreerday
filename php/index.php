@@ -561,12 +561,13 @@
         header("Location: index.php?pag=event&id=".$id);
     }
     if(isset($_POST["pag"]) && $_POST["pag"]=="prenotazione" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 2){
-        if(!isset($_POST["id"])) {
+        if(!isset($_POST["id"]) || !isset($_POST["posizione"])) {
             header("Location: index.php?pag=adesione&error=1");
             exit();
         }
+        $pos = filter_input(INPUT_POST,"posizione", FILTER_SANITIZE_NUMBER_INT);
         $id = filter_input(INPUT_POST,"id", FILTER_SANITIZE_NUMBER_INT);
-        $q ="insert into prenotazioni (rAd,rStu,datapren) values('".$id."','".$_SESSION["user"]["idStu"]."','".date('Y-m-d H:i:s')."')";
+        $q ="insert into prenotazioni (rAd,rStu,datapren, rPos) values('".$id."','".$_SESSION["user"]["idStu"]."','".date('Y-m-d H:i:s')."',".$pos.")";
         $result = mysqli_query($conn, $q) or die("errore nella query");
         header("Location: index.php?pag=adesione&id=".$id);
     }
