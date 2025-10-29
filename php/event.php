@@ -72,6 +72,7 @@
     </div>
 
     <div class="event <?php if ($_SESSION["user-type"] == 3) {echo "company";} ?>">
+        <div class="event-data">
         <div class="event-title">
             <a href="index.php"><span class="material-symbols-outlined">arrow_back_ios_new</span></a>
             <p>Eventi / <?php echo $event["nameCd"] ?></p>
@@ -82,8 +83,8 @@
         <div class="event-main">
             <div class="event-info">
                 <div class="event-date"><span class="material-symbols-outlined">calendar_today</span><?php echo date_format(date_create($event["dateCd"]), "d F Y"); ?> /
-                    <?php echo date_format(date_create(datetime: $event["fromCd"]), "H:i"); ?> -
-                    <?php echo date_format(date_create(datetime: $event["toCd"]), "H:i"); ?>
+                    <?php echo date_format(date_create($event["fromCd"]), "H:i"); ?> -
+                    <?php echo date_format(date_create($event["toCd"]), "H:i"); ?>
                 </div>
                 <div class="event-loc">
                     <span class="material-symbols-outlined">location_on</span>
@@ -107,6 +108,7 @@
                     ?>
                 </div>
             </div>
+        </div>
         </div>
         <?php
         if ($_SESSION["user-type"] == 3) {

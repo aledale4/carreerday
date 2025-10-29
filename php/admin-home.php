@@ -17,21 +17,18 @@
 <section id="eventi">
     <h1>Eventi</h1>
     <div class="scrollable-container">
-        <a href="index.php?pag=new_event">
-            <div class="element">
+        <a class="element" href="index.php?pag=new_event">
                 <span class="material-symbols-outlined">add</span>
                 <p>Nuovo Evento</p>
-            </div>
         </a>
         <?php 
             $q = "select * from career_day";
             $r = mysqli_query($conn, $q);
             while ($row = mysqli_fetch_assoc($r)) {
-                echo '<a href="index.php?pag=event&id='.$row["idCd"].'">';
-                echo '<div class="element">';
+                echo '<a  class="element"href="index.php?pag=event&id='.$row["idCd"].'">';
                 echo '<img src="../static/pfp/default_evento.svg" alt="logo evento">';
                 echo '<p>'.$row["nameCd"].'</p>';
-                echo '</div></a>';
+                echo '</a>';
             }
         ?>
     </div>
