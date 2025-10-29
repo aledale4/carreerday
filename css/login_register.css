@@ -37,7 +37,7 @@
 .container .input-form input {
   border:none;
   border-radius: var(--buttons-border-radius);
-  background-color: lightgrey;
+  background-color: var(--secondary-color);
   width: calc(100% - 20px);
   height: 30px;
   padding-inline: 10px;
@@ -156,7 +156,7 @@
 
 .password-container .occhio span{
     font-size: 18px;
-    color: var(--secondary-color);
+    color: var(--icon-color-1);
 }
 .p_di_register{
   display:flex;

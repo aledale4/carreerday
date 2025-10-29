@@ -60,7 +60,8 @@
                 <div class="occhio">
                     <span class="material-symbols-outlined" id="tasto">visibility_off</span>
                 </div>
-                <input type="submit" value="Accedi">
+            </div>
+            <input type="submit" value="Accedi">
             </form>
             <?php
             if ($_SESSION["user-type"] == 2 || $_SESSION["user-type"] == 3) {
