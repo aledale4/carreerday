@@ -59,13 +59,14 @@
                 </div>
             </div>
             <input type="submit" value="Accedi">
+            </form>
             <?php
             if($_SESSION["user-type"] == 2 || $_SESSION["user-type"] == 3){
                echo '<a href="request_reset_pwd.php" class="a_pwd_dimenticata">Password dimenticata?</a>';
+               echo '<p class="change-action-link">Oppure <a href="index.php?pag=register">Registrati</a></p>';
             }
             ?>
-        </form>
-        <p class="change-action-link">Oppure <a href="index.php?pag=register">Registrati</a></p>
+            
         <p class="error"><?php
                 if (isset($_GET["error"])){
                     $error = filter_input(INPUT_GET,"error", FILTER_SANITIZE_STRING);
