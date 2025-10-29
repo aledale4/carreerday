@@ -287,11 +287,13 @@
                 header("Location:email_inviata.php");
                 
             }else{
-                exit("email non inviata: parametri sbagliati");
+                echo'<p class="p_error">L&acuteemail inserita è errata o non registrata.</p>';
+                echo '<a class="a_error"href="index.php">Clicca qui per tornare al login</a>';
                 //email non inviata
             }
         }else{
-            exit("email non inviata: problemi con il numero di utenti");
+            echo'<p class="p_error">L&acuteemail inserita è associata a piu di un utente registrato.</p>';
+            echo '<a class="a_error"href="index.php">Clicca qui per tornare al login</a>';
             // ce piu di un utente
         } 
 
@@ -300,7 +302,7 @@
         
         $q= "select * from token where token='".$_POST["token"]."'";
 
-        $ris= mysqli_query($conn, $q)or die("token inesistente");
+        $ris= mysqli_query($conn, $q)or die();
         $num = mysqli_num_rows($ris);
 
         $riga=mysqli_fetch_assoc($ris);
@@ -350,10 +352,12 @@
                         exit();
                     }else{
                         //password nuove diverse
-                        exit("password nuove diverse");
+                        echo'<p class="p_error">Le password inserite sono diverse.</p>';
+                        echo '<a class="a_error"href="index.php">Clicca qui per tornare al login</a>';
                     }
                 }else{
-                    exit("password temporanee diverse");
+                    echo'<p class="p_error">La password temporanea inserita è sbagliata</p>';
+                    echo '<a class="a_error"href="index.php">Clicca qui per tornare al login</a>';
                     //password temporanee diverse
                 }
             }else{
@@ -363,7 +367,8 @@
                //"sono passati troppi giorni"
             }
         }else if($num==0){
-            exit("token non trovato");
+            echo'<p class="p_error">Il token inserito è errato</p>';
+            echo '<a class="a_error"href="index.php">Clicca qui per tornare al login</a>';
             //"piu utenti"
         }
         else{
