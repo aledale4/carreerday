@@ -16,10 +16,10 @@
             <div class="side">
                 <div class="img"><a href="index.php?pag=fotoprofilo"><?php include("defaultUser-pic.php")  ?></a></div>
                 <div class="inputs">
-                    <p>Nome: <input type="text" name="nome" id="" placeholder="Nome" required value="<?php echo $_SESSION["user"]["nomeStu"]?>"></p>
-                    <p>Cognome:<input type="text" name="cognome" id="" placeholder="Cognome" required value="<?php echo $_SESSION["user"]["cognomeStu"]?>"></p>
-                    <p>Username:<input type="text" name="username" id="" placeholder="Username" required value="<?php echo $_SESSION["user"]["usernameStu"]?>"></p>
-                    <p>Email:<input type="email" name="email" id="" placeholder="Email" required value="<?php echo $_SESSION["user"]["emailStu"]?>"></p>
+                    <p>Nome: <input type="text" name="nome" id="" placeholder="Nome" required value="<?php echo $_SESSION["user"]["nomeStu"]?>" maxlength="30"></p>
+                    <p>Cognome:<input type="text" name="cognome" id="" placeholder="Cognome" required value="<?php echo $_SESSION["user"]["cognomeStu"]?>" maxlength="30"></p>
+                    <p>Username:<input type="text" name="username" id="" placeholder="Username" required value="<?php echo $_SESSION["user"]["usernameStu"]?>" maxlength="30"></p>
+                    <p>Email:<input type="email" name="email" id="" placeholder="Email" required value="<?php echo $_SESSION["user"]["emailStu"]?>" maxlength="100"></p>
                     <p>Password Esistente:
                         <div class="password-container">
                             <input type="password" name="password" id="password" placeholder="Password">
@@ -41,8 +41,8 @@
             <div class="side additional">
                 <h1>Dati Aggiuntivi</h1>
                 <div class="inputs">
-                    <p>Numero di Telefono:<input name="tel" type="tel" placeholder="Numero di Telefono" value="<?php echo $_SESSION["user"]["telStu"]?>"></p>
-                    <p>Località:<input name="loc" type="text" placeholder="Localita" value="<?php echo $_SESSION["user"]["locStu"]?>"></p>
+                    <p>Numero di Telefono:<input name="tel" type="tel" placeholder="Numero di Telefono" value="<?php echo $_SESSION["user"]["telStu"]?>" maxlength="16"></p>
+                    <p>Località:<input name="loc" type="text" placeholder="Localita" value="<?php echo $_SESSION["user"]["locStu"]?>" maxlength="100"></p>
                     <p>Biografia:<textarea name="bio" maxlength="255" placeholder="Biografia"><?php echo $_SESSION["user"]["bioStu"]?></textarea></p>
                     <p>Curriculum: <span class="cv-check"><?php echo file_exists("../private/cv/".$_SESSION["user"]["idStu"].".pdf")?"<a target='_blank' href='index.php?pag=mycv'>CV</a> Caricato con successo":"Nessun file caricato" ?></span><input type="file" name="CV" id="" accept=".pdf"></p>
                 </div>
@@ -55,17 +55,17 @@
                 
                 <div class="link-item">
                     <label>Sito web:</label>
-                    <input type="text" name="website" value="<?php echo $_SESSION["user"]["websiteStu"];?>">
+                    <input type="text" name="website" value="<?php echo $_SESSION["user"]["websiteStu"];?>" maxlength="100">
                 </div>
                 
                 <div class="link-item">
                     <label>GitHub:</label>
-                    <input type="text" name="github" value="<?php echo $_SESSION["user"]["urlGithubStu"];?>">
+                    <input type="text" name="github" value="<?php echo $_SESSION["user"]["urlGithubStu"];?>" maxlength="100">
                 </div>
                 
                 <div class="link-item">
                     <label>LinkedIn:</label>
-                    <input type="text" name="linkedin" value="<?php echo $_SESSION["user"]["urlLinkedinStu"];?>">
+                    <input type="text" name="linkedin" value="<?php echo $_SESSION["user"]["urlLinkedinStu"];?>" maxlength="100">
                 </div>
             </div>
             <div class="save-button">
