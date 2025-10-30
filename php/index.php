@@ -289,12 +289,12 @@
                 header("Location:email_inviata.php");
                 exit("tutto apposto");
             }else{
-                header('Location: errori_reset_pwd.php?errore=1');
+                header('Location:index.php?pag=errori_reset_pwd&err=1');
                 //echo'<p class="p_error">L&acuteemail non è stata inviata correttamente.</p>';
                 //email non inviata
             }
         }else if ($num == 0 ){
-            header('Location: errori_reset_pwd.php?errore=2');
+            header('Location:index.php?pag=errori_reset_pwd&err=2');
             //echo'<p class="p_error">L&acuteemail inserita non è stata registrata.</p>';
             // ce piu di un utente
         } 
@@ -354,28 +354,28 @@
                         exit();
                     }else{
                         //password nuove diverse
-                        header('Location: errori_reset_pwd.php?errore=3');
+                        header('Location:index.php?pag=errori_reset_pwd&err=3');
                         //echo'<p class="p_error">Le password inserite sono diverse.</p>';
                     }
                 }else{
-                    header('Location: errori_reset_pwd.php?errore=4');
+                    header('Location:index.php?pag=errori_reset_pwd&err=4');
                     //echo'<p class="p_error">La password temporanea inserita è sbagliata</p>';
                     //password temporanee diverse
                 }
             }else{
-                header('Location: errori_reset_pwd.php?errore=5');
+                header('Location:index.php?pag=errori_reset_pwd&err=5');
                 //exit("sono passati troppi giorni sulla richiesta");
                 //$qtoken="delete from token where token='" .$riga["token"]. "'";
                 //mysqli_query($conn, $qtoken)or die("errore delete token");
                //"sono passati troppi giorni"
             }
         }else if($num==0){
-            header('Location: errori_reset_pwd.php?errore=6');
+            header('Location:index.php?pag=errori_reset_pwd&err=6');
             //echo'<p class="p_error">Il token inserito è errato</p>';
             //"piu utenti"
         }
         else{
-            header('Location: errori_reset_pwd.php?errore=7');
+            header('Location:index.php?pag=errori_reset_pwd&err=7');
             exit("numero token anomalo");
         }
     }
@@ -743,13 +743,11 @@
     <link rel="stylesheet" href="../css/company-home.css">
     <link rel="stylesheet" href="../css/send_mail.css">
     <link rel="stylesheet" href="../css/reset_password.css">
+    <link rel="stylesheet" href="../css/errori_reset_pwd.css">
     <link rel="stylesheet" href="../css/colloqui.css">
     <link rel="stylesheet" href="../css/posizioni.css">
     <link rel="stylesheet" href="../css/prenotazione.css">
     <link rel="stylesheet" href="../css/movepfp.css">
-    <link rel="stylesheet" href="../css/send_mail.css">
-    <link rel="stylesheet" href="../css/reset_password.css">
-    <link rel="stylesheet" href="../css/errori_reset_pwd.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
@@ -819,6 +817,8 @@
             include("register.php");
         }else if($_GET["pag"] == "request_reset_pwd"){
             include("request_reset_pwd.php");
+        }else if($_GET["pag"] == "errori_reset_pwd"){
+            include("errori_reset_pwd.php");
         }else{
             include("login.php");
         }

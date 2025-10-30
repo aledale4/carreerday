@@ -1,9 +1,11 @@
 <!--errore numero 1-->
 <?php
-if($_GET["errore"] == 1){
+if($_GET["err"] == 1){
 ?>
-<p>email non inviata correttamente.</p>
-<a href="index.php" class="accedi">Torna alla pagina di login</a>
+<div class="container_errori">
+<p class="riga">email non inviata correttamente.</p>
+<a href="index.php" class="accedi_errori">Torna alla pagina di login</a>
+<div>
 <?php    
 }
 ?>
@@ -12,10 +14,14 @@ if($_GET["errore"] == 1){
 
 <!--errore numero 2-->
 <?php
-if($_GET["errore"] == 2){
+if($_GET["err"] == 2){
 ?>
-<p>email inserita non esistente.</p>
-<a href="index.php" class="accedi">Torna alla pagina di login</a>
+<div class="container_errori">
+<div class="container_errori">
+<p class="riga_errori">email inserita non esistente.</p>
+<a href="index.php" class="accedi_errori">Torna alla pagina di login</a>
+</div>
+</div>
 <?php    
 }
 ?>
@@ -24,10 +30,12 @@ if($_GET["errore"] == 2){
 
 <!--errore numero 3-->
 <?php
-if($_GET["errore"] == 3){
+if($_GET["err"] == 3){
 ?>
-<p>Password inserite diverse.</p>
-<a href="index.php">Torna alla pagina di login</a>
+<div class="container_errori">
+<p class="riga_errori">Password inserite diverse.</p>
+<a class="accedi_errori" href="index.php">Torna alla pagina di login</a>
+</div>
 <?php    
 }
 ?>
@@ -36,10 +44,12 @@ if($_GET["errore"] == 3){
 
 <!--errore numero 4-->
 <?php
-if($_GET["errore"] == 4){
+if($_GET["err"] == 4){
 ?>
-<p>Le password temporanee inserite sono diverse.</p>
-<a href="index.php">Torna alla pagina di login</a>
+<div class="container_errori">
+<p class="riga_errori" >Le password temporanee inserite sono diverse.</p>
+<a class="accedi_errori" href="index.php">Torna alla pagina di login</a>
+<div>
 <?php    
 }
 ?>
@@ -48,10 +58,12 @@ if($_GET["errore"] == 4){
 
 <!--errore numero 5 -->
 <?php
-if($_GET["errore"] == 5){
+if($_GET["err"] == 5){
 ?>
-<p>Sono passati troppi giorni dalla richiesta del cambio password.</p>
-<a href="index.php">Torna alla pagina di login</a>
+<div class="container_errori">
+<p class="riga_errori">Sono passati troppi giorni dalla richiesta del cambio password.</p>
+<a class="accedi_errori" href="index.php">Torna alla pagina di login</a>
+</div>
 <?php    
 }
 ?>
@@ -60,10 +72,12 @@ if($_GET["errore"] == 5){
 
 <!-- errore numero 6 -->
 <?php
-if($_GET["errore"] == 6){
+if($_GET["err"] == 6){
 ?>
-<p>Il token inserto è errato.</p>
-<a href="index.php">Torna alla pagina di login</a>
+<div class="container_errori">
+<p class="riga_errori">Il token inserto è errato.</p>
+<a class="accedi_errori" href="index.php">Torna alla pagina di login</a>
+</div>
 <?php    
 }
 ?>
