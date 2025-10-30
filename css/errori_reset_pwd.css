@@ -1,0 +1,14 @@
+.accedi {
+background-color: var(--primary-color);
+border: none;
+color: var(--text-color);
+font-weight: bold;
+cursor: pointer;
+border-radius: var(--buttons-border-radius);
+width: 100%;
+padding-inline: 0;
+height: fit-content;
+font-size: 1.5rem;
+padding: 10px;
+margin: 0;
+}
