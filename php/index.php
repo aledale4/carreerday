@@ -632,8 +632,8 @@
         header("Location: index.php?pag=posizioni");
     }
     if(isset($_POST["pag"]) && $_POST["pag"]=="add_position" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 3){
-        $nome = htmlspecialchars($_POST["nomePos"]);
-        $desc = htmlspecialchars($_POST["descPos"]);
+        $nome = trim(mysqli_real_escape_string($conn, $_POST["nomePos"]));
+        $desc = trim(mysqli_real_escape_string($conn, $_POST["descPos"]));
         if(!$nome || !$desc) exit();
         $q = "insert into posizioni (rAz,nomePos,descrizionePos) values (".$_SESSION["user"]["idAz"].",'".$nome."','".$desc."')";
         $result = mysqli_query($conn, $q) or die();

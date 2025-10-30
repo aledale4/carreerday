@@ -48,8 +48,8 @@
                     </div>
                 </div>
                 <p class="p_di_register">
-                <input type="checkbox" id="policy-privacy" name="policy-privacy" value="mio cachbox" required>
-                <label  class="" for="policy-privacy">Leggi e accetta la politica della privacy <a href="politica_privacy.php" style="color: blue; text-decoration:underline">qui</a>.</label>
+                    <input type="checkbox" id="policy-privacy" name="policy-privacy" value="" required>
+                    <label  class="" for="policy-privacy">Leggi e accetta la politica della privacy <a href="politica_privacy.php" style="color: blue; text-decoration:underline">qui</a>.</label>
                 </p>
                 <input type="submit" value="Registrati">
             </form>
