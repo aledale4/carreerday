@@ -1,9 +1,9 @@
-<!--errore numero 1-->
+
 <?php
 if($_GET["err"] == 1){
 ?>
 <div class="container_errori">
-<p class="riga">email non inviata correttamente.</p>
+<p class="riga">E-mail non inviata correttamente.</p>
 <a href="index.php" class="accedi_errori">Torna alla pagina di login</a>
 <div>
 <?php    
@@ -12,13 +12,13 @@ if($_GET["err"] == 1){
 
 
 
-<!--errore numero 2-->
+
 <?php
 if($_GET["err"] == 2){
 ?>
 <div class="container_errori">
 <div class="container_errori">
-<p class="riga_errori">email inserita non esistente.</p>
+<p class="riga_errori">E-mail inserita non esistente.</p>
 <a href="index.php" class="accedi_errori">Torna alla pagina di login</a>
 </div>
 </div>
@@ -28,12 +28,12 @@ if($_GET["err"] == 2){
 
 
 
-<!--errore numero 3-->
+
 <?php
 if($_GET["err"] == 3){
 ?>
 <div class="container_errori">
-<p class="riga_errori">Password inserite diverse.</p>
+<p class="riga_errori">Nuove password inserite diverse.</p>
 <a class="accedi_errori" href="index.php">Torna alla pagina di login</a>
 </div>
 <?php    
@@ -42,7 +42,7 @@ if($_GET["err"] == 3){
 
 
 
-<!--errore numero 4-->
+
 <?php
 if($_GET["err"] == 4){
 ?>
@@ -56,7 +56,7 @@ if($_GET["err"] == 4){
 
 
 
-<!--errore numero 5 -->
+
 <?php
 if($_GET["err"] == 5){
 ?>
@@ -70,7 +70,7 @@ if($_GET["err"] == 5){
 
 
 
-<!-- errore numero 6 -->
+
 <?php
 if($_GET["err"] == 6){
 ?>
