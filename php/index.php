@@ -801,6 +801,7 @@
     <title>Career Day</title>
 </head>
 <body>
+    <main>
     <?php
     if(isset($_SESSION["user"])){
         if(pwd_expired() && $_GET["pag"]!="pwdUpdate"){
@@ -876,6 +877,7 @@
         $_SESSION["next-page"] = "";
     }
     ?>
+    </main>
     <?php
         include("footer.php");
     ?>

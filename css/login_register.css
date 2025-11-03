@@ -1,8 +1,7 @@
 .center-body{
   display: flex;
-  align-items: top;
+  align-items: start;
   justify-content: center;
-  /*height: 100vh;*/
   width: 100vw;
 }
 
@@ -11,14 +10,12 @@
   height: fit-content;
   margin: 20px;
   padding-top: 100px;
-  padding-bottom: 100px;
   /* display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center; */
 }
 .container .logo-container{
-  width: fit-content;
   margin: auto;
   width: 90%;
   max-width: 400px;
