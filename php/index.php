@@ -283,7 +283,7 @@
             
             $mitt="morganello76@gmail.com"; //mittente
             $ogg="Reset password Carreday";
-            $mess="Clicca su questo link per resettare a tua password : <br>reset_pwd.php?token=" .$token . "<br> Inserisci questa password provvisoria nel campo: Password provvisoria. <br>" . $pwd_random ; // link da inserire
+            $mess="Clicca su questo link per resettare a tua password : <br>reset_pwd.php?token=" .$token_random . "<br> Inserisci questa password provvisoria nel campo: Password provvisoria. <br>" . $pwd_random ; // link da inserire
             $header="From: ".$mitt."\r\nReply-To:".$mitt."\r\nContent-type: text/html; charset=utf-8\r\n";
             if(mail($_POST["email"], $ogg, $mess, $header)){ // destinatario , oggetto , messaggio , invio
                 header("Location:email_inviata.php");
@@ -344,10 +344,12 @@
                         }
                         //$_GET["pwdtemp"] = $qpass;
                         $qtoken="delete from token where token='" .$riga["token"]. "'";
+                        
                         echo $qtoken ." \ ";
                         
                         mysqli_query($conn, $qpass)or die("errore updating");
                         mysqli_query($conn, $qtoken)or die("errore delete token");
+
                         echo $qpass;
                         echo "password cambiata con successo";
                         header("Location:index.php?pag=login");
