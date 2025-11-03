@@ -112,7 +112,8 @@
                 $date=date("Y-m-d");
                 $q="update studenti set lastLoginStu='".$date."' where idStu=".$_SESSION["user"]["idStu"];
                 $ris=mysqli_query($conn, $q)or die("errore durante il salvataggio della data");
-                if (isset($_SESSION["next-page"])){
+                echo "redirecting";
+                if (isset($_SESSION["next-page"]) && $_SESSION["next-page"] != ""){
                     header("Location: ".$_SESSION["next-page"]);
                 }else{
                     header("Location: index.php");
@@ -147,7 +148,7 @@
                 $date=date("Y-m-d");
                 $q="update aziende set lastLoginRef='".$date."' where idAz=".$_SESSION["user"]["idAz"];
                 $ris=mysqli_query($conn, $q)or die("errore durante il salvataggio della data");
-                if (isset($_SESSION["next-page"])){
+                if (isset($_SESSION["next-page"]) && $_SESSION["next-page"] != ""){
                     header("Location: ".$_SESSION["next-page"]);
                 }else{
                     header("Location: index.php");
@@ -182,7 +183,7 @@
                 $date=date("Y-m-d");
                 $q="update admins set lastLoginUt='".$date."' where idUt=".$_SESSION["user"]["idUt"];
                 $ris=mysqli_query($conn, $q)or die("errore durante il salvataggio della data");
-                if (isset($_SESSION["next-page"])){
+                if (isset($_SESSION["next-page"]) && $_SESSION["next-page"] != ""){
                     header("Location: ".$_SESSION["next-page"]);
                 }else{
                     header("Location: index.php");
