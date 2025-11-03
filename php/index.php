@@ -857,5 +857,6 @@
 </html>
 
 <?php
+    include("footer.php");
     mysqli_close($conn);
 ?>
