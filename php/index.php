@@ -112,7 +112,11 @@
                 $date=date("Y-m-d");
                 $q="update studenti set lastLoginStu='".$date."' where idStu=".$_SESSION["user"]["idStu"];
                 $ris=mysqli_query($conn, $q)or die("errore durante il salvataggio della data");
-                header("Location: index.php");
+                if (isset($_SESSION["next-page"])){
+                    header("Location: ".$_SESSION["next-page"]);
+                }else{
+                    header("Location: index.php");
+                }
                 exit();
             }
             else{
@@ -143,7 +147,11 @@
                 $date=date("Y-m-d");
                 $q="update aziende set lastLoginRef='".$date."' where idAz=".$_SESSION["user"]["idAz"];
                 $ris=mysqli_query($conn, $q)or die("errore durante il salvataggio della data");
-                header("Location: index.php");
+                if (isset($_SESSION["next-page"])){
+                    header("Location: ".$_SESSION["next-page"]);
+                }else{
+                    header("Location: index.php");
+                }
                 exit();
             }
             else{
@@ -174,7 +182,11 @@
                 $date=date("Y-m-d");
                 $q="update admins set lastLoginUt='".$date."' where idUt=".$_SESSION["user"]["idUt"];
                 $ris=mysqli_query($conn, $q)or die("errore durante il salvataggio della data");
-                header("Location: index.php");
+                if (isset($_SESSION["next-page"])){
+                    header("Location: ".$_SESSION["next-page"]);
+                }else{
+                    header("Location: index.php");
+                }
                 exit();
             }
             else{
@@ -839,6 +851,7 @@
         }
     }
     else if(isset($_GET["pag"])){
+        $_SESSION["next-page"] = "";
         if($_GET["pag"] == "login"){
             include("login.php");
         }else if($_GET["pag"] == "register"){
@@ -849,9 +862,11 @@
             include("errori_reset_pwd.php");
         }else{
             include("login.php");
+            $_SESSION["next-page"] = $_SERVER['REQUEST_URI'];
         }
     }else{
         include("login.php");
+        $_SESSION["next-page"] = "";
     }
     ?>
     <?php
