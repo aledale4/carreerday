@@ -32,6 +32,9 @@
 .navbar .logo{
     height: 100%;
 }
+.navbar .logo img{
+    height: 100%;
+}
 
 .navbar .right-side{
     width: fit-content;
@@ -99,7 +102,6 @@
     width: fit-content;
     display: flex;
     flex-direction: row;
-    gap: 50px;
     justify-content: center;
     align-items: center;
 }

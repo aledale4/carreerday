@@ -1,7 +1,7 @@
 <div class="home-container">
 <div class="navbar">
     <div class="left-side">
-        <img src="../static/logo.svg" alt="" srcset="" class="logo">
+        <a href="index.php" class="logo"><img src="../static/logo.svg" alt="" srcset="" ></a>
         <p>Portale Studenti</p>
     </div>
     <div class="right-side">
@@ -49,10 +49,10 @@
                 if (mysqli_num_rows($azQ) == 0) continue;
                 $azienda = mysqli_fetch_assoc($azQ);
 
-                echo '<div class="element">';
+                echo '<a class="element" href="index.php?pag=adesione&id='.$adesione["idAd"].'">';
                 echo '<img src="../static/pfp/default_azienda.svg" alt="">';
                 echo '<p>'.$azienda["ragsoc"].'</p>';
-                echo '</div></a>';
+                echo '</a>';
             }
         ?>
     </div>

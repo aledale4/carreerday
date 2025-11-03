@@ -26,6 +26,7 @@ tr.checked{
     flex-direction: column;
     margin: 1px;
     padding: 5px;
+    font-size: 0.8rem;
 }
 
 .evento-colloquio{
@@ -68,4 +69,10 @@ tr.checked{
 
 .info-stu p span {
     font-weight: 400;
+}
+
+@media screen and (max-width: 1000px) {
+    .stu-name button{
+        display: none;
+    }
 }
