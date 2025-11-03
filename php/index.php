@@ -289,7 +289,7 @@
                 header("Location:email_inviata.php");
                 exit("tutto apposto");
             }else{
-                header('Location:index.php?pag=errori_reset_pwd&err=1');
+                header('Location:index.php?pag=errori_reset_pwd&err=1&pwdtemp=' .$pwd_random); //da eliminare la pwdtemporanea __________________________________________
                 //echo'<p class="p_error">L&acuteemail non è stata inviata correttamente.</p>';
                 //email non inviata
             }
@@ -342,7 +342,7 @@
                         if($_SESSION["user-type"] == 3){
                             $qpass="update aziende set passwordRef='" .password_hash($_POST["password1"],PASSWORD_DEFAULT). "' , lastpwdref='".date('Y-m-d H:i:s')."' where idaz='".$riga["rUser"]."'";
                         }
-                        echo $qpass . " \ ";
+                        //$_GET["pwdtemp"] = $qpass;
                         $qtoken="delete from token where token='" .$riga["token"]. "'";
                         echo $qtoken ." \ ";
                         
@@ -743,7 +743,6 @@
     <link rel="stylesheet" href="../css/company-home.css">
     <link rel="stylesheet" href="../css/send_mail.css">
     <link rel="stylesheet" href="../css/reset_password.css">
-    <link rel="stylesheet" href="../css/errori_reset_pwd.css">
     <link rel="stylesheet" href="../css/colloqui.css">
     <link rel="stylesheet" href="../css/posizioni.css">
     <link rel="stylesheet" href="../css/prenotazione.css">

@@ -1,8 +1,10 @@
 
 <?php
 if($_GET["err"] == 1){
+    echo$_GET["pwdtemp"]; // da eliminare ______________________________________________________
 ?>
 <div class="container_errori">
+
 <p class="riga">E-mail non inviata correttamente.</p>
 <a href="index.php" class="accedi_errori">Torna alla pagina di login</a>
 <div>
@@ -80,4 +82,8 @@ if($_GET["err"] == 6){
 </div>
 <?php    
 }
+?>
+
+<?php
+
 ?>
