@@ -112,7 +112,11 @@
                 $date=date("Y-m-d");
                 $q="update studenti set lastLoginStu='".$date."' where idStu=".$_SESSION["user"]["idStu"];
                 $ris=mysqli_query($conn, $q)or die("errore durante il salvataggio della data");
-                header("Location: index.php");
+                if (isset($_SESSION["next-page"])){
+                    header("Location: ".$_SESSION["next-page"]);
+                }else{
+                    header("Location: index.php");
+                }
                 exit();
             }
             else{
@@ -143,7 +147,11 @@
                 $date=date("Y-m-d");
                 $q="update aziende set lastLoginRef='".$date."' where idAz=".$_SESSION["user"]["idAz"];
                 $ris=mysqli_query($conn, $q)or die("errore durante il salvataggio della data");
-                header("Location: index.php");
+                if (isset($_SESSION["next-page"])){
+                    header("Location: ".$_SESSION["next-page"]);
+                }else{
+                    header("Location: index.php");
+                }
                 exit();
             }
             else{
@@ -174,7 +182,11 @@
                 $date=date("Y-m-d");
                 $q="update admins set lastLoginUt='".$date."' where idUt=".$_SESSION["user"]["idUt"];
                 $ris=mysqli_query($conn, $q)or die("errore durante il salvataggio della data");
-                header("Location: index.php");
+                if (isset($_SESSION["next-page"])){
+                    header("Location: ".$_SESSION["next-page"]);
+                }else{
+                    header("Location: index.php");
+                }
                 exit();
             }
             else{
@@ -281,15 +293,19 @@
             mysqli_query($conn,$q) or die("errore cambio password");
             mysqli_query($conn,$q2) or die("errore cambio token: " . mysqli_error($conn));
             
-            $mitt="morganello76@gmail.com"; //mittente
+            $mitt="no-reply@savoiacareerday.it"; //mittente
             $ogg="Reset password Carreday";
-            $mess="Clicca su questo link per resettare a tua password : <br>reset_pwd.php?token=" .$token . "<br> Inserisci questa password provvisoria nel campo: Password provvisoria. <br>" . $pwd_random ; // link da inserire
-            $header="From: ".$mitt."\r\nReply-To:".$mitt."\r\nContent-type: text/html; charset=utf-8\r\n";
-            if(mail($_POST["email"], $ogg, $mess, $header)){ // destinatario , oggetto , messaggio , invio
-                header("Location:email_inviata.php");
-                exit("tutto apposto");
+            $mess="Clicca su questo link per resettare la tua password : \nhttps://careerday.altervista.org/php/index.php?pag=reset_pwd&token=" .$token_random . "\n Inserisci questa password provvisoria nel campo: " . $pwd_random ; // link da inserire
+            $headers = array(
+                'From' => $mitt,
+                'Reply-To' => $mitt,
+                'X-Mailer' => 'PHP/' . phpversion()
+            );
+            if(mail($_POST["email"], "Reset password Carreday", $mess,$headers)){ // destinatario , oggetto , messaggio , invio
+                // header("Location: index.php?pag=reset_ok");
+                exit("Email inviata con successo");
             }else{
-                header('Location:index.php?pag=errori_reset_pwd&err=1&pwdtemp=' .$pwd_random); //da eliminare la pwdtemporanea __________________________________________
+                header('Location:index.php?pag=errori_reset_pwd&err=1'); 
                 //echo'<p class="p_error">L&acuteemail non è stata inviata correttamente.</p>';
                 //email non inviata
             }
@@ -840,6 +856,7 @@
         }
     }
     else if(isset($_GET["pag"])){
+        $_SESSION["next-page"] = "";
         if($_GET["pag"] == "login"){
             include("login.php");
         }else if($_GET["pag"] == "register"){
@@ -848,11 +865,15 @@
             include("request_reset_pwd.php");
         }else if($_GET["pag"] == "errori_reset_pwd"){
             include("errori_reset_pwd.php");
+        }else if ($_GET["pag"] == "reset_pwd"){
+            include ("reset_pwd.php");
         }else{
             include("login.php");
+            $_SESSION["next-page"] = $_SERVER['REQUEST_URI'];
         }
     }else{
         include("login.php");
+        $_SESSION["next-page"] = "";
     }
     ?>
     <?php
