@@ -30,7 +30,7 @@
 </head>
 
 <body>
-    <a href="index.php" class="logo"><img src="../static/logo.svg" alt="" srcset="" ></a>
+    <a href="index.php" class="logo"><img src="../static/logo.png" alt="" srcset="" ></a>
     <h1>Privacy</h1>
     <p>Nella realizzazione di questo sito sono stati utilizzati esclusivamente cookie tecnici necessari esclusivamente alla gestione delle sessioni PHP. I dati raccolti verranno usati esclusivamente per uso tecnico e non per scopi di terze parti.</p>
     <h2>Informativa sul trattamento dei dati (privacy policy)</h2>
