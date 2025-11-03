@@ -293,15 +293,19 @@
             mysqli_query($conn,$q) or die("errore cambio password");
             mysqli_query($conn,$q2) or die("errore cambio token: " . mysqli_error($conn));
             
-            $mitt="morganello76@gmail.com"; //mittente
+            $mitt="no-reply@savoiacareerday.it"; //mittente
             $ogg="Reset password Carreday";
-            $mess="Clicca su questo link per resettare a tua password : \nreset_pwd.php?token=" .$token . "\n Inserisci questa password provvisoria nel campo: Password provvisoria. \n" . $pwd_pro ; // link da inserire
-            $header="From: ".$mitt."\r\nReply-To:".$mitt."\r\nContent-type: text/html; charset=utf-8\r\n";
-            if(mail($_POST["email"], $ogg, $mess, $header)){ // destinatario , oggetto , messaggio , invio
-                header("Location:email_inviata.php");
-                exit("tutto apposto");
+            $mess="Clicca su questo link per resettare la tua password : \nhttps://careerday.altervista.org/php/index.php?pag=reset_pwd&token=" .$token_random . "\n Inserisci questa password provvisoria nel campo: " . $pwd_random ; // link da inserire
+            $headers = array(
+                'From' => $mitt,
+                'Reply-To' => $mitt,
+                'X-Mailer' => 'PHP/' . phpversion()
+            );
+            if(mail($_POST["email"], "Reset password Carreday", $mess,$headers)){ // destinatario , oggetto , messaggio , invio
+                // header("Location: index.php?pag=reset_ok");
+                exit("Email inviata con successo");
             }else{
-                header('Location:index.php?pag=errori_reset_pwd&err=1&pwdtemp=' .$pwd_random); //da eliminare la pwdtemporanea __________________________________________
+                header('Location:index.php?pag=errori_reset_pwd&err=1'); 
                 //echo'<p class="p_error">L&acuteemail non è stata inviata correttamente.</p>';
                 //email non inviata
             }
@@ -860,6 +864,8 @@
             include("request_reset_pwd.php");
         }else if($_GET["pag"] == "errori_reset_pwd"){
             include("errori_reset_pwd.php");
+        }else if ($_GET["pag"] == "reset_pwd"){
+            include ("reset_pwd.php");
         }else{
             include("login.php");
             $_SESSION["next-page"] = $_SERVER['REQUEST_URI'];
