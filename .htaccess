@@ -1,8 +1,31 @@
 RewriteEngine On
 RewriteBase /
 
+# --- BLOCCA cartelle specifiche ---
+RewriteCond %{REQUEST_URI} ^/static/pfp/ [OR]
+RewriteCond %{REQUEST_URI} ^/static/qrcodes/
+RewriteRule ^ - [F,L]
+
+# --- PERMETTI solo le sezioni autorizzate ---
+RewriteCond %{REQUEST_URI} ^/php/index\.php$ [OR]
+RewriteCond %{REQUEST_URI} ^/php/politica_privacy\.php$ [OR]
+RewriteCond %{REQUEST_URI} ^/static/
+RewriteRule ^ - [L]
+
+# --- BLOCCA tutto il resto ---
+RewriteRule ^ - [F,L]
+
+# --- Routing interno se il file o la directory non esistono ---
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-
 RewriteRule ^(.*)$ /php/index.php [L,QSA]
 RewriteRule ^$ /php/index.php [R=301,L]
+
+# av:PHP-upload
+php_value upload_max_filesize 20M
+php_value post_max_size 20M
+php_value max_input_time 300
+# PHP-upload
+
+# # av:php5-engine
+AddHandler av-php84 .php
