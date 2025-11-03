@@ -10,7 +10,7 @@
 
     $q2 = "select * from adesioni where rCd = " . $id;
     $adesioni_result = mysqli_query($conn, $q2) or die("errore nella query");
-
+    $ad = null;
     if ($_SESSION["user-type"] == 3) {
         $q = "select * from adesioni where rCd = '" . $id . "' and rAz = '" . $_SESSION["user"]["idAz"] . "'";
         $r = mysqli_query($conn, $q) or die("errore nella query");
@@ -21,7 +21,7 @@
 <div class="home-container">
     <div class="navbar">
         <div class="left-side">
-            <img src="../static/logo.svg" alt="" srcset="" class="logo">
+            <a href="index.php" class="logo"><img src="../static/logo.svg" alt="" srcset=""></a>
             <p>Portale <?php
             switch ($_SESSION["user-type"]) {
                 case 1:
@@ -118,6 +118,17 @@
             echo '<input type="hidden" name="pag" value="download_qr">';
             echo '<input type="hidden" name="id" value="' . $ad["idAd"] . '">';
             echo '<input type="submit" value="Download">';
+            echo '</form>';
+            echo '<form action="index.php" method="post">';
+            echo '<input type="hidden" name="enabledCheck" value="0">';
+            echo '<p class="switch_name">Prenotazioni abilitate';
+            echo '<label class="switch">';
+            echo '<input required name="enabledCheck" onchange="this.form.submit()" type="checkbox" '.($ad["enablePren"]?"checked":"").'>';
+            echo '<span class="slider round"></span>';
+            echo '</label></p>';
+            echo '<input type="hidden" name="pag" value="enable_prenotazione">';
+            echo '<input type="hidden" name="id" value="' . $ad["idAd"] . '">';
+            echo '<input type="hidden" name="eventId" value="'.$id.'">';
             echo '</form>';
             echo '</div>';
         }
