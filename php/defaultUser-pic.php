@@ -1,5 +1,4 @@
 <?php
-$r = random_int(0,10000);
 $file = "";
 switch ($_SESSION["user-type"]) {
     case 1:
@@ -15,7 +14,9 @@ switch ($_SESSION["user-type"]) {
         break;
 }
 if (file_exists($file)) {
-    echo '<img src="' . $file."?".$r . '" alt="">';
+    $data = file_get_contents($file); 
+    $base64 = base64_encode($data); 
+    echo '<img src="data:image/png;base64,' . $base64. '" alt="">';
 } else {
     echo "<img src='../static/pfp/Default_pfp.svg' alt=''>";
 }
