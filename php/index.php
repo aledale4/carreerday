@@ -731,6 +731,21 @@
             exit();
         }
 
+        if (isset($_FILES["CV"]) && isset($_FILES["CV"]["name"]) && is_uploaded_file($_FILES["CV"]["tmp_name"])){
+            if ($_FILES["CV"]["size"] > 5000000){
+                header("Location: index.php?pag=settings&error=3");
+                exit();
+            }
+            if (mime_content_type($_FILES["CV"]["tmp_name"]) != "application/pdf"){
+                header("Location: index.php?pag=settings&error=4");
+                exit();
+            }
+            if(!move_uploaded_file($_FILES["CV"]["tmp_name"], "../private/cv/".$_SESSION["user"]["idStu"].".pdf")){
+                header("Location: index.php?pag=settings&error=5");
+            }
+        }
+
+
         $website = trim(mysqli_real_escape_string($conn, $_POST["website"]));
         $github = trim(mysqli_real_escape_string($conn, $_POST["github"]));
         $linkedin = trim(mysqli_real_escape_string($conn, $_POST["linkedin"]));
@@ -749,21 +764,77 @@
         $result = mysqli_query($conn, $q) or die();
         reload_user_data();
 
-        if (isset($_FILES["CV"]) && isset($_FILES["CV"]["name"]) && is_uploaded_file($_FILES["CV"]["tmp_name"])){
-            if ($_FILES["CV"]["size"] > 5000000){
-                header("Location: index.php?pag=settings&error=3");
+        if(isset($_POST["password"]) && isset($_POST["newpassword"]) && !empty($_POST["password"]) && !empty($_POST["newpassword"])){
+            $oldpwd = trim(mysqli_real_escape_string($conn,$_POST["password"]));
+            $newpwd = trim(mysqli_real_escape_string($conn,$_POST["newpassword"]));
+            if(!password_verify($oldpwd,$_SESSION["user"]["passwordStu"])){
+                header("Location: index.php?pag=settings&error=6");
                 exit();
             }
-            if (mime_content_type($_FILES["CV"]["tmp_name"]) != "application/pdf"){
-                header("Location: index.php?pag=settings&error=4");
-                exit();
-            }
-            if(!move_uploaded_file($_FILES["CV"]["tmp_name"], "../private/cv/".$_SESSION["user"]["idStu"].".pdf")){
-                header("Location: index.php?pag=settings&error=5");
+            $q = "UPDATE studenti SET passwordStu = '" . password_hash($newpwd,PASSWORD_DEFAULT)."' WHERE idStu = " . $_SESSION["user"]["idStu"];
+            $result = mysqli_query($conn, $q) or die();
+            reload_user_data();
+        }
+        header("Location: index.php?pag=settings&success=1");
+    }
+    if(isset($_POST["pag"]) && $_POST["pag"]=="edit_az" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 3){
+        $required = ["ragsoc","ind","cap","loc","provincia","piva","nomeref","cognomeref","username","email"];
+        foreach($required as $r){
+            if(!isset($_POST[$r])) {
+                exit("campi mancanti");
             }
         }
 
-        header("Location: index.php?pag=settings");
+
+        $ragsoc = trim(mysqli_real_escape_string($conn, $_POST["ragsoc"]));
+        $ind = trim(mysqli_real_escape_string($conn, $_POST["ind"]));
+        $cap = trim(mysqli_real_escape_string($conn, $_POST["cap"]));
+        $loc = trim(mysqli_real_escape_string($conn, $_POST["loc"]));
+        $prov = trim(mysqli_real_escape_string($conn, $_POST["provincia"]));
+        $piva = trim(mysqli_real_escape_string($conn, $_POST["piva"]));
+        $nome = trim(mysqli_real_escape_string($conn, $_POST["nomeref"]));
+        $cognome = trim(mysqli_real_escape_string($conn, $_POST["cognomeref"]));
+        $username = trim(mysqli_real_escape_string($conn, $_POST["username"]));
+        $email = trim(mysqli_real_escape_string($conn, $_POST["email"]));
+
+        $web = trim(mysqli_real_escape_string($conn, $_POST["web"]));
+
+        $qCheckUsername = "select * from aziende where usernameRef = '".$username."' and idAz != ".$_SESSION["user"]["idAz"];
+        $resultCheckUsername = mysqli_query($conn,$qCheckUsername) or die();
+        if (mysqli_num_rows($resultCheckUsername) !=0){
+            header("Location: index.php?pag=settings&error=1");
+            exit();
+        }
+        $qCheckEmail = "select * from aziende where email = '".$email."' and idAz != ".$_SESSION["user"]["idAz"];
+        $resultCheckEmail = mysqli_query($conn,$qCheckEmail) or die();
+        if (mysqli_num_rows($resultCheckEmail) !=0){
+            header("Location: index.php?pag=settings&error=2");
+            exit();
+        }
+        $qCheckPiva = "select * from aziende where piva = '".$piva."' and idAz != ".$_SESSION["user"]["idAz"];
+        $resultCheckPiva = mysqli_query($conn,$qCheckPiva) or die();
+        if (mysqli_num_rows($resultCheckPiva) !=0){
+            header("Location: index.php?pag=settings&error=3");
+            exit();
+        }
+
+        $q ="UPDATE aziende SET ragsoc='".$ragsoc."',ind='".$ind."',cap = '".$cap."',loc = '".$loc."',prov = '".$prov."',piva = '".$piva."',email = '".$email."',web = '".$web."',nomeRef = '".$nome."',cognomeRef = '".$cognome."',usernameRef = '".$username."' WHERE idAz=".$_SESSION["user"]["idAz"];
+        $result = mysqli_query($conn, $q) or die("errore nella query");
+        reload_user_data();
+
+        if(isset($_POST["password"]) && isset($_POST["newpassword"]) && !empty($_POST["password"]) && !empty($_POST["newpassword"])){
+            $oldpwd = trim(mysqli_real_escape_string($conn,$_POST["password"]));
+            $newpwd = trim(mysqli_real_escape_string($conn,$_POST["newpassword"]));
+            if(!password_verify($oldpwd,$_SESSION["user"]["passwordRef"])){
+                header("Location: index.php?pag=settings&error=6");
+                exit();
+            }
+            $q = "UPDATE aziende SET passwordRef = '" . password_hash($newpwd,PASSWORD_DEFAULT)."' WHERE idAz = " . $_SESSION["user"]["idAz"];
+            $result = mysqli_query($conn, $q) or die();
+            reload_user_data();
+        }
+
+        header("Location: index.php?pag=settings&success=1");
     }
     if ($_POST["pag"] == "fotoprofilo2" && isset($_SESSION["user"]) && isset($_SESSION["user-type"])) {
         $dest = "";

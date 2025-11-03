@@ -59,6 +59,9 @@ a{
 .error{
   color: red;
 }
+.success{
+  color:green
+}
 
 .material-symbols-outlined {
   font-variation-settings:

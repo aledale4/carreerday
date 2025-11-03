@@ -88,10 +88,17 @@
                         case 3:
                             echo "File CV troppo grande (>5MB)";
                             break;
-                        case 3:
+                        case 4:
                             echo "File CV deve essere un PDF";
+                            break;
+                        case 5:
+                            echo "Errore nel salvataggio del curriculum";
+                            break;
+                        case 6:
+                            echo "La password corrente è errata";
                             break;
                     }
                 }
             ?></p>
+            <p class="success"><?php if(isset($_GET["success"])) echo "Operazioni eseguite con successo" ?></p>
 </div>
