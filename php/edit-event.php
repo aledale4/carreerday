@@ -19,7 +19,7 @@ $aziendeRes = mysqli_query($conn, $aziendeQ) or die();
 <div class="home-container">
     <div class="navbar">
         <div class="left-side">
-            <a href="index.php" class="logo"><img src="../static/logo.svg" alt="" srcset=""></a>
+            <a href="index.php" class="logo"><img src="../static/logo.png" alt="" srcset=""></a>
             <p>Portale Admin</p>
         </div>
         <div class="right-side">
