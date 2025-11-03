@@ -155,7 +155,7 @@ $province = [
 <div class="home-container">
     <div class="navbar">
         <div class="left-side">
-            <img src="../static/logo.svg" alt="" srcset="" class="logo">
+            <img src="../static/logo.png" alt="" srcset="" class="logo">
             <p>Portale Aziende</p>
         </div>
     </div>
