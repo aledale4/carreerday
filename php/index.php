@@ -249,6 +249,9 @@
         header("Location: index.php?pag=login");
         exit();
     }
+
+
+
     // funzione di reset password da login
     if(isset($_POST["pag"]) && $_POST["pag"]=="request_reset_pwd" && !isset($_SESSION["user"])){
         $q="";
@@ -273,8 +276,8 @@
                 $q2="insert into token (ruser,token,user_type,created) values('".$riga["idAz"]."' , '".$token_random."' , '" .$_SESSION["user-type"]."','" .date('Y-m-d H:i:s')."')";
                 echo $q2;
             }
-            echo $pwd_random . " \ ";
-            echo date('d/m/Y H:i:s');
+            //echo $pwd_random . " \ ";
+            //echo date('d/m/Y H:i:s');
             mysqli_query($conn,$q) or die("errore cambio password");
             mysqli_query($conn,$q2) or die("errore cambio token: " . mysqli_error($conn));
             
@@ -283,15 +286,16 @@
             $mess="Clicca su questo link per resettare a tua password : \nreset_pwd.php?token=" .$token . "\n Inserisci questa password provvisoria nel campo: Password provvisoria. \n" . $pwd_pro ; // link da inserire
             $header="From: ".$mitt."\r\nReply-To:".$mitt."\r\nContent-type: text/html; charset=utf-8\r\n";
             if(mail($_POST["email"], $ogg, $mess, $header)){ // destinatario , oggetto , messaggio , invio
-                exit("tutto apposto");
                 header("Location:email_inviata.php");
-                
+                exit("tutto apposto");
             }else{
-                exit("email non inviata: parametri sbagliati");
+                header('Location:index.php?pag=errori_reset_pwd&err=1&pwdtemp=' .$pwd_random); //da eliminare la pwdtemporanea __________________________________________
+                //echo'<p class="p_error">L&acuteemail non è stata inviata correttamente.</p>';
                 //email non inviata
             }
-        }else{
-            exit("email non inviata: problemi con il numero di utenti");
+        }else if ($num == 0 ){
+            header('Location:index.php?pag=errori_reset_pwd&err=2');
+            //echo'<p class="p_error">L&acuteemail inserita non è stata registrata.</p>';
             // ce piu di un utente
         } 
 
@@ -300,7 +304,7 @@
         
         $q= "select * from token where token='".$_POST["token"]."'";
 
-        $ris= mysqli_query($conn, $q)or die("token inesistente");
+        $ris= mysqli_query($conn, $q)or die();
         $num = mysqli_num_rows($ris);
 
         $riga=mysqli_fetch_assoc($ris);
@@ -338,7 +342,7 @@
                         if($_SESSION["user-type"] == 3){
                             $qpass="update aziende set passwordRef='" .password_hash($_POST["password1"],PASSWORD_DEFAULT). "' , lastpwdref='".date('Y-m-d H:i:s')."' where idaz='".$riga["rUser"]."'";
                         }
-                        echo $qpass . " \ ";
+                        //$_GET["pwdtemp"] = $qpass;
                         $qtoken="delete from token where token='" .$riga["token"]. "'";
                         echo $qtoken ." \ ";
                         
@@ -350,30 +354,35 @@
                         exit();
                     }else{
                         //password nuove diverse
-                        exit("password nuove diverse");
+                        header('Location:index.php?pag=errori_reset_pwd&err=3');
+                        //echo'<p class="p_error">Le password inserite sono diverse.</p>';
                     }
                 }else{
-                    exit("password temporanee diverse");
+                    header('Location:index.php?pag=errori_reset_pwd&err=4');
+                    //echo'<p class="p_error">La password temporanea inserita è sbagliata</p>';
                     //password temporanee diverse
                 }
             }else{
-                exit("sono passati troppi giorni sulla richiesta");
-                $qtoken="delete from token where token='" .$riga["token"]. "'";
-                mysqli_query($conn, $qtoken)or die("errore delete token");
+                header('Location:index.php?pag=errori_reset_pwd&err=5');
+                //exit("sono passati troppi giorni sulla richiesta");
+                //$qtoken="delete from token where token='" .$riga["token"]. "'";
+                //mysqli_query($conn, $qtoken)or die("errore delete token");
                //"sono passati troppi giorni"
             }
         }else if($num==0){
-            exit("token non trovato");
+            header('Location:index.php?pag=errori_reset_pwd&err=6');
+            //echo'<p class="p_error">Il token inserito è errato</p>';
             //"piu utenti"
         }
         else{
+            header('Location:index.php?pag=errori_reset_pwd&err=7');
             exit("numero token anomalo");
         }
     }
 
     // crea un stringa casuale
     function random_ascii_string($length) {
-                return substr(bin2hex(random_bytes($length)), 0, $length);
+        return substr(bin2hex(random_bytes($length)), 0, $length);
     }
 
     //funzione per l'aggiornamento della password
@@ -766,8 +775,6 @@
     <link rel="stylesheet" href="../css/posizioni.css">
     <link rel="stylesheet" href="../css/prenotazione.css">
     <link rel="stylesheet" href="../css/movepfp.css">
-    <link rel="stylesheet" href="../css/send_mail.css">
-    <link rel="stylesheet" href="../css/reset_password.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
@@ -837,6 +844,8 @@
             include("register.php");
         }else if($_GET["pag"] == "request_reset_pwd"){
             include("request_reset_pwd.php");
+        }else if($_GET["pag"] == "errori_reset_pwd"){
+            include("errori_reset_pwd.php");
         }else{
             include("login.php");
         }
