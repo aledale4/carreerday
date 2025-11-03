@@ -2,7 +2,7 @@
 
     <div class="navbar">
         <div class="left-side">
-            <img src="../static/logo.svg" alt="" srcset="" class="logo">
+            <a href="index.php" class="logo"><img src="../static/logo.svg" alt="" srcset=""></a>
             <p>Portale Aziende</p>
         </div>
         <div class="middle-nav">

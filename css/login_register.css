@@ -1,14 +1,17 @@
 .center-body{
   display: flex;
-  align-items: center;
+  align-items: top;
   justify-content: center;
-  height: 100vh;
+  /*height: 100vh;*/
   width: 100vw;
 }
 
 .container{
   width: calc(100vw - 40px);
+  height: fit-content;
   margin: 20px;
+  padding-top: 100px;
+  padding-bottom: 100px;
   /* display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,13 +37,21 @@
   max-width: 400px;
 }
 
-.container .input-form input {
+.container .input-form input,.container .input-form select{
   border:none;
   border-radius: var(--buttons-border-radius);
   background-color: var(--secondary-color);
   width: calc(100% - 20px);
   height: 30px;
   padding-inline: 10px;
+}
+.container .input-form p{
+  display: flex;
+  align-items: center;
+  gap:10px
+}
+.container .input-form select{
+  width: 100%;
 }
 
 .container .input-form input[type="submit"]{

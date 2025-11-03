@@ -2,7 +2,7 @@
 <div class="home-container">
     <div class="navbar">
         <div class="left-side">
-            <img src="../static/logo.svg" alt="" srcset="" class="logo">
+            <a href="index.php" class="logo"><img src="../static/logo.svg" alt="" srcset=""></a>
             <p>Portale Studenti</p>
         </div>
     </div>
@@ -41,6 +41,7 @@
             <div class="side additional">
                 <h1>Dati Aggiuntivi</h1>
                 <div class="inputs">
+                    <input type="hidden" name="MAX_FILE_SIZE" value="5000000">
                     <p>Numero di Telefono:<input name="tel" type="tel" placeholder="Numero di Telefono" value="<?php echo $_SESSION["user"]["telStu"]?>" maxlength="16"></p>
                     <p>Località:<input name="loc" type="text" placeholder="Localita" value="<?php echo $_SESSION["user"]["locStu"]?>" maxlength="100"></p>
                     <p>Biografia:<textarea name="bio" maxlength="255" placeholder="Biografia"><?php echo $_SESSION["user"]["bioStu"]?></textarea></p>

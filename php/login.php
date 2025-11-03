@@ -65,7 +65,7 @@
             </form>
             <?php
             if ($_SESSION["user-type"] == 2 || $_SESSION["user-type"] == 3) {
-                echo '<a href="request_reset_pwd.php" class="a_pwd_dimenticata">Password dimenticata?</a>';
+                echo '<a href="index.php?pag=request_reset_pwd" class="a_pwd_dimenticata">Password dimenticata?</a>';
                 echo '<p class="change-action-link">Oppure <a href="index.php?pag=register">Registrati</a></p>';
             }
             ?>

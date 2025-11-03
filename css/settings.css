@@ -100,7 +100,7 @@
     object-fit: cover;
 }
 
-.card input {
+.card input, .card select {
     width: 50%;
     height: 30px;
     border:none;
@@ -108,6 +108,9 @@
     background-color: lightgrey;
     height: 30px;
     padding-inline: 10px;
+}
+.card select {
+    width: calc(50% + 20px);
 }
 .card .web-link{
     width: 400px;
