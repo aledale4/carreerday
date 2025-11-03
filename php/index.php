@@ -283,7 +283,7 @@
             
             $mitt="morganello76@gmail.com"; //mittente
             $ogg="Reset password Carreday";
-            $mess="Clicca su questo link per resettare a tua password : \nreset_pwd.php?token=" .$token . "\n Inserisci questa password provvisoria nel campo: Password provvisoria. \n" . $pwd_pro ; // link da inserire
+            $mess="Clicca su questo link per resettare a tua password : <br>reset_pwd.php?token=" .$token . "<br> Inserisci questa password provvisoria nel campo: Password provvisoria. <br>" . $pwd_random ; // link da inserire
             $header="From: ".$mitt."\r\nReply-To:".$mitt."\r\nContent-type: text/html; charset=utf-8\r\n";
             if(mail($_POST["email"], $ogg, $mess, $header)){ // destinatario , oggetto , messaggio , invio
                 header("Location:email_inviata.php");
