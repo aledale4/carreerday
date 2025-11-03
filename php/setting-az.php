@@ -163,16 +163,16 @@ $province = [
         <a href="index.php"><span class="material-symbols-outlined">arrow_back_ios_new</span></a>
         <p>Il tuo profilo</p>
     </div>
-    <form action="index.php" class="form-set" method="$_POST">
+    <form action="index.php" class="form-set" method="post">
         <div class="card">
             <div class="side">
                 <div class="img"><a href="index.php?pag=fotoprofilo"><?php include("defaultUser-pic.php")  ?></a></div>
                 <div class="inputs">
-                    <input type="hidden" name="pag" value="modifiche">
-                    <p>Ragione sociale: <input type="text" name="ragionesoc" id="" placeholder="Ragione sociale" value="<?php echo $_SESSION["user"]["ragsoc"]?>" maxlength="256" required></p>
+                    <input type="hidden" name="pag" value="edit_az">
+                    <p>Ragione sociale: <input type="text" name="ragsoc" id="" placeholder="Ragione sociale" value="<?php echo $_SESSION["user"]["ragsoc"]?>" maxlength="256" required></p>
                     <p>Indirizzo:<input type="text" name="ind" id="" placeholder="Indirizzo" value="<?php echo $_SESSION["user"]["ind"]?>" maxlength="256" required ></p>
                     <p>CAP:<input type="text" name="cap" id="" placeholder="CAP" value="<?php echo $_SESSION["user"]["cap"]?>" maxlength="5" required></p>
-                    <p>Località:<input type="text" Passwo name="loc" id="" placeholder="Località" value="<?php echo $_SESSION["user"]["loc"]?>" maxlength="30" required></p>
+                    <p>Località:<input type="text" name="loc" id="" placeholder="Località" value="<?php echo $_SESSION["user"]["loc"]?>" maxlength="30" required></p>
                     <p>Provincia 
                         <select name="provincia" id="provincia" required>
                             <?php foreach ($province as $regione => $lista): ?>
@@ -186,16 +186,16 @@ $province = [
                             <?php endforeach; ?>
                         </select>
                     </p>
-                    <p>P.iva<input type="text" name="pivs" id="" placeholder="p.iva" value="<?php echo $_SESSION["user"]["piva"]?>" maxlength="11" required></p>
+                    <p>P.iva<input type="text" name="piva" id="" placeholder="p.iva" value="<?php echo $_SESSION["user"]["piva"]?>" maxlength="11" required></p>
                 </div>
             </div>
             <div class="side additional">
                 <div class="inputs">
-                    <p>Nome referente:<input type="text" placeholder="Nome referente" value="<?php echo $_SESSION["user"]["nomeRef"]?>" maxlength="30"></p>
-                    <p>Cognome referente:<input type="text" placeholder="Cognome referente" value="<?php echo $_SESSION["user"]["cognomeRef"]?>" maxlength="30"></p>
-                    <p>Username:<input type="text" placeholder="Username" value="<?php echo $_SESSION["user"]["usernameRef"]?>" maxlength="30"></p>
+                    <p>Nome referente:<input name="nomeref" type="text" placeholder="Nome referente" value="<?php echo $_SESSION["user"]["nomeRef"]?>" maxlength="30"></p>
+                    <p>Cognome referente:<input name="cognomeref" type="text" placeholder="Cognome referente" value="<?php echo $_SESSION["user"]["cognomeRef"]?>" maxlength="30"></p>
+                    <p>Username:<input type="text" name="username" placeholder="Username" value="<?php echo $_SESSION["user"]["usernameRef"]?>" maxlength="30"></p>
                     <p>Email:<input type="email" name="email" id="" value="<?php echo $_SESSION["user"]["email"]?>" maxlength="100"></p>
-                    <p>Sito web:<input type="text" name="web" id="" value="<?php echo $_SESSION["user"]["web"]?>" maxlength="60" class="web-link"></p>
+                    <p>Sito web:<input type="text" name="web" id="" value="<?php echo $_SESSION["user"]["web"]?>" maxlength="60"></p>
                 </div>
             </div>
         </div>
@@ -206,12 +206,12 @@ $province = [
                 
                 <div class="link-item">
                     <label>Password attuale:</label>
-                    <input type="password" maxlength="30">
+                    <input type="password" maxlength="30" name="password">
                 </div>
                 
                 <div class="link-item">
                     <label>Nuova password:</label>
-                    <input type="password" maxlength="30">
+                    <input type="password" maxlength="30" name="newpassword">
                 </div>
             </div>
             <div class="save-button">
@@ -220,4 +220,24 @@ $province = [
             </div>
         </div>
     </form>
+    <p class="error"><?php
+                if (isset($_GET["error"])){
+                    $error = filter_input(INPUT_GET,"error", FILTER_SANITIZE_NUMBER_INT);
+                    switch($error){
+                        case 1:
+                            echo "Username già usato";
+                            break;
+                        case 2:
+                            echo "Email già usata";
+                            break;
+                        case 3:
+                            echo "P.IVA già usata";
+                            break;
+                        case 6:
+                            echo "La password corrente è errata";
+                            break;
+                    }
+                }
+            ?></p>
+            <p class="success"><?php if(isset($_GET["success"])) echo "Operazioni eseguite con successo" ?></p>
 </div>
