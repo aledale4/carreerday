@@ -98,26 +98,34 @@
     //funzione di login studente
     if(isset($_POST["pag"]) && $_POST["pag"]=="login" && !isset($_SESSION["user"])){
         if (!isset($_POST["email"]) or !isset($_POST["password"])) header("Location: index.php?pag=login&error=2");
+
         $email=trim(mysqli_real_escape_string($conn, $_POST["email"]));
         $q= "select * from studenti where emailStu='".$email."'";
         $ris= mysqli_query($conn, $q)or die("errore durante la verifica dell'email");
         $num= mysqli_num_rows($ris);
+        $riga = mysqli_fetch_assoc($ris);
         if($num==1){
-            $riga = mysqli_fetch_assoc($ris);
             if(password_verify(trim($_POST["password"]),$riga["passwordStu"])){
                 //login effettuato con successo
-                $_SESSION["user"]=$riga;
-                $_SESSION["user-type"] = 2;
-                session_regenerate_id();
-                $date=date("Y-m-d");
-                $q="update studenti set lastLoginStu='".$date."' where idStu=".$_SESSION["user"]["idStu"];
-                $ris=mysqli_query($conn, $q)or die("errore durante il salvataggio della data");
-                if (isset($_SESSION["next-page"])){
-                    header("Location: ".$_SESSION["next-page"]);
+                if(verify_pwd_res($riga["idStu"])){
+                    $_SESSION["user"]=$riga;
+                    $_SESSION["user-type"] = 2;
+                    session_regenerate_id();
+                    $date=date("Y-m-d");
+                    $q="update studenti set lastLoginStu='".$date."' where idStu=".$_SESSION["user"]["idStu"];
+                    $ris=mysqli_query($conn, $q)or die("errore durante il salvataggio della data");
+                    if (isset($_SESSION["next-page"])){
+                        header("Location: ".$_SESSION["next-page"]);
+                    }else{
+                        header("Location: index.php");
+                    }
+                    exit();
                 }else{
-                    header("Location: index.php");
+                    $q="select * from token where ruser=".$riga["idStu"]. " order by idTok desc";
+                    $ris=mysqli_query($conn,$q);
+                    $riga=mysqli_fetch_assoc($ris);
+                    header("Location:index.php?pag=reset_pwd&token=" . $riga["token"]);
                 }
-                exit();
             }
             else{
                 //password errata
@@ -141,18 +149,25 @@
             $riga = mysqli_fetch_assoc($ris);
             if(password_verify(trim($_POST["password"]),$riga["passwordRef"])){
                 //login effettuato con successo
-                $_SESSION["user"]=$riga;
-                $_SESSION["user-type"] = 3;
-                session_regenerate_id();
-                $date=date("Y-m-d");
-                $q="update aziende set lastLoginRef='".$date."' where idAz=".$_SESSION["user"]["idAz"];
-                $ris=mysqli_query($conn, $q)or die("errore durante il salvataggio della data");
-                if (isset($_SESSION["next-page"])){
-                    header("Location: ".$_SESSION["next-page"]);
+                if(verify_pwd_res($riga["idAz"])){
+                    $_SESSION["user"]=$riga;
+                    $_SESSION["user-type"] = 3;
+                    session_regenerate_id();
+                    $date=date("Y-m-d");
+                    $q="update aziende set lastLoginRef='".$date."' where idAz=".$_SESSION["user"]["idAz"];
+                    $ris=mysqli_query($conn, $q)or die("errore durante il salvataggio della data");
+                    if (isset($_SESSION["next-page"])){
+                        header("Location: ".$_SESSION["next-page"]);
+                    }else{
+                        header("Location: index.php");
+                    }
+                    exit();
                 }else{
-                    header("Location: index.php");
+                    $q="select * from token where ruser=".$riga["idAz"]. " order by idTok desc";
+                    $ris=mysqli_query($conn,$q);
+                    $riga=mysqli_fetch_assoc($ris);
+                    header("Location:index.php?pag=reset_pwd&token=" . $riga["token"]);
                 }
-                exit();
             }
             else{
                 //password errata
@@ -305,7 +320,7 @@
                 // header("Location: index.php?pag=reset_ok");
                 exit("Email inviata con successo");
             }else{
-                header('Location:index.php?pag=errori_reset_pwd&err=1'); 
+                header('Location:index.php?pag=errori_reset_pwd&err=1&pwdtemp=' .$pwd_random); 
                 //echo'<p class="p_error">L&acuteemail non è stata inviata correttamente.</p>';
                 //email non inviata
             }
@@ -316,6 +331,11 @@
         } 
 
     }
+
+
+
+
+
     if(isset($_POST["pag"]) && $_POST["pag"] == "reset_pwd" && !isset($_GET["pag"]) &&  !isset($_SESSION["user"])){
         
         $q= "select * from token where token='".$_POST["token"]."'";
@@ -353,21 +373,24 @@
                         echo "entra pwd uguali \ ";
                         if($_SESSION["user-type"] == 2){
                             $qpass="update studenti set passwordstu='" .password_hash($_POST["password1"],PASSWORD_DEFAULT). "'  , lastpwdstu='".date('Y-m-d H:i:s')."' where idstu='".$riga["rUser"]."'";
-                            echo"entra usertype 2 \ ";
                         }
                         if($_SESSION["user-type"] == 3){
                             $qpass="update aziende set passwordRef='" .password_hash($_POST["password1"],PASSWORD_DEFAULT). "' , lastpwdref='".date('Y-m-d H:i:s')."' where idaz='".$riga["rUser"]."'";
                         }
                         //$_GET["pwdtemp"] = $qpass;
-                        $qtoken="delete from token where token='" .$riga["token"]. "'";
-                        
+                        $qtok="select * from token where ruser='" . $riga["rUser"] . "'";
+                        $ristoken=mysqli_query($conn,$qtok)or die ("morto");
+                        $num=mysqli_num_rows($ristoken);
+                        for($i=0;$i<$num;$i++){
+                            $qdeltoken="delete from token where ruser='" .$riga["rUser"]. "'";
+                            mysqli_query($conn, $qdeltoken)or die("errore delete token");
+                        }
                         echo $qtoken ." \ ";
-                        
                         mysqli_query($conn, $qpass)or die("errore updating");
-                        mysqli_query($conn, $qtoken)or die("errore delete token");
 
                         echo $qpass;
                         echo "password cambiata con successo";
+
                         header("Location:index.php?pag=login");
                         exit();
                     }else{
@@ -509,6 +532,21 @@
         $days= $today->diff($date);
         $days->format("%a giorni");
         return $days;
+    }
+
+    //funzione che vede se hai un reset pwd in corso
+    function verify_pwd_res($idut){
+        global $conn;
+        echo $idut;
+        $q="select * from token where ruser=" .$idut;
+        $ris=mysqli_query($conn,$q);
+        $num=mysqli_num_rows($ris);
+        echo"ci sono";
+        if($num != 0){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     function regenerate_qrcodes(){
