@@ -18,7 +18,7 @@
         <p class="error">
             <?php
             if (isset($_GET["error"]) && $_GET["error"] != "") {
-                switch ($_GET["err"]) {
+                switch ($_GET["error"]) {
                     case 3:
                         echo "Nuove password inserite diverse.";
                         break;
@@ -28,10 +28,21 @@
                     case 5:
                         echo "Sono passati troppi giorni dalla richiesta del cambio password.";
                         break;
+                    case 6:
+                        echo "Richiesta di reset non valida.";
+                        break;
                     default:
                         echo "Errore durante la richiesta di reset della password.";
                         break;
                     };
+                }
+            ?>
+        </p>
+        <p class="success">
+            <?php
+                if (isset($_GET['success']) && $_GET['success'] == 1) {
+                    echo "Password resettata con successo. Ora puoi effettuare il login con la tua nuova password.";
+                    echo '<br><a href="index.php" class="accedi_success">Vai alla pagina di login</a>';
                 }
             ?>
         </p>

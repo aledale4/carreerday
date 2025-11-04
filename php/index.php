@@ -342,8 +342,8 @@
 
 
     if(isset($_POST["pag"]) && $_POST["pag"] == "reset_pwd" && !isset($_GET["pag"]) &&  !isset($_SESSION["user"])){
-        
-        $q= "select * from token where token='".$_POST["token"]."'";
+        $token = trim(mysqli_real_escape_string($conn, $_POST["token"]));
+        $q= "select * from token where token='".$token."' order by idTok desc";
 
         $ris= mysqli_query($conn, $q)or die();
         $num = mysqli_num_rows($ris);
@@ -395,33 +395,32 @@
 
                         echo $qpass;
                         echo "password cambiata con successo";
-
-                        header("Location:index.php?pag=login");
+                        header('Location:index.php?pag=reset_pwd&success=1&token=' . $token);
                         exit();
                     }else{
                         //password nuove diverse
-                        header('Location:index.php?pag=reset_pwd&error=3');
+                        header('Location:index.php?pag=reset_pwd&error=3&token=' . $token);
                         //echo'<p class="p_error">Le password inserite sono diverse.</p>';
                     }
                 }else{
-                    header('Location:index.php?pag=reset_pwd&error=4');
+                    header('Location:index.php?pag=reset_pwd&error=4&token=' . $token);
                     //echo'<p class="p_error">La password temporanea inserita è sbagliata</p>';
                     //password temporanee diverse
                 }
             }else{
-                header('Location:index.php?pag=reset_pwd&error=5');
+                header('Location:index.php?pag=reset_pwd&error=5&token=' . $token);
                 //exit("sono passati troppi giorni sulla richiesta");
                 //$qtoken="delete from token where token='" .$riga["token"]. "'";
                 //mysqli_query($conn, $qtoken)or die("errore delete token");
                //"sono passati troppi giorni"
             }
         }else if($num==0){
-            header('Location:index.php?pag=reset_pwd&error=6');
+            header('Location:index.php?pag=reset_pwd&error=6&token=' . $token);
             //echo'<p class="p_error">Il token inserito è errato</p>';
             //"piu utenti"
         }
         else{
-            header('Location:index.php?pag=reset_pwd&error=7');
+            header('Location:index.php?pag=reset_pwd&error=7&token=' . $token);
             exit("numero token anomalo");
         }
     }
