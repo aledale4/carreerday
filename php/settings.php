@@ -2,7 +2,7 @@
 <div class="home-container">
     <div class="navbar">
         <div class="left-side">
-            <a href="index.php" class="logo"><img src="../static/logo.svg" alt="" srcset=""></a>
+            <a href="index.php" class="logo"><img src="../static/logo.png" alt="" srcset=""></a>
             <p>Portale Studenti</p>
         </div>
     </div>
@@ -88,10 +88,17 @@
                         case 3:
                             echo "File CV troppo grande (>5MB)";
                             break;
-                        case 3:
+                        case 4:
                             echo "File CV deve essere un PDF";
+                            break;
+                        case 5:
+                            echo "Errore nel salvataggio del curriculum";
+                            break;
+                        case 6:
+                            echo "La password corrente è errata";
                             break;
                     }
                 }
             ?></p>
+            <p class="success"><?php if(isset($_GET["success"])) echo "Operazioni eseguite con successo" ?></p>
 </div>

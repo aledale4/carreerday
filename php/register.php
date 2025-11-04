@@ -4,7 +4,7 @@
 <div class="center-body">
     <div class="container">
         <div class="logo-container">
-            <img src="../static/logo.svg" alt="">
+            <img src="../static/logo.png" alt="">
         </div>
         <div class="centered">
             <p class="user-type-title">Che utente sei?</p>
