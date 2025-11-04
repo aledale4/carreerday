@@ -50,7 +50,14 @@
                 $azienda = mysqli_fetch_assoc($azQ);
 
                 echo '<a class="element" href="index.php?pag=adesione&id='.$adesione["idAd"].'">';
-                echo '<img src="../static/default_azienda.svg" alt="">';
+                $file = "../static/pfp/azienda-pic/" . $azienda["idAz"] . ".jpeg";
+                if (file_exists($file)) {
+                    $data = file_get_contents($file); 
+                    $base64 = base64_encode($data); 
+                    echo '<img src="data:image/jpeg;base64,' . $base64. '" alt="">';
+                } else {
+                    echo '<img src="../static/default_azienda.svg" alt="">';
+                }
                 echo '<p>'.$azienda["ragsoc"].'</p>';
                 echo '</a>';
             }

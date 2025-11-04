@@ -203,7 +203,8 @@ section{
     left: 0;
     width: 100%;
     border-radius: var(--buttons-border-radius);
-    object-fit: cover;
+    height: 100%;
+    object-fit: scale-down;
 }
 
 .scrollable-container .element span{

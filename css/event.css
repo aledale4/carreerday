@@ -116,6 +116,7 @@
     border: 1px solid var(--primary-color);
     border-radius: var(--buttons-border-radius);
     padding: 10px;
+    aspect-ratio: 1.75;
 }
 
 .event-participants .participants .participant p{
@@ -125,6 +126,8 @@
 .event-participants .participants .participant img{
     background-color: lightgray;
     width: 100%;
+    height: 100%;
+    object-fit: scale-down;
     border-radius: var(--buttons-border-radius);
 }
 

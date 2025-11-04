@@ -97,12 +97,19 @@
                 <div class="participants">
                     <?php
                     while ($adesione = mysqli_fetch_assoc($adesioni_result)) {
-                        $q = "select ragsoc from aziende where idAz = " . $adesione["rAz"];
+                        $q = "select ragsoc, idAz from aziende where idAz = " . $adesione["rAz"];
                         $result = mysqli_query($conn, $q) or die("errore nella query");
                         $azienda = mysqli_fetch_assoc($result);
                         echo '<div class="participant">';
                         echo '<p>' . $azienda['ragsoc'] . '</p>';
-                        echo '<img src="../static/default_azienda.svg" alt="">';
+                        $file = "../static/pfp/azienda-pic/" . $azienda["idAz"] . ".jpeg";
+                        if (file_exists($file)) {
+                            $data = file_get_contents($file); 
+                            $base64 = base64_encode($data); 
+                            echo '<img src="data:image/jpeg;base64,' . $base64. '" alt="">';
+                        } else {
+                            echo '<img src="../static/default_azienda.svg" alt="">';
+                        }
                         echo '</div>';
                     }
                     ?>
