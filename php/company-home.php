@@ -48,7 +48,7 @@
                 $event = mysqli_query($conn, $q2) or die("errore nella query");
                 $eventRow = mysqli_fetch_assoc($event);
                 echo '<a class="element" href="index.php?pag=event&id=' . $eventRow["idCd"] . '">';
-                echo '<img src="../static/pfp/default_evento.svg" alt="">';
+                echo '<img src="../static/default_evento.svg" alt="">';
                 echo '<p>' . $eventRow["nameCd"] . '</p>';
                 echo '</a>';
             }
