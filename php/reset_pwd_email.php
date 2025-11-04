@@ -56,7 +56,7 @@ function generateResetPasswordEmail($temp_password, $reset_link) {
         <p>Inserisci questa password temporanea quando ti sarà richiesto:</p>
         <p><strong><?php echo $temp_password; ?></strong></p>
         <p>Per reimpostare la tua password, clicca sul link sottostante:</p>
-        <a target="_blank" href="https://careerday.altervista.org/php/index.php?pag=reset_pwd&token<?php echo $reset_link; ?>">RESET PASSWORD</a>
+        <a target="_blank" href="https://careerday.altervista.org/php/index.php?pag=reset_pwd&token=<?php echo $reset_link; ?>">RESET PASSWORD</a>
         <p>Se non hai richiesto il reset della password, ignora questa email.</p>
         <p>Grazie,<br>Il team di Career Day</p>
     </div>
