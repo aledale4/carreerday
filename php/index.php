@@ -118,23 +118,26 @@
                         header("Location: ".$_SESSION["next-page"]);
                     }else{
                         header("Location: index.php");
+                        exit();
                     }
-                    exit();
                 }else{
                     $q="select * from token where ruser=".$riga["idStu"]. " order by idTok desc";
                     $ris=mysqli_query($conn,$q);
                     $riga=mysqli_fetch_assoc($ris);
                     header("Location:index.php?pag=reset_pwd&token=" . $riga["token"]);
+                    exit();
                 }
             }
             else{
                 //password errata
                 header("Location: index.php?pag=login&error=0");
+                exit();
             }
         }
         else{
             //username errato
             header("Location: index.php?pag=login&error=1");
+            exit();
         }
     }
 
@@ -303,8 +306,6 @@
                 $q2="insert into token (ruser,token,user_type,created) values('".$riga["idAz"]."' , '".$token_random."' , '" .$_SESSION["user-type"]."','" .date('Y-m-d H:i:s')."')";
                 echo $q2;
             }
-            //echo $pwd_random . " \ ";
-            //echo date('d/m/Y H:i:s');
             mysqli_query($conn,$q) or die("errore cambio password");
             mysqli_query($conn,$q2) or die("errore cambio token: " . mysqli_error($conn));
             
