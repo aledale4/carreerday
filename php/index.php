@@ -116,8 +116,6 @@
                     $ris=mysqli_query($conn, $q)or die("errore durante il salvataggio della data");
                     if (isset($_SESSION["next-page"]) && $_SESSION["next-page"] != ""){
                         header("Location: ".$_SESSION["next-page"]);
-                        echo $_SESSION["next-page"];
-                        exit(" \ arrivato \ ");
                     }else{
                         header("Location: index.php");
                         exit();
@@ -308,8 +306,6 @@
                 $q2="insert into token (ruser,token,user_type,created) values('".$riga["idAz"]."' , '".$token_random."' , '" .$_SESSION["user-type"]."','" .date('Y-m-d H:i:s')."')";
                 echo $q2;
             }
-            //echo $pwd_random . " \ ";
-            //echo date('d/m/Y H:i:s');
             mysqli_query($conn,$q) or die("errore cambio password");
             mysqli_query($conn,$q2) or die("errore cambio token: " . mysqli_error($conn));
             
