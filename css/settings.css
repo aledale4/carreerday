@@ -100,7 +100,7 @@
     object-fit: cover;
 }
 
-.card input, .card select {
+.card p input, .card p select {
     width: 50%;
     height: fit-content;
     border:none;
@@ -168,8 +168,13 @@
     padding: 10px;
 }
 
-.card input[type="password"]{
+.card .password-container input{
     width: 100%;
+    height: fit-content;
+    border:none;
+    border-radius: var(--buttons-border-radius);
+    background-color: lightgrey;
+    padding: 10px;
 }
 
 .save-button{

@@ -17,7 +17,7 @@
         </div>
     </div>
     <div class="title-bar">
-        <a href="index.php"><span class="material-symbols-outlined">arrow_back_ios_new</span></a>
+        <a href="index.php?pag=settings"><span class="material-symbols-outlined">arrow_back_ios_new</span></a>
         <p>Carica immagine profilo</p>
     </div>
 </div>
