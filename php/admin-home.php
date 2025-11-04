@@ -26,7 +26,7 @@
             $r = mysqli_query($conn, $q);
             while ($row = mysqli_fetch_assoc($r)) {
                 echo '<a  class="element"href="index.php?pag=event&id='.$row["idCd"].'">';
-                echo '<img src="../static/pfp/default_evento.svg" alt="logo evento">';
+                echo '<img src="../static/default_evento.svg" alt="logo evento">';
                 echo '<p>'.$row["nameCd"].'</p>';
                 echo '</a>';
             }

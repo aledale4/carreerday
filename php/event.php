@@ -113,7 +113,11 @@
         <?php
         if ($_SESSION["user-type"] == 3) {
             echo '<div class="event-qr">';
-            echo '<img src="../static/qrcodes/' . $ad["idAd"] . '.png">';
+            if (file_exists("../static/qrcodes/" .$ad["idAd"] .".png")) {
+                $data = file_get_contents("../static/qrcodes/" .$ad["idAd"] .".png"); 
+                $base64 = base64_encode($data); 
+                echo '<img src="data:image/png;base64,' . $base64. '" alt="">';
+            }
             echo '<form action="index.php">';
             echo '<input type="hidden" name="pag" value="download_qr">';
             echo '<input type="hidden" name="id" value="' . $ad["idAd"] . '">';

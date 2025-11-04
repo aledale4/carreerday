@@ -114,7 +114,7 @@
                     $date=date("Y-m-d");
                     $q="update studenti set lastLoginStu='".$date."' where idStu=".$_SESSION["user"]["idStu"];
                     $ris=mysqli_query($conn, $q)or die("errore durante il salvataggio della data");
-                    if (isset($_SESSION["next-page"])){
+                    if (isset($_SESSION["next-page"]) && $_SESSION["next-page"] != ""){
                         header("Location: ".$_SESSION["next-page"]);
                     }else{
                         header("Location: index.php");
@@ -156,7 +156,7 @@
                     $date=date("Y-m-d");
                     $q="update aziende set lastLoginRef='".$date."' where idAz=".$_SESSION["user"]["idAz"];
                     $ris=mysqli_query($conn, $q)or die("errore durante il salvataggio della data");
-                    if (isset($_SESSION["next-page"])){
+                    if (isset($_SESSION["next-page"]) && $_SESSION["next-page"] != ""){
                         header("Location: ".$_SESSION["next-page"]);
                     }else{
                         header("Location: index.php");
@@ -434,6 +434,7 @@
                 $campo1="passwordUt";
                 $campo2="lastPwdUt";
                 $campo3="idUt";
+                break;
             case 2:
                 $tabella="studenti";
                 $campo1="passwordStu";
