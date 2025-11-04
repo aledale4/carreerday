@@ -6,7 +6,8 @@
 }
 
 .posizioni-container .posizione{
-    border: 1px solid black;
+    border: 3px solid var(--primary-color);
+    background-color: lightgrey;
     border-radius: var(--buttons-border-radius);
     padding: 10px;
     
@@ -30,11 +31,17 @@
     padding: 10px;
     height: fit-content;
     width: calc(100% - 20px);
+    outline: none;
+    border: none;
 }
 
 .add-position-form input[type="submit"]{
     width: fit-content;
     margin: 0;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px;
 }
 
 .add-position-form textarea{
@@ -43,6 +50,11 @@
     height: 100px;
     resize: none;
     width: calc(100% - 20px);
+    outline: none;
+    border: none;
+}
+.add-position-form textarea:focus, .add-position-form input:focus{
+    border: 1px solid var(--primary-color);
 }
 
 .delete-position-form{
@@ -57,4 +69,8 @@
     margin: 0;
     border-radius: var(--buttons-border-radius);
     background-color: red;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px;
 }

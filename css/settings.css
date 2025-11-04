@@ -108,7 +108,7 @@
     background-color: lightgrey;
     padding: 10px;
 }
-.card select {
+.card p select {
     width: calc(50% + 20px);
 }
 .card .web-link{
