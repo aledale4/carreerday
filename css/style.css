@@ -88,10 +88,11 @@ main{
 }
 
 footer{
-  margin: 3rem;
+  padding: 3rem;
   width: calc(100% - 6rem);
   display: flex;
   justify-content: space-between;
+  background-color: var(--primary-color);
 }
 
 footer a{

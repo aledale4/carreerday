@@ -537,11 +537,11 @@
     //funzione che vede se hai un reset pwd in corso
     function verify_pwd_res($idut){
         global $conn;
-        echo $idut;
+        //echo $idut;
         $q="select * from token where ruser=" .$idut;
         $ris=mysqli_query($conn,$q);
         $num=mysqli_num_rows($ris);
-        echo"ci sono";
+        //echo"ci sono";
         if($num != 0){
             return false;
         }else{
