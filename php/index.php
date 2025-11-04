@@ -321,15 +321,16 @@
                 'Content-Type' => 'text/html; charset=utf-8'
             );
             if(mail($_POST["email"], "Reset password Carreday", $mess,$headers)){ // destinatario , oggetto , messaggio , invio
-                // header("Location: index.php?pag=reset_ok");
-                exit("Email inviata con successo");
+                header("Location: index.php?pag=request_reset_pwd&success=1");
+                // exit("Email inviata con successo");
             }else{
-                header('Location:index.php?pag=errori_reset_pwd&err=1&pwdtemp=' .$pwd_random); 
+                header('Location:index.php?pag=request_reset_pwd&error=1'); 
+                // header('Location:index.php?pag=errori_reset_pwd&err=1&pwdtemp=' .$pwd_random); 
                 //echo'<p class="p_error">L&acuteemail non è stata inviata correttamente.</p>';
                 //email non inviata
             }
         }else if ($num == 0 ){
-            header('Location:index.php?pag=errori_reset_pwd&err=2');
+            header('Location:index.php?pag=request_reset_pwd&error=2');
             //echo'<p class="p_error">L&acuteemail inserita non è stata registrata.</p>';
             // ce piu di un utente
         } 
@@ -399,28 +400,28 @@
                         exit();
                     }else{
                         //password nuove diverse
-                        header('Location:index.php?pag=errori_reset_pwd&err=3');
+                        header('Location:index.php?pag=reset_pwd&error=3');
                         //echo'<p class="p_error">Le password inserite sono diverse.</p>';
                     }
                 }else{
-                    header('Location:index.php?pag=errori_reset_pwd&err=4');
+                    header('Location:index.php?pag=reset_pwd&error=4');
                     //echo'<p class="p_error">La password temporanea inserita è sbagliata</p>';
                     //password temporanee diverse
                 }
             }else{
-                header('Location:index.php?pag=errori_reset_pwd&err=5');
+                header('Location:index.php?pag=reset_pwd&error=5');
                 //exit("sono passati troppi giorni sulla richiesta");
                 //$qtoken="delete from token where token='" .$riga["token"]. "'";
                 //mysqli_query($conn, $qtoken)or die("errore delete token");
                //"sono passati troppi giorni"
             }
         }else if($num==0){
-            header('Location:index.php?pag=errori_reset_pwd&err=6');
+            header('Location:index.php?pag=reset_pwd&error=6');
             //echo'<p class="p_error">Il token inserito è errato</p>';
             //"piu utenti"
         }
         else{
-            header('Location:index.php?pag=errori_reset_pwd&err=7');
+            header('Location:index.php?pag=reset_pwd&error=7');
             exit("numero token anomalo");
         }
     }
