@@ -44,6 +44,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+}
+
+.posizione-lavorativa p{
+    display: none;
+}
+.posizione-lavorativa p.selected{
+    display: inline-block
 }
 
 .posizione-lavorativa select{
