@@ -434,6 +434,7 @@
                 $campo1="passwordUt";
                 $campo2="lastPwdUt";
                 $campo3="idUt";
+                break;
             case 2:
                 $tabella="studenti";
                 $campo1="passwordStu";

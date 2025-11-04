@@ -25,7 +25,7 @@
             $r = mysqli_query($conn, $q) or die("Errore nella query");
             while ($row = mysqli_fetch_assoc($r)) {
                 echo '<a class="element" href="index.php?pag=event&id='.$row["idCd"].'">';
-                echo '<img src="../static/pfp/default_evento.svg" alt="">';
+                echo '<img src="../static/default_evento.svg" alt="">';
                 echo '<p>'.$row["nameCd"].'</p>';
                 echo '</a>';
             }
@@ -50,7 +50,7 @@
                 $azienda = mysqli_fetch_assoc($azQ);
 
                 echo '<a class="element" href="index.php?pag=adesione&id='.$adesione["idAd"].'">';
-                echo '<img src="../static/pfp/default_azienda.svg" alt="">';
+                echo '<img src="../static/default_azienda.svg" alt="">';
                 echo '<p>'.$azienda["ragsoc"].'</p>';
                 echo '</a>';
             }
