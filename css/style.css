@@ -9,7 +9,7 @@
   --buttons-border-radius: 10px;
 
   font-family: "Inter",sans-serif;
-  user-select: none;
+  /*user-select: none;*/
 }
 
 img{

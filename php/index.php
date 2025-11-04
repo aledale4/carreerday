@@ -116,25 +116,30 @@
                     $ris=mysqli_query($conn, $q)or die("errore durante il salvataggio della data");
                     if (isset($_SESSION["next-page"])){
                         header("Location: ".$_SESSION["next-page"]);
+                        echo $_SESSION["next-page"];
+                        exit(" \ arrivato \ ");
                     }else{
                         header("Location: index.php");
+                        exit();
                     }
-                    exit();
                 }else{
                     $q="select * from token where ruser=".$riga["idStu"]. " order by idTok desc";
                     $ris=mysqli_query($conn,$q);
                     $riga=mysqli_fetch_assoc($ris);
                     header("Location:index.php?pag=reset_pwd&token=" . $riga["token"]);
+                    exit();
                 }
             }
             else{
                 //password errata
                 header("Location: index.php?pag=login&error=0");
+                exit();
             }
         }
         else{
             //username errato
             header("Location: index.php?pag=login&error=1");
+            exit();
         }
     }
 

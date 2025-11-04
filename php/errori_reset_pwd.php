@@ -3,11 +3,10 @@
 if($_GET["err"] == 1){
     echo$_GET["pwdtemp"]; // da eliminare ______________________________________________________
 ?>
-<div class="container_errori">
-
+<div class="container_reset_pwd">
 <p class="riga">E-mail non inviata correttamente.</p>
 <a href="index.php" class="accedi_errori">Torna alla pagina di login</a>
-<div>
+</div>
 <?php    
 }
 ?>
@@ -19,10 +18,8 @@ if($_GET["err"] == 1){
 if($_GET["err"] == 2){
 ?>
 <div class="container_errori">
-<div class="container_errori">
 <p class="riga_errori">E-mail inserita non esistente.</p>
 <a href="index.php" class="accedi_errori">Torna alla pagina di login</a>
-</div>
 </div>
 <?php    
 }
