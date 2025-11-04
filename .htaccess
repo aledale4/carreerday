@@ -1,6 +1,12 @@
 RewriteEngine On
 RewriteBase /
 
+# --- Routing interno se il file o la directory non esistono ---
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /php/index.php [L,QSA]
+RewriteRule ^$ /php/index.php [R=302,L]
+
 # --- BLOCCA cartelle specifiche ---
 RewriteCond %{REQUEST_URI} ^/static/pfp/ [OR]
 RewriteCond %{REQUEST_URI} ^/static/qrcodes/
@@ -17,11 +23,7 @@ RewriteRule ^ - [L]
 # --- BLOCCA tutto il resto ---
 RewriteRule ^ - [F,L]
 
-# --- Routing interno se il file o la directory non esistono ---
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ /php/index.php [L,QSA]
-RewriteRule ^$ /php/index.php [R=301,L]
+
 
 # av:PHP-upload
 php_value upload_max_filesize 20M
