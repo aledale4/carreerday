@@ -5,6 +5,7 @@
     flex-direction: column;
     align-items: start;
     justify-content: start;
+    color:var(--text-color);
 }
 
 .navbar{
@@ -14,6 +15,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    color:var(--text-color);
 }
 
 .navbar .left-side{
@@ -195,6 +197,7 @@ section{
     align-items: end;
     justify-content: end;
     border: 1px solid var(--primary-color);
+    color:black;
 }
 
 .scrollable-container .element img{

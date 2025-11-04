@@ -102,12 +102,11 @@
 
 .card input, .card select {
     width: 50%;
-    height: 30px;
+    height: fit-content;
     border:none;
     border-radius: var(--buttons-border-radius);
     background-color: lightgrey;
-    height: 30px;
-    padding-inline: 10px;
+    padding: 10px;
 }
 .card select {
     width: calc(50% + 20px);

@@ -81,6 +81,7 @@ a{
   top: 20px;
   right: 20px;
   cursor: pointer;
+  color: var(--text-color)
 }
 
 main{
@@ -97,6 +98,7 @@ footer{
 
 footer a{
   text-decoration: underline;
+  color:black;
 }
 
 @media  screen and (max-width: 1000px) {
