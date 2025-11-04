@@ -311,11 +311,14 @@
             
             $mitt="no-reply@savoiacareerday.it"; //mittente
             $ogg="Reset password Carreday";
-            $mess="Clicca su questo link per resettare la tua password : \nhttps://careerday.altervista.org/php/index.php?pag=reset_pwd&token=" .$token_random . "\n Inserisci questa password provvisoria nel campo: " . $pwd_random ; // link da inserire
+            // $mess="Clicca su questo link per resettare la tua password : \nhttps://careerday.altervista.org/php/index.php?pag=reset_pwd&token=" .$token_random . "\n Inserisci questa password provvisoria nel campo: " . $pwd_random ; // link da inserire
+            include 'reset_pwd_email.php';
+            $mess = generateResetPasswordEmail($pwd_random, $token_random);
             $headers = array(
                 'From' => $mitt,
                 'Reply-To' => $mitt,
-                'X-Mailer' => 'PHP/' . phpversion()
+                'X-Mailer' => 'PHP/' . phpversion(),
+                'Content-Type' => 'text/html; charset=utf-8'
             );
             if(mail($_POST["email"], "Reset password Carreday", $mess,$headers)){ // destinatario , oggetto , messaggio , invio
                 // header("Location: index.php?pag=reset_ok");
