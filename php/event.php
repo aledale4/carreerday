@@ -103,6 +103,7 @@
                         echo '<div class="participant">';
                         echo '<p>' . $azienda['ragsoc'] . '</p>';
                         $file = "../static/pfp/azienda-pic/" . $azienda["idAz"] . ".jpeg";
+                        echo '<a href="index.php?pag=adesione&id='.$adesione["idAd"].'">';
                         if (file_exists($file)) {
                             $data = file_get_contents($file); 
                             $base64 = base64_encode($data); 
@@ -110,6 +111,7 @@
                         } else {
                             echo '<img src="../static/default_azienda.svg" alt="">';
                         }
+                        echo '</a>';
                         echo '</div>';
                     }
                     ?>

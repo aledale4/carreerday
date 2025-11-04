@@ -118,23 +118,26 @@
                         header("Location: ".$_SESSION["next-page"]);
                     }else{
                         header("Location: index.php");
+                        exit();
                     }
-                    exit();
                 }else{
                     $q="select * from token where ruser=".$riga["idStu"]. " order by idTok desc";
                     $ris=mysqli_query($conn,$q);
                     $riga=mysqli_fetch_assoc($ris);
                     header("Location:index.php?pag=reset_pwd&token=" . $riga["token"]);
+                    exit();
                 }
             }
             else{
                 //password errata
                 header("Location: index.php?pag=login&error=0");
+                exit();
             }
         }
         else{
             //username errato
             header("Location: index.php?pag=login&error=1");
+            exit();
         }
     }
 
@@ -303,8 +306,6 @@
                 $q2="insert into token (ruser,token,user_type,created) values('".$riga["idAz"]."' , '".$token_random."' , '" .$_SESSION["user-type"]."','" .date('Y-m-d H:i:s')."')";
                 echo $q2;
             }
-            //echo $pwd_random . " \ ";
-            //echo date('d/m/Y H:i:s');
             mysqli_query($conn,$q) or die("errore cambio password");
             mysqli_query($conn,$q2) or die("errore cambio token: " . mysqli_error($conn));
             
@@ -694,10 +695,15 @@
     }
     if(isset($_POST["pag"]) && $_POST["pag"]=="delete_position" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 3){
         $id = filter_input(INPUT_POST,"idPos", FILTER_SANITIZE_NUMBER_INT);
-        if(!$id) exit();
-        $q = "delete from posizioni where idPos = ".$id;
-        $result = mysqli_query($conn, $q) or die();
-        header("Location: index.php?pag=posizioni");
+        $q = "select * from prenotazioni where rPos = ".$id;
+        $ris = mysqli_query($conn, $q) or die("c'è stato un problema nel controllare le prenotazioni associate a questa posizione");
+        $num = mysqli_num_rows($ris);
+        if($num > 0){
+            if(!$id) exit();
+            $q = "delete from posizioni where idPos = ".$id;
+            $result = mysqli_query($conn, $q) or die();
+            header("Location: index.php?pag=posizioni");
+        }
     }
     if(isset($_POST["pag"]) && $_POST["pag"]=="add_position" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 3){
         $nome = trim(mysqli_real_escape_string($conn, $_POST["nomePos"]));
