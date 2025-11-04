@@ -1,15 +1,26 @@
 /*stylesheet principale*/
 :root {
   --primary-color: rgba(250,160,0,1);
-  --secondary-color: rgba(90,90,90,1);
+  --secondary-color: lightgrey;
   --text-color: rgb(0,0,0);
   --background-color: rgb(255,255,255);
   --text-size: 12px;
   --title-size: 18px;
   --buttons-border-radius: 10px;
+  --icon-color-1: rgb(100,100,100);
+  --icon-color-2: rgb(0,0,0);
 
   font-family: "Inter",sans-serif;
   user-select: none;
+}
+
+body.darkmode {
+  --primary-color: rgba(250,160,0,1);
+  --secondary-color: darkgrey;
+  --text-color: rgb(255,255,255);
+  --background-color: rgb(0,0,0);
+  --icon-color-1: rgb(155,155,155);
+  --icon-color-2: rgb(255,255,255);
 }
 
 img{
@@ -21,14 +32,8 @@ img{
   -ms-user-select: none;
 }
 
-body.darkmode {
-  --primary-color: rgba(250,160,0,1);
-  --secondary-color: rgba(165,165,165,1);
-  --text-color: rgb(255,255,255);
-  --background-color: rgb(0,0,0);
-}
-
 body {
+  background-color: var(--background-color);
   margin: 0;
   padding: 0;
   font-family: "inter";
@@ -71,15 +76,23 @@ a{
   'opsz' 24
 }
 
+.dark-mode-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
 main{
   flex:1;
 }
 
 footer{
-  margin: 3rem;
+  padding: 3rem;
   width: calc(100% - 6rem);
   display: flex;
   justify-content: space-between;
+  background-color: var(--primary-color);
 }
 
 footer a{
