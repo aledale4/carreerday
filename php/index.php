@@ -319,7 +319,7 @@
             );
             if(mail($_POST["email"], "Reset password Carreday", $mess,$headers)){ // destinatario , oggetto , messaggio , invio
                 // header("Location: index.php?pag=reset_ok");
-                exit("Email inviata con successo");
+                //exit("Email inviata con successo");
             }else{
                 header('Location:index.php?pag=errori_reset_pwd&err=1&pwdtemp=' .$pwd_random); 
                 //echo'<p class="p_error">L&acuteemail non è stata inviata correttamente.</p>';
