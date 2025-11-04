@@ -226,6 +226,16 @@ section{
     font-weight: 500;
     z-index: 1;
 }
+.scrollable-container .element.empty{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.scrollable-container .element.empty p{
+    margin:0;
+    font-size: 2rem;
+    cursor: default;
+}
 
 .logout{
     display: flex;

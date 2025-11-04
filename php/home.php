@@ -29,6 +29,9 @@
                 echo '<p>'.$row["nameCd"].'</p>';
                 echo '</a>';
             }
+            if (mysqli_num_rows($r) == 0) {
+                echo "<p class='element empty'>Non ancora ci sono eventi disponibili</p>";
+            }
         ?>
     </div>
 </section>
@@ -60,6 +63,9 @@
                 }
                 echo '<p>'.$azienda["ragsoc"].'</p>';
                 echo '</a>';
+            }
+            if (mysqli_num_rows($r) == 0) {
+                echo "<p class='element empty'>Non hai ancora prenotato colloqui.</p>";
             }
         ?>
     </div>
