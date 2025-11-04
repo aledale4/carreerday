@@ -695,10 +695,15 @@
     }
     if(isset($_POST["pag"]) && $_POST["pag"]=="delete_position" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 3){
         $id = filter_input(INPUT_POST,"idPos", FILTER_SANITIZE_NUMBER_INT);
-        if(!$id) exit();
-        $q = "delete from posizioni where idPos = ".$id;
-        $result = mysqli_query($conn, $q) or die();
-        header("Location: index.php?pag=posizioni");
+        $q = "select * from prenotazioni where rPos = ".$id;
+        $ris = mysqli_query($conn, $q) or die("c'è stato un problema nel controllare le prenotazioni associate a questa posizione");
+        $num = mysqli_num_rows($ris);
+        if($num > 0){
+            if(!$id) exit();
+            $q = "delete from posizioni where idPos = ".$id;
+            $result = mysqli_query($conn, $q) or die();
+            header("Location: index.php?pag=posizioni");
+        }
     }
     if(isset($_POST["pag"]) && $_POST["pag"]=="add_position" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 3){
         $nome = trim(mysqli_real_escape_string($conn, $_POST["nomePos"]));

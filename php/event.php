@@ -102,7 +102,7 @@
                         $azienda = mysqli_fetch_assoc($result);
                         echo '<div class="participant">';
                         echo '<p>' . $azienda['ragsoc'] . '</p>';
-                        echo '<img src="../static/default_azienda.svg" alt="">';
+                        echo '<a href="index.php?pag=adesione&id='.$adesione["idAd"].'"><img src="../static/pfp/default_azienda.svg" alt=""></a>';
                         echo '</div>';
                     }
                     ?>
