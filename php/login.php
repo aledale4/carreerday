@@ -1,3 +1,6 @@
+<div class="dark-mode-toggle">
+    <span class="material-symbols-outlined" id="dark_mode">dark_mode</span>
+</div>
 <div class="center-body">
     <div class="container">
         <div class="logo-container">
@@ -52,13 +55,13 @@
                     echo '<input type="email" name="email" id="" placeholder="Email" maxlength="100" required>';
                 }
                 ?>
-                <div class="password-container">
-                    <input type="password" name="password" id="password" placeholder="Password" required>
-                    <div class="occhio">
-                        <span class="material-symbols-outlined" id="tasto">visibility_off</span>
-                    </div>
+            <div class="password-container">
+                <input type="password" name="password" id="password" placeholder="Password" autocomplete="off" maxlength="30" required>
+                <div class="occhio">
+                    <span class="material-symbols-outlined" id="tasto">visibility_off</span>
                 </div>
-                <input type="submit" value="Accedi">
+            </div>
+            <input type="submit" value="Accedi">
             </form>
             <?php
             if ($_SESSION["user-type"] == 2 || $_SESSION["user-type"] == 3) {

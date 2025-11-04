@@ -22,7 +22,7 @@
                     <p>Email:<input type="email" name="email" id="" placeholder="Email" required value="<?php echo $_SESSION["user"]["emailStu"]?>" maxlength="100"></p>
                     <p>Password Esistente:
                         <div class="password-container">
-                            <input type="password" name="password" id="password" placeholder="Password">
+                            <input type="password" name="password" id="password" placeholder="Password" maxlength="30" autocomplete="off">
                             <div class="occhio">
                                 <span id="tasto" class="material-symbols-outlined">visibility_off</span>
                             </div>
@@ -30,7 +30,7 @@
                     </p>
                     <p>Nuova Password
                         <div class="password-container">
-                            <input type="password" name="newpassword" id="password2" placeholder="Nuova Password">
+                            <input type="password" name="newpassword" id="password2" placeholder="Nuova Password" maxlength="30" autocomplete="off">
                             <div class="occhio">
                                 <span id="tasto2" class="material-symbols-outlined">visibility_off</span>
                             </div>
