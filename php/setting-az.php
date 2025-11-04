@@ -206,12 +206,12 @@ $province = [
                 
                 <div class="link-item">
                     <label>Password attuale:</label>
-                    <input type="password" maxlength="30" name="password">
+                    <input type="password" maxlength="30" autocomplete="off" name="password">
                 </div>
                 
                 <div class="link-item">
                     <label>Nuova password:</label>
-                    <input type="password" maxlength="30" name="newpassword">
+                    <input type="password" maxlength="30" autocomplete="off" name="newpassword">
                 </div>
             </div>
             <div class="save-button">
