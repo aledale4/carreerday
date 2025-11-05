@@ -4,22 +4,22 @@
 <div class="center-body">
     <div class="container">
         <div class="logo-container">
-            <img src="../static/logo.png" alt="">
+            <a href="index.php"><img src="../static/logo.png" alt=""></a>
         </div>
         <div class="centered">
             <p class="user-type-title">Che utente sei?</p>
             <div class="user-type-select">
-                <a href="index.php?usertype=1">
+                <a href="index.php?pag=login&usertype=1">
                     <div class="user-type-button <?php echo $_SESSION["user-type"] == 1 ? "selected" : "" ?>">
                         <p>Admin</p>
                     </div>
                 </a>
-                <a href="index.php?usertype=2">
+                <a href="index.php?pag=login&usertype=2">
                     <div class="user-type-button <?php echo $_SESSION["user-type"] == 2 ? "selected" : "" ?>">
                         <p>Studente</p>
                     </div>
                 </a>
-                <a href="index.php?usertype=3">
+                <a href="index.php?pag=login&usertype=3">
                     <div class="user-type-button <?php echo $_SESSION["user-type"] == 3 ? "selected" : "" ?>">
                         <p>Azienda</p>
                     </div>
