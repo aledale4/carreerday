@@ -51,7 +51,8 @@
     display: none;
 }
 .posizione-lavorativa p.selected{
-    display: inline-block
+    display: inline-block;
+    padding-top: 20px;
 }
 
 .posizione-lavorativa select{
