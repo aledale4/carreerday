@@ -70,3 +70,8 @@
     gap: 10px;
     margin-bottom: 20px;
 }
+
+.container_form_send_mail .success{
+    text-align: center;
+    padding-top: 20px;
+}

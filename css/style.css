@@ -61,6 +61,10 @@ a{
   color: var(--text-color);
 }
 
+textarea{
+  font-family: "Inter",sans-serif;
+}
+
 .error{
   color: red;
 }
@@ -81,10 +85,12 @@ a{
   top: 20px;
   right: 20px;
   cursor: pointer;
+  color: var(--text-color)
 }
 
 main{
   flex:1;
+  display: flex;
 }
 
 footer{
@@ -97,4 +103,12 @@ footer{
 
 footer a{
   text-decoration: underline;
+  color:black;
+}
+
+@media  screen and (max-width: 1000px) {
+  footer{
+    flex-direction: column;
+    gap: 20px;
+  }
 }

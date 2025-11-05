@@ -52,6 +52,9 @@
                 echo '<p>' . $eventRow["nameCd"] . '</p>';
                 echo '</a>';
             }
+            if (mysqli_num_rows($r) == 0) {
+                echo "<p class='element empty'>Non ancora ci sono eventi disponibili</p>";
+            }
             ?>
         </div>
     </section>

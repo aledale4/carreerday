@@ -49,7 +49,7 @@
             <?php
                 while ($posizione = mysqli_fetch_assoc($result)){
                     echo '<div class="posizione">';
-                    echo '<p>'.$posizione['nomePos']."<p>";
+                    echo '<p><strong>'.$posizione['nomePos']."</strong><p>";
                     echo '<p>'.$posizione['descrizionePos']."<p>";
                     echo '<form action="index.php" method="post" class="delete-position-form">';
                     echo '<input type="hidden" name="pag" value="delete_position">';

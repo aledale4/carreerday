@@ -286,10 +286,10 @@
     if(isset($_POST["pag"]) && $_POST["pag"]=="request_reset_pwd" && !isset($_SESSION["user"])){
         $q="";
         if($_SESSION["user-type"]== 2){
-            $q= "select * from studenti where emailstu='".$_POST["email"]."'";
+            $q= "select * from studenti where emailstu='".trim(mysqli_real_escape_string($conn,$_POST["email"]))."'";
         }
         if($_SESSION["user-type"]== 3){
-            $q= "select * from aziende where email='".$_POST["email"]."'";
+            $q= "select * from aziende where email='".trim(mysqli_real_escape_string($conn,$_POST["email"]))."'";
         }
         $ris= mysqli_query($conn, $q)or die("queri don't work");
         $num = mysqli_num_rows($ris);
@@ -311,22 +311,26 @@
             
             $mitt="no-reply@savoiacareerday.it"; //mittente
             $ogg="Reset password Carreday";
-            $mess="Clicca su questo link per resettare la tua password : \nhttps://careerday.altervista.org/php/index.php?pag=reset_pwd&token=" .$token_random . "\n Inserisci questa password provvisoria nel campo: " . $pwd_random ; // link da inserire
+            // $mess="Clicca su questo link per resettare la tua password : \nhttps://careerday.altervista.org/php/index.php?pag=reset_pwd&token=" .$token_random . "\n Inserisci questa password provvisoria nel campo: " . $pwd_random ; // link da inserire
+            include 'reset_pwd_email.php';
+            $mess = generateResetPasswordEmail($pwd_random, $token_random);
             $headers = array(
                 'From' => $mitt,
                 'Reply-To' => $mitt,
-                'X-Mailer' => 'PHP/' . phpversion()
+                'X-Mailer' => 'PHP/' . phpversion(),
+                'Content-Type' => 'text/html; charset=utf-8'
             );
             if(mail($_POST["email"], "Reset password Carreday", $mess,$headers)){ // destinatario , oggetto , messaggio , invio
-                // header("Location: index.php?pag=reset_ok");
-                //exit("Email inviata con successo");
+                header("Location: index.php?pag=request_reset_pwd&success=1");
+                // exit("Email inviata con successo");
             }else{
-                header('Location:index.php?pag=errori_reset_pwd&err=1&pwdtemp=' .$pwd_random); 
+                header('Location:index.php?pag=request_reset_pwd&error=1'); 
+                // header('Location:index.php?pag=errori_reset_pwd&err=1&pwdtemp=' .$pwd_random); 
                 //echo'<p class="p_error">L&acuteemail non è stata inviata correttamente.</p>';
                 //email non inviata
             }
         }else if ($num == 0 ){
-            header('Location:index.php?pag=errori_reset_pwd&err=2');
+            header('Location:index.php?pag=request_reset_pwd&error=2');
             //echo'<p class="p_error">L&acuteemail inserita non è stata registrata.</p>';
             // ce piu di un utente
         } 
@@ -338,8 +342,8 @@
 
 
     if(isset($_POST["pag"]) && $_POST["pag"] == "reset_pwd" && !isset($_GET["pag"]) &&  !isset($_SESSION["user"])){
-        
-        $q= "select * from token where token='".$_POST["token"]."'";
+        $token = trim(mysqli_real_escape_string($conn, $_POST["token"]));
+        $q= "select * from token where token='".$token."' order by idTok desc";
 
         $ris= mysqli_query($conn, $q)or die();
         $num = mysqli_num_rows($ris);
@@ -391,33 +395,32 @@
 
                         echo $qpass;
                         echo "password cambiata con successo";
-
-                        header("Location:index.php?pag=login");
+                        header('Location:index.php?pag=reset_pwd&success=1&token=' . $token);
                         exit();
                     }else{
                         //password nuove diverse
-                        header('Location:index.php?pag=errori_reset_pwd&err=3');
+                        header('Location:index.php?pag=reset_pwd&error=3&token=' . $token);
                         //echo'<p class="p_error">Le password inserite sono diverse.</p>';
                     }
                 }else{
-                    header('Location:index.php?pag=errori_reset_pwd&err=4');
+                    header('Location:index.php?pag=reset_pwd&error=4&token=' . $token);
                     //echo'<p class="p_error">La password temporanea inserita è sbagliata</p>';
                     //password temporanee diverse
                 }
             }else{
-                header('Location:index.php?pag=errori_reset_pwd&err=5');
+                header('Location:index.php?pag=reset_pwd&error=5&token=' . $token);
                 //exit("sono passati troppi giorni sulla richiesta");
                 //$qtoken="delete from token where token='" .$riga["token"]. "'";
                 //mysqli_query($conn, $qtoken)or die("errore delete token");
                //"sono passati troppi giorni"
             }
         }else if($num==0){
-            header('Location:index.php?pag=errori_reset_pwd&err=6');
+            header('Location:index.php?pag=reset_pwd&error=6&token=' . $token);
             //echo'<p class="p_error">Il token inserito è errato</p>';
             //"piu utenti"
         }
         else{
-            header('Location:index.php?pag=errori_reset_pwd&err=7');
+            header('Location:index.php?pag=reset_pwd&error=7&token=' . $token);
             exit("numero token anomalo");
         }
     }
@@ -671,7 +674,7 @@
             $q ="update prenotazioni set completed = 0 where idPren = ".$id;
         }
         $result = mysqli_query($conn, $q) or die("errore nella query");
-        header("Location: index.php?pag=colloqui");
+        header("Location: index.php?pag=colloqui&selected=".$id);
     }
     if(isset($_POST["pag"]) && $_POST["pag"]=="remove_adesione" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 1){
         $id = filter_input(INPUT_POST,"idAd", FILTER_SANITIZE_NUMBER_INT);
@@ -884,6 +887,32 @@
         }
         $result = mysqli_query($conn, $q) or die("errore nella query");
         header("Location: index.php?pag=event&id=".$eventId);
+    }
+    if(isset($_POST["pag"]) && $_POST["pag"]=="commPren" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 3){
+        if (!isset($_POST["id"]) || !isset($_POST["feedback"])){
+            header("Location: index.php?pag=colloqui&error=1");
+            exit();
+        }
+        $id = trim(mysqli_real_escape_string($conn, $_POST["id"]));
+        $feedback = trim(mysqli_real_escape_string($conn, $_POST["feedback"]));
+        if(strlen($feedback) > 255){
+            header("Location: index.php?pag=colloqui&error=1");
+            exit();
+        }
+        $q = "select * from prenotazioni inner join adesioni on prenotazioni.rAd = adesioni.idAd where idPren = ".$id;
+        $res = mysqli_query($conn, $q) or die();
+        if (mysqli_num_rows($res) == 0) {
+            header("Location: index.php?pag=colloqui&error=1");
+            exit();
+        }
+        $prenotazione = mysqli_fetch_assoc($res);
+        if ($prenotazione["rAz"] != $_SESSION["user"]["idAz"]){
+            header("Location: index.php?pag=colloqui&error=1");
+            exit();
+        }
+        $q = "UPDATE prenotazioni SET commPren = '".$feedback."' where idPren = ".$id;
+        $res = mysqli_query($conn, $q) or die();
+        header("Location: index.php?pag=colloqui&selected=".$id);
     }
 ?>
 
