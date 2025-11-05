@@ -674,7 +674,7 @@
             $q ="update prenotazioni set completed = 0 where idPren = ".$id;
         }
         $result = mysqli_query($conn, $q) or die("errore nella query");
-        header("Location: index.php?pag=colloqui");
+        header("Location: index.php?pag=colloqui&selected=".$id);
     }
     if(isset($_POST["pag"]) && $_POST["pag"]=="remove_adesione" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 1){
         $id = filter_input(INPUT_POST,"idAd", FILTER_SANITIZE_NUMBER_INT);
@@ -887,6 +887,32 @@
         }
         $result = mysqli_query($conn, $q) or die("errore nella query");
         header("Location: index.php?pag=event&id=".$eventId);
+    }
+    if(isset($_POST["pag"]) && $_POST["pag"]=="commPren" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 3){
+        if (!isset($_POST["id"]) || !isset($_POST["feedback"])){
+            header("Location: index.php?pag=colloqui&error=1");
+            exit();
+        }
+        $id = trim(mysqli_real_escape_string($conn, $_POST["id"]));
+        $feedback = trim(mysqli_real_escape_string($conn, $_POST["feedback"]));
+        if(strlen($feedback) > 255){
+            header("Location: index.php?pag=colloqui&error=1");
+            exit();
+        }
+        $q = "select * from prenotazioni inner join adesioni on prenotazioni.rAd = adesioni.idAd where idPren = ".$id;
+        $res = mysqli_query($conn, $q) or die();
+        if (mysqli_num_rows($res) == 0) {
+            header("Location: index.php?pag=colloqui&error=1");
+            exit();
+        }
+        $prenotazione = mysqli_fetch_assoc($res);
+        if ($prenotazione["rAz"] != $_SESSION["user"]["idAz"]){
+            header("Location: index.php?pag=colloqui&error=1");
+            exit();
+        }
+        $q = "UPDATE prenotazioni SET commPren = '".$feedback."' where idPren = ".$id;
+        $res = mysqli_query($conn, $q) or die();
+        header("Location: index.php?pag=colloqui&selected=".$id);
     }
 ?>
 

@@ -68,7 +68,7 @@
                         if (mysqli_num_rows($posPren) != 0){
                             $pos = mysqli_fetch_assoc($posPren);
                         }
-                        echo "<tr class='".($prenotazione["completed"]==1?"checked":"")."'><td>";
+                        echo "<tr class='".($prenotazione["completed"]==1?"checked":"")." ".($_GET["selected"]==$prenotazione["idPren"]?"selected":"")."'><td>";
                         echo "<form action='index.php' method='post'>";
                         echo '<input type="hidden" name="id" value="'.$prenotazione["idPren"].'">';
                         echo '<input type="hidden" name="pag" value="update_prenotazione">';
@@ -86,13 +86,21 @@
             <div class="overview">
                 <button class="backbt" onclick="back()"><span class="material-symbols-outlined">arrow_back_ios_new</span></button>
                 <?php
-                    mysqli_data_seek($rPren, 0);
+                $q = "select * from adesioni where rAz = ".$_SESSION["user"]["idAz"];
+                $r = mysqli_query($conn, $q);
+                while ($adesione = mysqli_fetch_assoc($r)) {
+                    $qEv = "select * from career_day where idCd = ".$adesione["rCd"];
+                    $rEvPren = mysqli_query($conn, $qEv) or die();
+                    if (mysqli_num_rows($rEvPren) == 0) exit();
+                    $q2 = "select * from prenotazioni where rAd=".$adesione["idAd"]." order by idPren";;
+                    $rPren = mysqli_query($conn, $q2) or die();
+                    $evento = mysqli_fetch_assoc($rEvPren);
                     while ($prenotazione = mysqli_fetch_assoc($rPren)) {
                         $qStu = "select * from studenti where idStu = ".$prenotazione["rStu"];
                         $rStu = mysqli_query($conn, $qStu) or die();
                         if (mysqli_num_rows($rStu) == 0) continue;
                         $stu = mysqli_fetch_assoc($rStu);
-                        echo "<div class='info-stu' id='".$prenotazione["idPren"]."'>";
+                        echo "<div class='info-stu"." ".($_GET["selected"]==$prenotazione["idPren"]?"expanded":"")."' id='".$prenotazione["idPren"]."'>";
                         $file = '../static/pfp/studente-pic/' . $stu["idStu"] . '.jpeg';
                         if (file_exists($file)) {
                             $data = file_get_contents($file); 
@@ -117,9 +125,18 @@
                         echo "<p>Biografia: <span>".$stu["bioStu"]."</span></p>";
                         echo "<br>";
                         echo "<p>CV: ".(file_exists("../private/cv/".$stu["idStu"].".pdf")?("<a href='index.php?pag=viewcv&id=".$stu["idStu"]."'>Apri</a>"):"<a>No CV</a>")."</p>";
+                        echo "<br>";
+                        echo "<p>Aggiungi una nota relativa al colloquio:</p>";
+                        echo "<form action='index.php' method='post' class='feedbackForm'>";
+                        echo "<input type='hidden' name='pag' value='commPren'>";
+                        echo "<input type='hidden' name='id' value='".$prenotazione["idPren"]."'>";
+                        echo "<textarea placeholder=\"Inserisci un commento relativo al colloquio con l'alunno\" maxlength='255' name='feedback'>".$prenotazione["commPren"]."</textarea>";
+                        echo "<input type='submit' value='Salva'>";
+                        echo "</form>";
                         echo "</div>";
                         echo "</div>";
                     }
+                }
                 ?>
                 <p class="hint">Premi sul nome di uno studente per visualizzarne i dati</p>
             </div>

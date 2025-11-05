@@ -61,6 +61,10 @@ a{
   color: var(--text-color);
 }
 
+textarea{
+  font-family: "Inter",sans-serif;
+}
+
 .error{
   color: red;
 }
