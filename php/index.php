@@ -932,7 +932,7 @@
     <link rel="stylesheet" href="../css/new_edit_event.css">
     <link rel="stylesheet" href="../css/settings.css">
     <link rel="stylesheet" href="../css/send_mail.css">
-    <link rel="stylesheet" href="../css/reset_password  .css">
+    <link rel="stylesheet" href="../css/reset_password.css">
     <link rel="stylesheet" href="../css/colloqui.css">
     <link rel="stylesheet" href="../css/posizioni.css">
     <link rel="stylesheet" href="../css/prenotazione.css">

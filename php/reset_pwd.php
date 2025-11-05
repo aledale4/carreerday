@@ -4,17 +4,21 @@
         Reset Password
     </h1>
     <div class="form_container_reset_pwd">
-        <form action="index.php" method="post" class="form_reset_pwd">
-            <p>Password Temporanea</p>
-            <input type="password" id="password" name="password_temp" placeholder="Password ricevuta nell'email" maxlength="32" required>
-            <p>Inserisci una password:</p>
-            <input type="password" id="password" name="password1" placeholder="La tua nuova password" required>
-            <p>Inserisci di nuovo la password:</p>
-            <input type="password" id="password-confirm" name="password2" placeholder="La tua nuova password" required>
-            <input type="hidden" name="pag" value="reset_pwd">
-            <input type="hidden" name="token" value="<?php echo $_GET["token"]; ?>">
-            <input type="submit" value="Reset Password">
-        </form>
+        <?php 
+        if (!isset($_GET["success"]) || $_GET["success"] !="1"){
+            echo '<form action="index.php" method="post" class="form_reset_pwd">';
+            echo '    <p>Password Temporanea</p>';
+            echo '    <input type="password" id="password" name="password_temp" placeholder="Password ricevuta nell\'email" maxlength="32" required>';
+            echo '    <p>Inserisci una password:</p>';
+            echo '    <input type="password" id="password" name="password1" placeholder="La tua nuova password" required>';
+            echo '    <p>Inserisci di nuovo la password:</p>';
+            echo '    <input type="password" id="password-confirm" name="password2" placeholder="La tua nuova password" required>';
+            echo '    <input type="hidden" name="pag" value="reset_pwd">';
+            echo '    <input type="hidden" name="token" value="<?php echo $_GET["token"]; ?>">';
+            echo '    <input type="submit" value="Reset Password">';
+            echo '</form>';
+        }
+        ?>
         <p class="error">
             <?php
             if (isset($_GET["error"]) && $_GET["error"] != "") {
