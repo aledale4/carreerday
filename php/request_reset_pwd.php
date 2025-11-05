@@ -26,6 +26,9 @@
                         case 2:
                             echo "Email inserita non esistente.";
                             break;
+                        case 3:
+                            echo "Account eliminato con successo";
+                            break;
                         default:
                             echo "Errore durante la richiesta di reset della password.";
                             break;
