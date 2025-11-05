@@ -19,6 +19,12 @@
         session_destroy();
         header("Location: index.php");
     }
+
+    if(isset($_GET["pag"]) && $_GET["pag"]=="eliminaut" && isset($_SESSION["user"])){
+        elimina_utente($_SESSION["user"],$_SESSION["user-type"]);
+        header('Location:index.php?pag=request_reset_pwd&error=3');
+    }
+
     if(isset($_GET["pag"]) && $_GET["pag"] == "download_qr" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 3){
         $id = filter_input(INPUT_GET,"id", FILTER_SANITIZE_NUMBER_INT);
         $q = "select * from adesioni where idAd = ".$id;
@@ -105,9 +111,9 @@
         $num= mysqli_num_rows($ris);
         $riga = mysqli_fetch_assoc($ris);
         if($num==1){
-            if(password_verify(trim($_POST["password"]),$riga["passwordStu"])){
+            if(verify_pwd_res($riga["idStu"] , 2)){
+                if(password_verify(trim($_POST["password"]),$riga["passwordStu"])){
                 //login effettuato con successo
-                if(verify_pwd_res($riga["idStu"])){
                     $_SESSION["user"]=$riga;
                     $_SESSION["user-type"] = 2;
                     session_regenerate_id();
@@ -121,16 +127,16 @@
                         exit();
                     }
                 }else{
-                    $q="select * from token where ruser=".$riga["idStu"]. " order by idTok desc";
-                    $ris=mysqli_query($conn,$q);
-                    $riga=mysqli_fetch_assoc($ris);
-                    header("Location:index.php?pag=reset_pwd&token=" . $riga["token"]);
+                    //password errata
+                    header("Location: index.php?pag=login&error=0");
                     exit();
                 }
             }
             else{
-                //password errata
-                header("Location: index.php?pag=login&error=0");
+                $q="select * from token where ruser=".$riga["idStu"]. " and user_type = 2 order by idTok desc";
+                $ris=mysqli_query($conn,$q);
+                $riga=mysqli_fetch_assoc($ris);
+                header("Location:index.php?pag=reset_pwd&token=" . $riga["token"]);
                 exit();
             }
         }
@@ -150,9 +156,9 @@
         $num= mysqli_num_rows($ris);
         if($num==1){
             $riga = mysqli_fetch_assoc($ris);
-            if(password_verify(trim($_POST["password"]),$riga["passwordRef"])){
+            if(verify_pwd_res($riga["idAz"], 3)){
+                if(password_verify(trim($_POST["password"]),$riga["passwordRef"])){
                 //login effettuato con successo
-                if(verify_pwd_res($riga["idAz"])){
                     $_SESSION["user"]=$riga;
                     $_SESSION["user-type"] = 3;
                     session_regenerate_id();
@@ -166,20 +172,22 @@
                     }
                     exit();
                 }else{
-                    $q="select * from token where ruser=".$riga["idAz"]. " order by idTok desc";
-                    $ris=mysqli_query($conn,$q);
-                    $riga=mysqli_fetch_assoc($ris);
-                    header("Location:index.php?pag=reset_pwd&token=" . $riga["token"]);
+                    //password errata
+                    header("Location: index.php?pag=login&error=0");
                 }
             }
             else{
-                //password errata
-                header("Location: index.php?pag=login&error=0");
+                $q="select * from token where ruser=".$riga["idAz"]. " and user_type = 3 order by idTok desc";
+                $ris=mysqli_query($conn,$q);
+                $riga=mysqli_fetch_assoc($ris);
+                header("Location:index.php?pag=reset_pwd&token=" . $riga["token"]);
+                exit();
             }
         }
         else{
             //username errato
             header("Location: index.php?pag=login&error=1");
+            exit();
         }
     }
 
@@ -304,7 +312,7 @@
             if($_SESSION["user-type"] == 3){
                 $q="update aziende set passwordRef = '".password_hash($pwd_random,PASSWORD_DEFAULT). "' where idAz='" . $riga["idAz"]. "'";
                 $q2="insert into token (ruser,token,user_type,created) values('".$riga["idAz"]."' , '".$token_random."' , '" .$_SESSION["user-type"]."','" .date('Y-m-d H:i:s')."')";
-                echo $q2;
+                //echo $q2;
             }
             mysqli_query($conn,$q) or die("errore cambio password");
             mysqli_query($conn,$q2) or die("errore cambio token: " . mysqli_error($conn));
@@ -324,8 +332,8 @@
                 header("Location: index.php?pag=request_reset_pwd&success=1");
                 // exit("Email inviata con successo");
             }else{
-                header('Location:index.php?pag=request_reset_pwd&error=1'); 
-                // header('Location:index.php?pag=errori_reset_pwd&err=1&pwdtemp=' .$pwd_random); 
+                //header('Location:index.php?pag=request_reset_pwd&error=1'); 
+                header('Location:index.php?pag=errori_reset_pwd&err=1&pwdtemp=' .$pwd_random); 
                 //echo'<p class="p_error">L&acuteemail non è stata inviata correttamente.</p>';
                 //email non inviata
             }
@@ -354,47 +362,45 @@
         if($num == 1){
             if(days_counter($riga["created"]) <=2){ //per vedere se sono passati piu di 2 giorni
                 $tipopwd="";
-                if($_SESSION["user-type"] == 2){ // per vedere che tipo di utente è
+                if($riga["user_type"] == 2){ // per vedere che tipo di utente è
                     $q="select * from studenti where idStu = '".$riga["rUser"]."'";
                     $tipo_pwd="passwordStu";
                 }
-                if($_SESSION["user-type"] == 3){
+                if($riga["user_type"] == 3){
                     $q="select * from aziende where idAz='".$riga["rUser"]."'";
                     $tipo_pwd="passwordRef";
                 }
                 $risut = mysqli_query($conn, $q)or die("utente inesistente ");
                 $rigaut=mysqli_fetch_assoc($risut);
-                echo " \ " . $_SESSION["user-type" ] . " \ ";
-                echo $riga["rUser"] .  " \ ";
-                echo $q . " \ ";
-                echo $rigaut . " \ ";
+                //echo " \ " . $_SESSION["user-type" ] . " \ ";
+                //echo $riga["rUser"] .  " \ ";
+                //echo $q . " \ ";
+                //echo $rigaut . " \ ";
                 $i = password_verify($_POST["password_temp"],$rigaut[$tipo_pwd]);
-                echo "pass temp: " . $_POST["password_temp"] . " \ ";
-                echo "tipo pwd:" .$rigaut[$tipo_pwd] . " \ ";
+                //echo "pass temp: " . $_POST["password_temp"] . " \ ";
+                //echo "tipo pwd:" .$rigaut[$tipo_pwd] . " \ ";
                 //echo $i ;
                 if(password_verify($_POST["password_temp"],$rigaut[$tipo_pwd])){ // per vedere se le password temporanee coincidono
-                    echo "pwd temp giuste";
+                    //echo "pwd temp giuste";
                     if($_POST["password1"]==$_POST["password2"]){ // per vedere se le password nuove coincidono
-                        echo "entra pwd uguali \ ";
-                        if($_SESSION["user-type"] == 2){
+                        //echo "entra pwd uguali \ ";
+                        if($riga["user_type"] == 2){
                             $qpass="update studenti set passwordstu='" .password_hash($_POST["password1"],PASSWORD_DEFAULT). "'  , lastpwdstu='".date('Y-m-d H:i:s')."' where idstu='".$riga["rUser"]."'";
                         }
-                        if($_SESSION["user-type"] == 3){
+                        if($riga["user_type"] == 3){
                             $qpass="update aziende set passwordRef='" .password_hash($_POST["password1"],PASSWORD_DEFAULT). "' , lastpwdref='".date('Y-m-d H:i:s')."' where idaz='".$riga["rUser"]."'";
                         }
                         //$_GET["pwdtemp"] = $qpass;
-                        $qtok="select * from token where ruser='" . $riga["rUser"] . "'";
+                        $qtok="select * from token where ruser='" . $riga["rUser"] . "' and user_type='" .$riga["user-type"] . "'";
                         $ristoken=mysqli_query($conn,$qtok)or die ("morto");
                         $num=mysqli_num_rows($ristoken);
-                        for($i=0;$i<$num;$i++){
-                            $qdeltoken="delete from token where ruser='" .$riga["rUser"]. "'";
-                            mysqli_query($conn, $qdeltoken)or die("errore delete token");
-                        }
-                        echo $qtoken ." \ ";
+                        $qdeltoken="delete from token where ruser='" .$riga["rUser"]. "'";
+                        mysqli_query($conn, $qdeltoken)or die("errore delete token");
+                        //echo $qtoken ." \ ";
                         mysqli_query($conn, $qpass)or die("errore updating");
 
-                        echo $qpass;
-                        echo "password cambiata con successo";
+                        //echo $qpass;
+                        //echo "password cambiata con successo";
                         header('Location:index.php?pag=reset_pwd&success=1&token=' . $token);
                         exit();
                     }else{
@@ -484,7 +490,7 @@
                 $campo1="idAz";
                 break;
             default:
-                echo "Si è verificato un errore durante il controllo dell'account";
+                //echo "Si è verificato un errore durante il controllo dell'account";
                 exit();
         }
     	global $conn;
@@ -540,10 +546,10 @@
     }
 
     //funzione che vede se hai un reset pwd in corso
-    function verify_pwd_res($idut){
+    function verify_pwd_res($idut,$u){
         global $conn;
         //echo $idut;
-        $q="select * from token where ruser=" .$idut;
+        $q="select * from token where ruser=" .$idut. " and user_type='" . $u . "'";
         $ris=mysqli_query($conn,$q);
         $num=mysqli_num_rows($ris);
         //echo"ci sono";
@@ -560,8 +566,8 @@
         global $env;
         $ris = mysqli_query($conn,$q);
         while ($adesione = mysqli_fetch_assoc($ris)){
-        $id_qr = $adesione["idAd"];
-        QRcode::png($env['BASE_URL']."/php/index.php?pag=adesione&id=".$id_qr, '../static/qrcodes/'.$id_qr.'.png', 'L', 16, 2);
+            $id_qr = $adesione["idAd"];
+            QRcode::png($env['BASE_URL']."/php/index.php?pag=adesione&id=".$id_qr, '../static/qrcodes/'.$id_qr.'.png', 'L', 16, 2);
         }
     }
 
@@ -582,6 +588,32 @@
         $res = mysqli_query($conn,$q) or die();
         $user_data = mysqli_fetch_assoc($res);
         $_SESSION["user"] = $user_data;
+    }
+    
+    
+    //fornisci un idutente e il suo usertye e elimina tutti i dati utente
+    function elimina_utente($user,$us_type){
+        global $conn;
+        if($us_type == 1){
+            $q = "delete * from admin where idUt='" .$user["idUt"]. "'";
+            if(file_exist("../static/pfp/admin-pic/" . $user["idUt"] .".jpeg")){
+                unlink("../static/pfp/admin-pic/" . $user["idUt"] .".jpeg");
+            }
+        }
+        if($us_type == 2){
+            $q = "delete * from studenti where idStu='" .$user["idStu"]. "'";
+            if (file_exist("../static/pfp/studente-pic/" .user["idStu"] .".jpeg")){
+                unlink("../static/pfp/studente-pic/" .user["idStu"] .".jpeg");
+            }
+        }
+        if($us_type == 3){
+            $q = "delete * from aziende where idAz='" .user["idAz"]. "'";
+            if(fyle_exist("../static/pfp/azienda-pic/" .user["idAz"] .".jpeg")){
+                unlink("../static/pfp/azienda-pic/" .user["idAz"] .".jpeg");
+            }
+        }
+        mysqli_query($conn,$q);
+        return;
     }
 
     if(isset($_POST["pag"]) && $_POST["pag"]=="new_event" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 1){
@@ -1014,12 +1046,14 @@
             include("errori_reset_pwd.php");
         }else if ($_GET["pag"] == "reset_pwd"){
             include ("reset_pwd.php");
+        }elseif($_GET["pag"] == "request_elut"){
+            include ("request_elut.php");
         }else{
             include("homepage.php");
             $_SESSION["next-page"] = $_SERVER['REQUEST_URI'];
         }
     }else{
-        include("homepage.php");
+        include("login.php"); // mettere homepage.php ebbast
         $_SESSION["next-page"] = "";
     }
     ?>

@@ -1,3 +1,7 @@
+<?php
+if(!isset($_GET['success']) || $_GET["success"] == ""){
+?>
+
 <div class="container_reset_pwd">
     <a href="index.php" class="logo"><img src="../static/logo.png" alt="" srcset="" ></a>
     <h1>
@@ -21,6 +25,7 @@
         ?>
         <p class="error">
             <?php
+            }
             if (isset($_GET["error"]) && $_GET["error"] != "") {
                 switch ($_GET["error"]) {
                     case 3:
