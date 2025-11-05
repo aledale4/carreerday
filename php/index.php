@@ -286,10 +286,10 @@
     if(isset($_POST["pag"]) && $_POST["pag"]=="request_reset_pwd" && !isset($_SESSION["user"])){
         $q="";
         if($_SESSION["user-type"]== 2){
-            $q= "select * from studenti where emailstu='".$_POST["email"]."'";
+            $q= "select * from studenti where emailstu='".trim(mysqli_real_escape_string($conn,$_POST["email"]))."'";
         }
         if($_SESSION["user-type"]== 3){
-            $q= "select * from aziende where email='".$_POST["email"]."'";
+            $q= "select * from aziende where email='".trim(mysqli_real_escape_string($conn,$_POST["email"]))."'";
         }
         $ris= mysqli_query($conn, $q)or die("queri don't work");
         $num = mysqli_num_rows($ris);
