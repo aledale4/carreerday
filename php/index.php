@@ -596,20 +596,20 @@
         global $conn;
         if($us_type == 1){
             $q = "delete * from admin where idUt='" .$user["idUt"]. "'";
-            if(file_exist("../static/pfp/admin-pic/" . $user["idUt"] .".jpeg")){
+            if(file_exists("../static/pfp/admin-pic/" . $user["idUt"] .".jpeg")){
                 unlink("../static/pfp/admin-pic/" . $user["idUt"] .".jpeg");
             }
         }
-        if($us_type == 2){
+        else if($us_type == 2){
             $q = "delete * from studenti where idStu='" .$user["idStu"]. "'";
-            if (file_exist("../static/pfp/studente-pic/" .user["idStu"] .".jpeg")){
-                unlink("../static/pfp/studente-pic/" .user["idStu"] .".jpeg");
+            if (file_exists("../static/pfp/studente-pic/" .$user["idStu"] .".jpeg")){
+                unlink("../static/pfp/studente-pic/" .$user["idStu"] .".jpeg");
             }
         }
-        if($us_type == 3){
-            $q = "delete * from aziende where idAz='" .user["idAz"]. "'";
-            if(fyle_exist("../static/pfp/azienda-pic/" .user["idAz"] .".jpeg")){
-                unlink("../static/pfp/azienda-pic/" .user["idAz"] .".jpeg");
+        else if($us_type == 3){
+            $q = "delete * from aziende where idAz='" .$user["idAz"]. "'";
+            if(file_exists("../static/pfp/azienda-pic/" .$user["idAz"] .".jpeg")){
+                unlink("../static/pfp/azienda-pic/" .$user["idAz"] .".jpeg");
             }
         }
         mysqli_query($conn,$q);
