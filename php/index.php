@@ -582,6 +582,23 @@
         $_SESSION["user"] = $user_data;
     }
 
+    function elimina_utente($idut,$us_type){
+        global $conn;
+        if($us_type == 1){
+            $q = "delete * from admin where idUt='" .$idut. "'";
+            unlink("../static/pfp/admin-pic/" .$idut .".jpeg");
+        }
+        if($us_type == 2){
+            $q = "delete * from studenti where idStu='" .$idut. "'";
+            unlink("../static/pfp/studente-pic/" .$idut .".jpeg");
+        }
+        if($us_type == 3){
+            $q = "delete * from aziende where idAz='" .$idut. "'";
+            unlink("../static/pfp/azienda-pic/" .$idut .".jpeg");
+        }
+        mysqli_query($conn,$q);
+    }
+
     if(isset($_POST["pag"]) && $_POST["pag"]=="new_event" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 1){
         $required = ["nome","descrizione","date","start_time","end_time","pos"];
         foreach($required as $r){
