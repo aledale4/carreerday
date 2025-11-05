@@ -86,6 +86,7 @@ a{
 
 main{
   flex:1;
+  display: flex;
 }
 
 footer{

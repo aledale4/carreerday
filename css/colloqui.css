@@ -2,31 +2,83 @@ tr.checked{
     text-decoration: line-through;
 }
 
+#colloquiPren {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 .colloqui {
     width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    gap: 10px;
 }
 .colloqui table{
     width: 100%;
     text-align: center;
-    background-color: black;
 }
 
 .colloqui table tr{
     width: 100%;
-    display: flex;
-    flex-direction: row;
+}
+
+.colloqui table tr.selected{
+    background-color: var(--primary-color);
+    border-radius: var(--buttons-border-radius);
 }
 
 .colloqui table td, .colloqui table th{
-    background-color: white;
-    display: flex;
-    justify-content: space-between;
-    width: 25%;
-    display: flex;
-    flex-direction: column;
     margin: 1px;
     padding: 5px;
     font-size: 0.8rem;
+    width: 100%;
+}
+.colloqui table td:nth-child(1),.colloqui table th:nth-child(1){
+    width: min-content;
+    border-bottom-left-radius: var(--buttons-border-radius);
+    border-top-left-radius: var(--buttons-border-radius);
+}
+.colloqui table td:nth-child(2),.colloqui table th:nth-child(2){
+    border-bottom-right-radius: var(--buttons-border-radius);
+    border-top-right-radius: var(--buttons-border-radius);
+}
+.colloqui table td span.stu-name{
+    color: black;
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+}
+
+.colloqui .elenco{
+    width: 20%;
+}
+
+.colloqui .overview{
+    flex: 1;
+    background-color: lightgray;
+    border-radius: var(--buttons-border-radius);
+    position: relative;
+}
+
+.colloqui .overview .hint{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    text-align: center;
+    width: 100%;
+}
+
+.colloqui .overview .info-stu img{
+    width: calc(20% + 2rem);
+    height: fit-content;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 100%;
+    background-color: white;
 }
 
 .evento-colloquio{
@@ -42,18 +94,26 @@ tr.checked{
 }
 
 .info-stu {
-    width: 100%;
+    position: relative;
+    display: none;
+    width: calc(100% - 4rem);
     text-align: left;
     font-size: 18px;
-    margin-top: 5px;
-    display: none;
+    padding: 2rem;
+    gap: 2rem;
+    background-color: lightgray;
+    border-radius: var(--buttons-border-radius);
+    z-index: 2;
+    flex-direction: row;
 }
-
 .info-stu.expanded {
-    display: block;
+    display: flex;
+}
+.info-stu .dati{
+    flex:1;
 }
 .info-stu p {
-    font-weight: 500;
+    font-weight: 300;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -68,11 +128,61 @@ tr.checked{
 }
 
 .info-stu p span {
-    font-weight: 400;
+    font-weight: 600;
+}
+
+.info-stu a {
+    /* color: var(--primary-color); */
+    text-decoration: underline;
+}
+
+.colloqui .overview .backbt{
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 20px;
+    padding: 0;
+    cursor: pointer;
+    z-index: 3;
+    width: fit-content;
+    height: fit-content;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+.colloqui .overview .backbt span{
+    padding: 0;
 }
 
 @media screen and (max-width: 1000px) {
     .stu-name button{
         display: none;
+    }
+    .colloqui .elenco{
+        width: 100%;
+    }
+    .colloqui .overview{
+        display: none;
+    }
+    .colloqui .overview.expanded{
+        display: block;
+    }
+    .colloqui .elenco.collapsed{
+        display: none;
+    }
+    .colloqui .overview .info-stu{
+        flex-direction: column;
+        align-items: center;
+    }
+    .colloqui .overview .info-stu .dati{
+        width: 100%;
+    }
+    .colloqui .overview .info-stu img{
+        width: 100%;
+        max-width: 200px;
+    }
+    .colloqui .overview .backbt{
+        display: block;
     }
 }
