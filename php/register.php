@@ -1,6 +1,6 @@
-<div class="dark-mode-toggle">
+<!-- <div class="dark-mode-toggle">
     <span class="material-symbols-outlined" id="dark_mode">dark_mode</span>
-</div>
+</div> -->
 <div class="center-body">
     <div class="container">
         <div class="logo-container">

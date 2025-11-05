@@ -1,19 +1,19 @@
 .prenotazione-container{
     width: 100%;
-    min-height: calc(100vh - 140px);
+    margin-top: 100px;
     display: flex;
     justify-content: center;
-    align-items: center;
 }
 
 .prenotazione{
     text-align: center;
     width: fit-content;
+    max-width: 500px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 2px solid var(--primary-color);
+    outline: 2px solid var(--primary-color);
     border-radius: var(--buttons-border-radius);
     padding: 30px;
 }
@@ -44,6 +44,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+}
+
+.posizione-lavorativa p{
+    display: none;
+}
+.posizione-lavorativa p.selected{
+    display: inline-block;
+    padding-top: 20px;
 }
 
 .posizione-lavorativa select{

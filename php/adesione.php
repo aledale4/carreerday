@@ -78,10 +78,26 @@
                     }
                     ?>
                 </select>
+                <?php
+                    mysqli_data_seek($resPosQ,0);
+                    mysqli_data_seek($resultCheck,0);
+                    $selected = mysqli_fetch_assoc($resPosQ)["idPos"];
+                    mysqli_data_seek($resPosQ,0);
+                    if ($already_signed) {
+                        $selected = mysqli_fetch_assoc($resultCheck)["rPos"];
+                    }
+                    while($position = mysqli_fetch_assoc($resPosQ)){
+                        if ($position["idPos"] == $selected){
+                            echo "<p class='selected'>".$position["descrizionePos"]."</p>\n";
+                        }else {
+                            echo "<p>".$position["descrizionePos"]."</p>\n";
+                        }
+                    }
+                ?>
             </div>
             <?php
                 if($already_signed) {
-                    echo "<p>Hai già prenotato un colloquio</p>";
+                    echo "<p class='success'>Hai già prenotato un colloquio</p>";
                     echo "<p>Progressivo prenotazione: #".$count."</p>";
                 }else if (!$enabled) echo "<p class='error'>Al momento non è possibile prenotare un colloquio</p>";
             ?>
@@ -89,3 +105,17 @@
         </form>
     </div>
 </div>
+
+<script>
+    const select = document.querySelector(".posizione-lavorativa select");
+    const descrizioni = document.querySelectorAll(".posizione-lavorativa p");
+
+    select.addEventListener("change", (e) => {
+        descrizioni.forEach((desc) => {
+            desc.classList.remove("selected");
+            if (desc.innerText === descrizioni[select.selectedIndex].innerText) {
+                desc.classList.add("selected");
+            }
+        });
+    });
+</script>

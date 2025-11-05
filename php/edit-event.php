@@ -77,7 +77,14 @@ $aziendeRes = mysqli_query($conn, $aziendeQ) or die();
                 $aziende[$azienda["idAz"]] = 1;
                 echo '<div class="participant">';
                 echo '<p>' . $azienda['ragsoc'] . '</p>';
-                echo '<img src="../static/default_azienda.svg" alt="">';
+                $file = "../static/pfp/azienda-pic/" . $azienda["idAz"] . ".jpeg";
+                if (file_exists($file)) {
+                    $data = file_get_contents($file); 
+                    $base64 = base64_encode($data); 
+                    echo '<img src="data:image/jpeg;base64,' . $base64. '" alt="">';
+                } else {
+                    echo '<img src="../static/default_azienda.svg" alt="">';
+                }
                 echo '<form action="index.php" method="post" class="delete-form">';
                 echo '<input type="hidden" name="pag" value="remove_adesione">';
                 echo '<input type="hidden" name="idAd" value="' . $adesione["idAd"] . '">';
@@ -92,7 +99,14 @@ $aziendeRes = mysqli_query($conn, $aziendeQ) or die();
                 echo $aziende[$azienda["idAz"]];
                 echo '<div class="participant">';
                 echo '<p>' . $azienda['ragsoc'] . '</p>';
-                echo '<img src="../static/default_azienda.svg" alt="">';
+                $file = "../static/pfp/azienda-pic/" . $azienda["idAz"] . ".jpeg";
+                if (file_exists($file)) {
+                    $data = file_get_contents($file); 
+                    $base64 = base64_encode($data); 
+                    echo '<img src="data:image/jpeg;base64,' . $base64. '" alt="">';
+                } else {
+                    echo '<img src="../static/default_azienda.svg" alt="">';
+                }
                 echo '<form action="index.php" method="post" class="add-form">';
                 echo '<input type="hidden" name="pag" value="add_adesione">';
                 echo '<input type="hidden" name="idEvento" value="' . $id . '">';

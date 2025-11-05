@@ -15,6 +15,11 @@
   align-items: center;
   justify-content: center; */
 }
+
+.container h1{
+  color: var(--text-color)
+}
+
 .container .logo-container{
   margin: auto;
   width: 90%;
@@ -54,7 +59,6 @@
 .container .input-form input[type="submit"]{
   background-color: var(--primary-color);
   border: none;
-  color: var(--text-color);
   font-weight: bold;
   cursor: pointer;
   border-radius: var(--buttons-border-radius);
@@ -70,6 +74,7 @@
   margin-bottom: 10px;
   font-size: 16px;
   font-weight: 400;
+  color: var(--text-color);
 }
 
 .container a{
@@ -116,6 +121,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  color: black
 }
 .user-type-select .user-type-button.selected{
   background-color: var(--primary-color);
@@ -131,7 +137,7 @@
 .user-type-select .user-type-button:hover{
   cursor: pointer;
   background-color: var(--primary-color);
-  color: var(--text-color);
+  color: black;
 }
 
 .user-type-select a:nth-child(1) .user-type-button{
