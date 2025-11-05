@@ -173,7 +173,7 @@ tr.checked{
     height: 100px;
 }
 .colloqui .overview .feedbackForm textarea:focus{
-    border: 1px solid var(--primary-color);
+    outline: 1px solid var(--primary-color);
 }
 .colloqui .overview .feedbackForm input[type="submit"]{
     border: none;

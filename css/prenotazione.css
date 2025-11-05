@@ -13,7 +13,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 2px solid var(--primary-color);
+    outline: 2px solid var(--primary-color);
     border-radius: var(--buttons-border-radius);
     padding: 30px;
 }

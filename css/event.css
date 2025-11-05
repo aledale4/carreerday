@@ -113,7 +113,7 @@
     margin-top: 20px;
     width: 30%;
     max-width: 400px;
-    border: 1px solid var(--primary-color);
+    outline: 1px solid var(--primary-color);
     border-radius: var(--buttons-border-radius);
     padding: 10px;
     aspect-ratio: 1.75;
