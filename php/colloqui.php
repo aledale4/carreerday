@@ -41,7 +41,7 @@
     <section id="colloquiPren">
         <h1>Colloqui Prenotati</h1>
         <div class="colloqui">
-            <div class="elenco">
+            <div class="elenco <?php echo (isset($_GET["selected"])&&$_GET["selected"]!='')?'collapsed':''?>">
             <?php
                 $adesioni = [];
                 $q = "select * from adesioni where rAz = ".$_SESSION["user"]["idAz"];
@@ -83,7 +83,7 @@
                 }
             ?>
             </div>
-            <div class="overview">
+            <div class="overview <?php echo (isset($_GET["selected"])&&$_GET["selected"]!='')?'expanded':''?>">
                 <button class="backbt" onclick="back()"><span class="material-symbols-outlined">arrow_back_ios_new</span></button>
                 <?php
                 $q = "select * from adesioni where rAz = ".$_SESSION["user"]["idAz"];
