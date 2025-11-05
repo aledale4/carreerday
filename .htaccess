@@ -15,6 +15,7 @@ RewriteRule ^ - [F,L]
 # --- PERMETTI solo le sezioni autorizzate ---
 RewriteCond %{REQUEST_URI} ^/php/index\.php$ [OR]
 RewriteCond %{REQUEST_URI} ^/php/politica_privacy\.php$ [OR]
+RewriteCond %{REQUEST_URI} ^/manifest\.json$ [OR]
 RewriteCond %{REQUEST_URI} ^/static/ [OR]
 RewriteCond %{REQUEST_URI} ^/css/ [OR]
 RewriteCond %{REQUEST_URI} ^/js/

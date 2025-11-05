@@ -78,6 +78,9 @@
     background-color:var(--secondary-color);
     position: relative;
 }
+.card .side .img a{
+    display: block;
+}
 .card .side .img::after{
     content: "";
     opacity: 0;
@@ -91,6 +94,7 @@
     background-image: url("../static/edit_icon.svg");
     background-repeat: no-repeat;
     background-size: cover;
+    pointer-events: none;
     cursor: pointer;
 }
 
