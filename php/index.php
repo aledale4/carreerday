@@ -598,7 +598,6 @@
 		$partidata=explode("-" , $data);
         $mese=$partidata[1];
         $anno = $partidata[2];
-        global $conn;
         if($mese <= 7){ // primma di luglio
             $annos = ($anno-1) ."/". $anno;
         } else{ // dopo di luglio
