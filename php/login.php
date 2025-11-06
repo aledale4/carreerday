@@ -88,6 +88,9 @@
                     case 2:
                         echo "Input non validi";
                         break;
+                    case 3:
+                        echo'Email non verificata';
+                        break;
                 }
             }
             ?></p>
