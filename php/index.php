@@ -4,13 +4,13 @@
     //per collegare il database e avviare la sessione
     session_start();
     $env = parse_ini_file("../.env");
-    // $conn = mysqli_connect($env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"]);
-    $ssl_ca = '../ca.pem';
-    $conn = mysqli_init();
-    mysqli_ssl_set($conn, NULL, NULL, $ssl_ca, "", NULL);
-    if (!mysqli_real_connect($conn, $env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"], NULL, MYSQLI_CLIENT_SSL)) {
-        die("". mysqli_connect_error());
-    }
+    $conn = mysqli_connect($env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"]);
+    // $ssl_ca = '../ca.pem';
+    // $conn = mysqli_init();
+    // mysqli_ssl_set($conn, NULL, NULL, $ssl_ca, "", NULL);
+    // if (!mysqli_real_connect($conn, $env["DB_HOST"],$env["DB_USRNAME"],$env["DB_PSW"],$env["DB_NAME"],$env["DB_PORT"], NULL, MYSQLI_CLIENT_SSL)) {
+    //     die("". mysqli_connect_error());
+    // }
     include 'phpqrcode/qrlib.php';
     // regenerate_qrcodes();
     //funzione di logout
@@ -124,14 +124,18 @@
     }
 
     //funzione che cambia stato al verificato
-    if(isset($_POST["pag"]) && $_POST["pag"]=="conferma_email" && !isset($_SESSION["user"])){
-        $q="select * from token where token= '" .$_GET["token"]. "' oder by idTok desc";
+    if(isset($_GET["pag"]) && $_GET["pag"]=="conferma_email" && !isset($_SESSION["user"])){
+        $token = trim(mysqli_escape_string($conn,$_GET["token"]));
+        $q="select * from tokenLogin where token= '".$token. "' order by idTok desc";
         $ris=mysqli_query($conn,$q);
+        if (mysqli_num_rows($ris) == 0) die("errore");
         $riga=mysqli_fetch_assoc($ris);
-        $q= "update studenti set verificato =1 where idStu='" .$riga["idTok"]. "'";
-        $res="delete from tokenLogin where token='" .mysqli_real_escape_string($conn, $_GET["token"]) . "' and email='".  mysqli_real_escape_string($conn, $_GET["email"]) . "'";
+        $q= "UPDATE studenti SET verificato=1 WHERE idStu = " .$riga["ruser"];
+        $res="delete from tokenLogin where token = '" .$token. "' and ruser=".$riga["ruser"];
         mysqli_query($conn,$q) or die ("verificato non aggiornato");
-        mysqli_query($conn,$res) or die ("tokenLogin non eliminato");;
+        mysqli_query($conn,$res) or die ("tokenLogin non eliminato");
+        header("Location: index.php?pag=login&success=1");
+        exit();
     }
 
     //funzione di login studente
@@ -563,9 +567,9 @@
     //funzione per inviare l'email per verificare l'email
     function verifica_email_login($email,$token){
         $mitt="no-reply@savoiacareerday.it"; //mittente
-        $ogg="Conferma login Carreday";
-        include 'verify_email.php';
-        $mess = "ciao"; //generateVerificaEmailLogin($token);  //----------------------------------------------------------------------------------------------------------------
+        $ogg="Conferma account Carreday";
+        include 'verifica_email.php';
+        $mess = generateVerificaEmailLogin($token);  //----------------------------------------------------------------------------------------------------------------
         $headers = array(
             'From' => $mitt,
             'Reply-To' => $mitt,
@@ -574,7 +578,7 @@
         );
         if(mail($email, $ogg, $mess,$headers)){ // destinatario , oggetto , messaggio , invio
            // header("Location: index.php?pag=request_reset_pwd&success=1");
-            exit($token);
+            return;
         }else{
             //header('Location:index.php?pag=request_reset_pwd&error=1');
             //exit();

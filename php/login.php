@@ -69,6 +69,11 @@
                 echo '<p class="change-action-link">Oppure <a href="index.php?pag=register">Registrati</a></p>';
             }
             ?>
+            <p class="error"><?php
+            if (isset($_GET["success"]) && $_GET["success"] == 1) {
+                echo "Email verificata con successo. Ora puoi accedere";
+            }?>
+            </p>
 
             <p class="error"><?php
             if (isset($_GET["error"])) {
