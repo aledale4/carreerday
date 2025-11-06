@@ -632,6 +632,39 @@
        return $pos;
     }
 
+    //funzione che datogli una data di nascita di un alunno ti dice che anno sta frequentando il ragazzo in questione ritorna 6 se c' qualche anomalia.
+    function detect_anno($dataNascita){
+        $dataN=explode("-" , $dataNascita);
+        $meseN=$dataN[1];
+        $annoN = $dataN[2];
+        $data=date("d-m-Y");
+		$partidata=explode("-" , $data);
+        $mese=$partidata[1];
+        $anno = $partidata[2];
+        //se serve da qua ----------------------------------
+        //if($mese <= 7){ // primma di luglio
+        //    $annos = ($anno-1) ."/". $anno;
+        //} else{ // dopo di luglio
+        //	$annos = $anno ."/". ($anno+1);
+        //}
+        //fino qua ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        $eta = ($anno - $annoN);
+        if ($eta == 18 || ($eta == 17 && $meseN<=4)){
+            return 5;
+        }else if ($eta == 17 || ($eta == 16 && $meseN<=4)){
+            return 4;
+        }else if ($eta == 16 || ($eta == 15 && $meseN<=4)){
+            return 3;
+        }else if ($eta == 15 || ($eta == 14 && $meseN<=4)){
+            return 2;
+        }else if($eta == 14 || ($eta == 13 && $meseN<=4)){
+            return 1;
+        } else{
+            return 6; //quando c'è un anomalia nell'età
+        }
+    }
+
+
     //funzione che conta i giorni da una data fornita in input con formato "Y-m-d", restituisce il numero di giorni
     function days_counter($value){
         $today= new DateTime(date("Y-m-d"));
@@ -698,7 +731,7 @@
             return true;
         }
     }
-    
+
     //fornisci un idutente e il suo usertye e elimina tutti i dati utente
     function elimina_utente($user,$us_type){
         global $conn;

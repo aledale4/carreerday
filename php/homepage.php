@@ -7,19 +7,19 @@
     <!-- <h1>CareerDay</h1> -->
     <section id="sect1" class="homepage-section">
         <img class="logo" src="../static/logo.png" alt="">
-        <h1>Uniamo studenti e aziende</h1>
+        <h1>Incontra il tuo domani, oggi.</h1>
     </section>
     <section id="sect2" class="homepage-section">
-        <h1>Cos'è CareerDay</h1>
-         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <h1>Cos’è Career Day?</h1>
+         <p>Career Day è un progetto realizzato dalla classe 5BI a.s. 2025/2026 dell’Istituto “Luigi di Savoia” di Chieti, nato per favorire l’incontro tra studenti ed aziende. <br>Attraverso una piattaforma web dedicata, il Career Day permette di presentare profili, offrire opportunità di colloquio e creare un ponte diretto tra scuola e mondo del lavoro.</p>
     </section>
     <section id="sect3" class="homepage-section">
         <h1>Il nostro team di lavoro</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <p>Nel corso di questo progetto, la classe 5ª B Informatica ha lavorato in modo collaborativo, mettendo in pratica competenze tecniche, organizzative e comunicative per realizzare un prodotto completo e ben strutturato. Il lavoro è stato suddiviso in più gruppi, ognuno con ruoli e responsabilità specifiche, ma tutti accomunati da un unico obiettivo: portare a termine un progetto ben documentato, testato e funzionante. Per gestire in modo efficace le varie fasi del progetto, la classe si è suddivisa in diversi gruppi di lavoro: gruppo di sviluppo, gruppo di documentazione, gruppo database e gruppo beta tester. Questo progetto ci ha insegnato che il successo nasce dalla collaborazione e dall’unione delle nostre capacità. Con impegno, fiducia e spirito di squadra, siamo riusciti a raggiungere un risultato di cui possiamo essere orgogliosi.</p>
     </section>
     <section id="sect4" class="homepage-section">
         <h1>La nostra scuola</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <p>La realizzazione di questo progetto è stata possibile grazie al contributo della scuola e dei docenti. L’Istituto di Istruzione Superiore «Luigi di Savoia», fondato nel 1879, è oggi un punto di riferimento nazionale per la formazione tecnica industriale. La scuola offre due principali indirizzi: il Settore Tecnologico e il Liceo Scientifico opzione Scienze Applicate. L’offerta formativa dell’IIS “Savoia” si distingue per l’uso di metodologie innovative e laboratoriali, che rendono gli studenti protagonisti del proprio apprendimento. La scuola dispone di laboratori specializzati, aule attrezzate, una grande Aula Magna di 400 mq, 3 palestre, ed una sala docenti accogliente. L’Istituto ha anche un Servizio di Prevenzione e Protezione che si occupa di tutti gli aspetti legati alla sicurezza.</p>
     </section>
 
 
