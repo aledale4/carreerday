@@ -93,6 +93,10 @@
                         break;
                     case 4:
                         echo "Link non valido";
+                        break;
+                    case 5:
+                        echo "Hai una richiesta di reset password in corso";
+                        break;
                 }
             }
             ?></p>

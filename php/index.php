@@ -177,10 +177,11 @@
                 }
             }
             else{
-                $q="select * from token where ruser=".$riga["idStu"]. " and user_type = 2 order by idTok desc";
-                $ris=mysqli_query($conn,$q);
-                $riga=mysqli_fetch_assoc($ris);
-                header("Location:index.php?pag=reset_pwd&token=" . $riga["token"]);
+            //     $q="select * from token where ruser=".$riga["idStu"]. " and user_type = 2 order by idTok desc";
+            //     $ris=mysqli_query($conn,$q);
+            //     $riga=mysqli_fetch_assoc($ris);
+            //     header("Location:index.php?pag=reset_pwd&token=" . $riga["token"]);
+                header("Location: index.php?pag=login&error=5");
                 exit();
             }
         }

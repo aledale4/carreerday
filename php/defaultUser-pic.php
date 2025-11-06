@@ -26,6 +26,10 @@ if (file_exists($file)) {
         echo '<img src="data:image/jpeg;base64,' . $base64. '" alt="">';
     }
 } else {
-    echo "<img src='../static/Default_pfp.svg' alt=''>";
+    if($gold){
+        echo '<img class="gold" src="data:image/jpeg;base64,' . $base64. '" alt="">';
+    }else{
+        echo "<img src='../static/Default_pfp.svg' alt=''>";
+    }
 }
 ?>
