@@ -124,14 +124,18 @@
     }
 
     //funzione che cambia stato al verificato
-    if(isset($_POST["pag"]) && $_POST["pag"]=="conferma_email" && !isset($_SESSION["user"])){
-        $q="select * from token where token= '" .$_GET["token"]. "' oder by idTok desc";
+    if(isset($_GET["pag"]) && $_GET["pag"]=="conferma_email" && !isset($_SESSION["user"])){
+        $token = trim(mysqli_escape_string($conn,$_GET["token"]));
+        $q="select * from tokenLogin where token= '".$token. "' order by idTok desc";
         $ris=mysqli_query($conn,$q);
+        if (mysqli_num_rows($ris) == 0) header("Location: index.php?pag=login&error=4");
         $riga=mysqli_fetch_assoc($ris);
-        $q= "update studenti set verificato =1 where idStu='" .$riga["idTok"]. "'";
-        $res="delete from tokenLogin where token='" .mysqli_real_escape_string($conn, $_GET["token"]) . "' and email='".  mysqli_real_escape_string($conn, $_GET["email"]) . "'";
-        mysqli_query($conn,$q) or die ("verificato non aggiornato");
-        mysqli_query($conn,$res) or die ("tokenLogin non eliminato");;
+        $q= "UPDATE studenti SET verificato=1 WHERE idStu = " .$riga["ruser"];
+        $res="delete from tokenLogin where token = '" .$token. "' and ruser=".$riga["ruser"];
+        mysqli_query($conn,$q) or header("Location: index.php?pag=login&error=4");
+        mysqli_query($conn,$res) or header("Location: index.php?pag=login&error=4");
+        header("Location: index.php?pag=login&success=1");
+        exit();
     }
 
     //funzione di login studente
@@ -145,31 +149,39 @@
         $riga = mysqli_fetch_assoc($ris);
         if($num==1){
             if(verify_pwd_res($riga["idStu"] , 2)){
-                if(password_verify(trim($_POST["password"]),$riga["passwordStu"])){
-                //login effettuato con successo
-                    $_SESSION["user"]=$riga;
-                    $_SESSION["user-type"] = 2;
-                    session_regenerate_id();
-                    $date=date("Y-m-d");
-                    $q="update studenti set lastLoginStu='".$date."' where idStu=".$_SESSION["user"]["idStu"];
-                    $ris=mysqli_query($conn, $q)or die("errore durante il salvataggio della data");
-                    if (isset($_SESSION["next-page"]) && $_SESSION["next-page"] != ""){
-                        header("Location: ".$_SESSION["next-page"]);
+                if (verifica_verificato($riga["idStu"])){
+                    if(password_verify(trim($_POST["password"]),$riga["passwordStu"])){
+                    //login effettuato con successo
+                        $_SESSION["user"]=$riga;
+                        $_SESSION["user-type"] = 2;
+                        session_regenerate_id();
+                        $date=date("Y-m-d");
+                        $q="update studenti set lastLoginStu='".$date."' where idStu=".$_SESSION["user"]["idStu"];
+                        $ris=mysqli_query($conn, $q)or die("errore durante il salvataggio della data");
+                        if (isset($_SESSION["next-page"]) && $_SESSION["next-page"] != ""){
+                            header("Location: ".$_SESSION["next-page"]);
+                        }else{
+                            header("Location: index.php");
+                            exit();
+                        }
                     }else{
-                        header("Location: index.php");
+                        //password errata
+                        header("Location: index.php?pag=login&error=0");
                         exit();
                     }
                 }else{
-                    //password errata
-                    header("Location: index.php?pag=login&error=0");
-                    exit();
+                    //$q="select * from tokenLogin where ruser=".$riga["idStu"]. " and user_type = 2 order by idTok desc";
+                    //$ris=mysqli_query($conn,$q);
+                    //$riga=mysqli_fetch_assoc($ris);
+                    header("Location:index.php?pag=login&error=3");
                 }
             }
             else{
-                $q="select * from token where ruser=".$riga["idStu"]. " and user_type = 2 order by idTok desc";
-                $ris=mysqli_query($conn,$q);
-                $riga=mysqli_fetch_assoc($ris);
-                header("Location:index.php?pag=reset_pwd&token=" . $riga["token"]);
+            //     $q="select * from token where ruser=".$riga["idStu"]. " and user_type = 2 order by idTok desc";
+            //     $ris=mysqli_query($conn,$q);
+            //     $riga=mysqli_fetch_assoc($ris);
+            //     header("Location:index.php?pag=reset_pwd&token=" . $riga["token"]);
+                header("Location: index.php?pag=login&error=5");
                 exit();
             }
         }
@@ -589,9 +601,9 @@
     //funzione per inviare l'email per verificare l'email
     function verifica_email_login($email,$token){
         $mitt="no-reply@savoiacareerday.it"; //mittente
-        $ogg="Conferma login Carreday";
-        include 'verify_email.php';
-        $mess = "ciao"; //generateVerificaEmailLogin($token);  //----------------------------------------------------------------------------------------------------------------
+        $ogg="Conferma account Carreday";
+        include 'verifica_email.php';
+        $mess = generateVerificaEmailLogin($token);  //----------------------------------------------------------------------------------------------------------------
         $headers = array(
             'From' => $mitt,
             'Reply-To' => $mitt,
@@ -600,7 +612,7 @@
         );
         if(mail($email, $ogg, $mess,$headers)){ // destinatario , oggetto , messaggio , invio
            // header("Location: index.php?pag=request_reset_pwd&success=1");
-            exit($token);
+            return;
         }else{
             //header('Location:index.php?pag=request_reset_pwd&error=1');
             //exit();
@@ -674,6 +686,18 @@
         $_SESSION["user"] = $user_data;
     }
     
+    // funzione che passatogli un idut vede se ha accettato la richiesta di verifica email o no, da falso se non è stata verificata e vero se è verificata
+    function verifica_verificato($idut){
+        global $conn;
+        $q="select * from studenti where idStu=" .$idut;
+        $ris = mysqli_query($conn,$q) or die ($q);
+        $riga = mysqli_fetch_assoc($ris);
+        if($riga["verificato"] == 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
     
     //fornisci un idutente e il suo usertye e elimina tutti i dati utente
     function elimina_utente($user,$us_type){

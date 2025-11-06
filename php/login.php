@@ -69,6 +69,11 @@
                 echo '<p class="change-action-link">Oppure <a href="index.php?pag=register">Registrati</a></p>';
             }
             ?>
+            <p class="success"><?php
+            if (isset($_GET["success"]) && $_GET["success"] == 1) {
+                echo "Email verificata con successo. Ora puoi accedere";
+            }?>
+            </p>
 
             <p class="error"><?php
             if (isset($_GET["error"])) {
@@ -82,6 +87,15 @@
                         break;
                     case 2:
                         echo "Input non validi";
+                        break;
+                    case 3:
+                        echo'Email non verificata';
+                        break;
+                    case 4:
+                        echo "Link non valido";
+                        break;
+                    case 5:
+                        echo "Hai una richiesta di reset password in corso";
                         break;
                 }
             }
