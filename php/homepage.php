@@ -7,7 +7,7 @@
     <!-- <h1>CareerDay</h1> -->
     <section id="sect1" class="homepage-section">
         <img class="logo" src="../static/logo.png" alt="">
-        <h1>Il binomio perfetto tra studenti e aziende</h1>
+        <h1>Uniamo studenti e aziende</h1>
     </section>
     <section id="sect2" class="homepage-section">
         <h1>Cos'è CareerDay</h1>
