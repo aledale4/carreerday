@@ -72,7 +72,7 @@
             <div class="save-button">
                 <input class="" type="submit" value="Salva modifiche">
                 <a href="index.php?pag=logout">Log Out</a>
-                <a href="index.php?pag=eliminaut">Elimina il tuo utente</a>
+                <a href="index.php?pag=request_elut">Elimina il tuo account</a>
             </div>
         </div>
     </form>

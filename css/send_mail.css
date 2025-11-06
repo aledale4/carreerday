@@ -52,7 +52,7 @@
     border-color: black;
 }
 
-.container_form_send_mail input[type="submit"] {
+.container_form_send_mail input[type="submit"],.container_form_send_mail a.sendreq {
     background-color: orange;
     color: black;
     padding:7px;
@@ -62,6 +62,9 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
     font-weight: 500;
+}
+.container_form_send_mail a.sendreq{
+    margin-top:  20px;
 }
 
 .title{

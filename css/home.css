@@ -229,6 +229,7 @@ section{
     display: flex;
     align-items: center;
     justify-content: center;
+    aspect-ratio: 1.75;
 }
 .scrollable-container .element.empty p{
     margin:0;
