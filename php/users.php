@@ -33,44 +33,47 @@
     </div>
     <div class="users-container">
         <?php
-            $usr_type = mysqli_real_escape_string($_GET['usr-type']);
+            $usr_type = mysqli_real_escape_string($conn, $_GET['usr-type']);
+            echo $usr_type;
             switch($usr_type){
                 case 1:
-                    $q = "select idUt as id,nomeUt as nome,cognomeUt as cognome from admins";
-                    $ris = mysqli_query($conn, $q);
+                    $q = "select idUt,nomeUt,cognomeUt from admins";
+                    $ris = mysqli_query($conn, $q)or die("Errore nella query: ".mysqli_error($conn));
                     $num = mysqli_num_rows($ris);
                     echo '<p class="counter">Trovati '.$num.' utenti</p>';
                     echo '<table>';
                     echo '<tr><th>ID</th><th>Nome</th><th>Cognome</th><th>Del</th></tr>';
                     while ($row = mysqli_fetch_assoc($ris)) {
                         echo '<tr>';
-                        echo '<td>'.$row["id"].'</td>';
-                        echo '<td>'.$row["nome"].'</td>';
-                        echo '<td>'.$row["cognome"].'</td>';
+                        echo '<td>'.$row["idUt"].'</td>';
+                        echo '<td>'.$row["nomeUt"].'</td>';
+                        echo '<td>'.$row["cognomeUt"].'</td>';
                         echo '<td><a href="request_elut"><span class="material-symbols-outlined">delete_forever</span></a></td>';
                         echo '</tr>';
                     }
+                    echo '</table>';
                     break;
                 case 2:
-                    $q = "select idStu as id,nomeStu as nome,cognomeStu as cognome,emailStu as email from studenti";
-                    $ris = mysqli_query($conn, $q);
+                    $q = "select idStu,nomeStu,cognomeStu,emailStu from studenti";
+                    $ris = mysqli_query($conn, $q)or die("Errore nella query: ".mysqli_error($conn));
                     $num = mysqli_num_rows($ris);
                     echo '<p class="counter">Trovati '.$num.' utenti</p>';
                     echo '<table>';
                     echo '<tr><th>ID</th><th>Nome</th><th>Cognome</th><th>Del</th></tr>';
                     while ($row = mysqli_fetch_assoc($ris)) {
                         echo '<tr>';
-                        echo '<td>'.$row["id"].'</td>';
-                        echo '<td>'.$row["nome"].'</td>';
-                        echo '<td>'.$row["cognome"].'</td>';
-                        echo '<td>'.$row["email"].'</td>';
+                        echo '<td>'.$row["idStu"].'</td>';
+                        echo '<td>'.$row["nomeStu"].'</td>';
+                        echo '<td>'.$row["cognomeStu"].'</td>';
+                        echo '<td>'.$row["emailStu"].'</td>';
                         echo '<td><a href="request_elut"><span class="material-symbols-outlined">delete_forever</span></a></td>';
                         echo '</tr>';
                     }
+                    echo '</table>';
                     break;
                 case 3:
                     $q = "select idAz,ragsoc,email,nomeRef,cognomeRef from aziende";
-                    $ris = mysqli_query($conn, $q);
+                    $ris = mysqli_query($conn, $q)or die("Errore nella query: ".mysqli_error($conn));
                     $num = mysqli_num_rows($ris);
                     echo '<p class="counter">Trovati '.$num.' utenti</p>';
                     echo '<table>';
@@ -85,6 +88,7 @@
                         echo '<td><a href="request_elut"><span class="material-symbols-outlined">delete_forever</span></a></td>';
                         echo '</tr>';
                     }
+                    echo '</table>';
                     break;
                 default:
                     die("Errore nel caricamento degli utenti.");
