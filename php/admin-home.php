@@ -7,7 +7,7 @@
         </div>
         <div class="right-side">
             <p>Benvenuto/a, <span><?php echo $_SESSION["user"]["nomeUt"]; ?></span></p>
-            <a href="index.php?pag=settings">
+            <a>
                 <div class="user-pic"><?php include("defaultUser-pic.php") ?></div>
             </a>
             <a href="index.php?pag=logout" class="logout"><span class="material-symbols-outlined logout-icon">logout</span></a>
