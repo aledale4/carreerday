@@ -72,13 +72,40 @@ tr.checked{
     width: 100%;
 }
 
-.colloqui .overview .info-stu img{
+.colloqui .overview .info-stu .img{
     width: calc(20% + 2rem);
-    height: fit-content;
+    height: 100%;
     aspect-ratio: 1;
     object-fit: cover;
     border-radius: 100%;
     background-color: white;
+    position: relative;
+}
+.colloqui .overview .info-stu .img img{
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 100%;
+}
+
+.colloqui .overview .info-stu .img .gold{
+    outline: 10px solid gold;
+}
+.colloqui .overview .info-stu .img:has(.gold)::after{
+    content: "Developer";
+    position: absolute;
+    bottom: 5%;
+    right: 0%;
+    width: fit-content;
+    transform: rotateZ(-45deg);
+    height: fit-content;
+    pointer-events: none;
+    cursor: pointer;
+    background-color: #005eff;
+    border-radius: var(--buttons-border-radius);
+    padding: 10px;
+    font-size: 1rem;
 }
 
 .evento-colloquio{
@@ -210,9 +237,12 @@ tr.checked{
     }
     .colloqui .overview .info-stu img{
         width: 100%;
-        max-width: 200px;
     }
     .colloqui .overview .backbt{
         display: block;
+    }
+    .colloqui .overview .info-stu .img:has(.gold)::after{
+        right: -10%;
+        font-size: 50%;
     }
 }

@@ -7,6 +7,7 @@
             <a href="index.php"><img src="../static/logo.png" alt=""></a>
         </div>
         <div class="centered">
+            <?php if(!isset($_GET["success"])|| $_GET["success"]!="1") : ?>
             <p class="user-type-title">Che utente sei?</p>
             <div class="user-type-select">
                 <a href="index.php?pag=register&usertype=2">
@@ -20,6 +21,7 @@
                     </div>
                 </a>
             </div>
+            <?php endif; ?>
             <h1>Registrazione <?php switch ($_SESSION["user-type"]) {
                 case 1:
                     echo "Admin";
@@ -31,6 +33,7 @@
                     echo "Aziende";
                     break;
             } ?></h1>
+            <?php if(!isset($_GET["success"])|| $_GET["success"]!="1") : ?>
             <form class="input-form" action="index.php" method="post">
                 <?php
                 if ($_SESSION["user-type"] == 2) {
@@ -57,6 +60,14 @@
                 <input type="submit" value="Registrati">
             </form>
             <p class="change-action-link">Oppure <a href="index.php?pag=login">Accedi</a></p>
+            <?php endif; ?>
+            <?php
+                if(isset($_GET["success"]) && $_GET["success"]=="1"){
+                    echo "<p class=\"success\">Account creato con successo</p>";
+                    echo "<a href='index.php?pag=login'>Torna al login</a>";
+                }
+            ?>
+            
             <p class="error"><?php
             if (isset($_GET["error"])) {
                 $error = filter_input(INPUT_GET, "error", FILTER_SANITIZE_STRING);
