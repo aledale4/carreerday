@@ -22,7 +22,8 @@
     </div>
     <div class="sub-menu">
         <div class="sub-menu-item selected">
-            //inserire qui il tasti per selezionare il tipo di utente da mostrare
+        <a href="index.php?pag=users&usr-type=2"><p>Studenti</p></a>    
+        //inserire qui il tasti per selezionare il tipo di utente da mostrare
         </div>
     </div>
     //contenuto della pagina, con possibilità di aggiungere gli utenti admin
