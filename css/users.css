@@ -133,3 +133,14 @@
 .users-container .container .centered{
     padding-top: 0;
 }
+
+.success-message{
+    color: var(--success-color);
+    text-align: center;
+    margin: 20px 0;
+}
+.error-message{
+    color: var(--error-color);
+    text-align: center;
+    margin: 20px 0;
+}

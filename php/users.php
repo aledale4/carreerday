@@ -48,7 +48,7 @@
                             echo '<td>'.$row["idUt"].'</td>';
                             echo '<td>'.$row["nomeUt"].'</td>';
                             echo '<td>'.$row["cognomeUt"].'</td>';
-                            echo '<td><a href="request_elut" class="delete"><span class="material-symbols-outlined">delete_forever</span></a></td>';
+                            echo '<td><a href="index.php?pag=request_elut" class="delete"><span class="material-symbols-outlined">delete_forever</span></a></td>';
                             echo '</tr>';
                         }
                         echo '</table>';
@@ -93,7 +93,7 @@
                             echo '<td>'.$row["nomeStu"].'</td>';
                             echo '<td>'.$row["cognomeStu"].'</td>';
                             echo '<td>'.$row["emailStu"].'</td>';
-                            echo '<td><a href="request_elut" class="delete"><span class="material-symbols-outlined">delete_forever</span></a></td>';
+                            echo '<td><a href="index.php?pag=request_elut" class="delete"><span class="material-symbols-outlined">delete_forever</span></a></td>';
                             echo '</tr>';
                         }
                         echo '</table>';
@@ -113,7 +113,7 @@
                             echo '<td>'.$row["email"].'</td>';
                             echo '<td>'.$row["nomeRef"].'</td>';
                             echo '<td>'.$row["cognomeRef"].'</td>';
-                            echo '<td><a href="request_elut" class="delete"><span class="material-symbols-outlined">delete_forever</span></a></td>';
+                            echo '<td><a href="index.php?pag=request_elut" class="delete"><span class="material-symbols-outlined">delete_forever</span></a></td>';
                             echo '</tr>';
                         }
                         echo '</table>';
