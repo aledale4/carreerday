@@ -614,11 +614,13 @@
 		$partidata=explode("-" , $data);
         $mese=$partidata[1];
         $anno = $partidata[2];
-        if($mese <= 7){ // primma di luglio
-            $annos = ($anno-1) ."/". $anno;
-        } else{ // dopo di luglio
-        	$annos = $anno ."/". ($anno+1);
-        }
+        //se serve da qua ----------------------------------
+        //if($mese <= 7){ // primma di luglio
+        //    $annos = ($anno-1) ."/". $anno;
+        //} else{ // dopo di luglio
+        //	$annos = $anno ."/". ($anno+1);
+        //}
+        //fino qua ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         $eta = ($anno - $annoN);
         if ($eta == 18 || ($eta == 17 && $meseN<=4)){
             return 5;
