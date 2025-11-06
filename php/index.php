@@ -1055,7 +1055,7 @@
             $_SESSION["next-page"] = $_SERVER['REQUEST_URI'];
         }
     }else{
-        include("login.php"); // mettere homepage.php ebbast
+        include("homepage.php"); // mettere homepage.php ebbast
         $_SESSION["next-page"] = "";
     }
     ?>

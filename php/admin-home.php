@@ -10,7 +10,7 @@
                 <a href="index.php"><p>Home</p></a>
             </div>
             <div class="nav-page">
-                <a href="index.php?pag=users"><p>Utenti</p></a>
+                <a href="index.php?pag=users&usr-type=1"><p>Utenti</p></a>
             </div>
         </div>
         <div class="right-side">

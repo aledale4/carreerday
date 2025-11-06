@@ -5,10 +5,10 @@
             <p>Portale Admin</p>
         </div>
         <div class="middle-nav">
-            <div class="nav-page-selected">
+            <div class="nav-page">
                 <a href="index.php"><p>Home</p></a>
             </div>
-            <div class="nav-page">
+            <div class="nav-page selected">
                 <a href="index.php?pag=users"><p>Utenti</p></a>
             </div>
         </div>
@@ -21,10 +21,75 @@
         </div>
     </div>
     <div class="sub-menu">
-        <div class="sub-menu-item selected">
-        <a href="index.php?pag=users&usr-type=2"><p>Studenti</p></a>    
-        //inserire qui il tasti per selezionare il tipo di utente da mostrare
+        <div class="sub-menu-item <?php if($_GET['usr-type'] == 1) echo 'selected'; ?>">
+            <a href="index.php?pag=users&usr-type=1"><p>Admin</p></a>
+        </div>
+        <div class="sub-menu-item <?php if($_GET['usr-type'] == 2) echo 'selected'; ?>">
+            <a href="index.php?pag=users&usr-type=2"><p>Studenti</p></a>
+        </div>
+        <div class="sub-menu-item <?php if($_GET['usr-type'] == 3) echo 'selected'; ?>">
+            <a href="index.php?pag=users&usr-type=3"><p>Aziende</p></a>
         </div>
     </div>
-    //contenuto della pagina, con possibilità di aggiungere gli utenti admin
+    <div class="users-container">
+        <?php
+            $usr_type = mysqli_real_escape_string($_GET['usr-type']);
+            switch($usr_type){
+                case 1:
+                    $q = "select idUt as id,nomeUt as nome,cognomeUt as cognome from admins";
+                    $ris = mysqli_query($conn, $q);
+                    $num = mysqli_num_rows($ris);
+                    echo '<p class="counter">Trovati '.$num.' utenti</p>';
+                    echo '<table>';
+                    echo '<tr><th>ID</th><th>Nome</th><th>Cognome</th><th>Del</th></tr>';
+                    while ($row = mysqli_fetch_assoc($ris)) {
+                        echo '<tr>';
+                        echo '<td>'.$row["id"].'</td>';
+                        echo '<td>'.$row["nome"].'</td>';
+                        echo '<td>'.$row["cognome"].'</td>';
+                        echo '<td><a href="request_elut"><span class="material-symbols-outlined">delete_forever</span></a></td>';
+                        echo '</tr>';
+                    }
+                    break;
+                case 2:
+                    $q = "select idStu as id,nomeStu as nome,cognomeStu as cognome,emailStu as email from studenti";
+                    $ris = mysqli_query($conn, $q);
+                    $num = mysqli_num_rows($ris);
+                    echo '<p class="counter">Trovati '.$num.' utenti</p>';
+                    echo '<table>';
+                    echo '<tr><th>ID</th><th>Nome</th><th>Cognome</th><th>Del</th></tr>';
+                    while ($row = mysqli_fetch_assoc($ris)) {
+                        echo '<tr>';
+                        echo '<td>'.$row["id"].'</td>';
+                        echo '<td>'.$row["nome"].'</td>';
+                        echo '<td>'.$row["cognome"].'</td>';
+                        echo '<td>'.$row["email"].'</td>';
+                        echo '<td><a href="request_elut"><span class="material-symbols-outlined">delete_forever</span></a></td>';
+                        echo '</tr>';
+                    }
+                    break;
+                case 3:
+                    $q = "select idAz,ragsoc,email,nomeRef,cognomeRef from aziende";
+                    $ris = mysqli_query($conn, $q);
+                    $num = mysqli_num_rows($ris);
+                    echo '<p class="counter">Trovati '.$num.' utenti</p>';
+                    echo '<table>';
+                    echo '<tr><th>ID</th><th>Nome azienda</th><th>Email azienda</th><th>Nome referente</th><th>Cognome refefrente</th><th>Del</th></tr>';
+                    while ($row = mysqli_fetch_assoc($ris)) {
+                        echo '<tr>';
+                        echo '<td>'.$row["idAz"].'</td>';
+                        echo '<td>'.$row["ragsoc"].'</td>';
+                        echo '<td>'.$row["email"].'</td>';
+                        echo '<td>'.$row["nomeRef"].'</td>';
+                        echo '<td>'.$row["cognomeRef"].'</td>';
+                        echo '<td><a href="request_elut"><span class="material-symbols-outlined">delete_forever</span></a></td>';
+                        echo '</tr>';
+                    }
+                    break;
+                default:
+                    die("Errore nel caricamento degli utenti.");
+                    break;
+            }
+        ?>
+    </div>
 </div>
