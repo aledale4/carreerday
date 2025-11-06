@@ -158,10 +158,10 @@
                         exit();
                     }
                 }else{
-                    $q="select * from tokenLogin where ruser=".$riga["idStu"]. " and user_type = 2 order by idTok desc";
-                    $ris=mysqli_query($conn,$q);
-                    $riga=mysqli_fetch_assoc($ris);
-                    header("Location:index.php?pag=conferma_email&token=" .$riga["token"]);
+                    //$q="select * from tokenLogin where ruser=".$riga["idStu"]. " and user_type = 2 order by idTok desc";
+                    //$ris=mysqli_query($conn,$q);
+                    //$riga=mysqli_fetch_assoc($ris);
+                    header("Location:index.php?pag=login&error=3");
                 }
             }
             else{
@@ -643,11 +643,11 @@
         $_SESSION["user"] = $user_data;
     }
     
-    // funzione ch epassatogli un idut vede se ha accettato la richiesta di verifica email o no, da falso se non è stata verificata e vero se è verificata
+    // funzione che passatogli un idut vede se ha accettato la richiesta di verifica email o no, da falso se non è stata verificata e vero se è verificata
     function verifica_verificato($idut){
         global $conn;
-        $q="select * from studenti where idStu'" .$idut . "'";
-        $ris = mysqli_query($conn,$q);
+        $q="select * from studenti where idStu=" .$idut;
+        $ris = mysqli_query($conn,$q) or die ($q);
         $riga = mysqli_fetch_assoc($ris);
         if($riga["verificato"] == 0){
             return false;
