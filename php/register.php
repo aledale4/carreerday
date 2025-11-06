@@ -69,7 +69,7 @@
             ?>
             <?php
                 if(isset($_GET["success"]) && $_GET["success"]=="1"){
-                    echo "<p class=\"success\">Account creato con successo</p>";
+                    echo "<p class=\"success\">Abbiamo inviato un email alla tua casella di posta elettronica <br> Verifica la tua identità</p>";
                     echo "<a href='index.php?pag=login'>Torna al login</a>";
                 }
             ?>

@@ -88,8 +88,8 @@
         $q ="select * from studenti where emailStu='".$email."'";
         $ris = mysqli_query($conn, $q)or die("errore durante la verifica della mail");
         $num = mysqli_num_rows($ris);
-        if($num>0){
-            //email già usata
+        if($num>0 || !filter_var($email, FILTER_VALIDATE_EMAIL)){
+            //email già usata oppure con formato non valido
             header("Location: index.php?pag=register&error=1");
             exit();
         }
@@ -107,12 +107,31 @@
         $cognome= trim(mysqli_real_escape_string($conn, $_POST["cognome"]));
         $password= password_hash(trim($_POST["password"]),PASSWORD_DEFAULT);
         $data= date("Y-m-d");
-        $q ="insert into studenti (nomeStu,cognomeStu,usernameStu,passwordStu,emailStu,lastPwdStu,lastLoginStu) values('".$nome."','".$cognome."','".$username."','".$password."','".$email."','".$data."','".$data."')";
+        $verificato= 0;
+        $q ="insert into studenti (nomeStu,cognomeStu,usernameStu,passwordStu,emailStu,lastPwdStu,lastLoginStu,verificato) values('".$nome."','".$cognome."','".$username."','".$password."','".$email."','".$data."','".$data."',".$verificato.")";
         $ris= mysqli_query($conn, $q)or die("errore durante la registrazione | ".$q." | ".mysqli_error($conn));
+        //invio email di sicurezza
+        $token = random_ascii_string(32);
+        echo"ci sono";
+        verifica_email_login($email,$token);
+        echo' \n2';
+        $q="insert into tokenLogin (token,ruser,user_type,created) values('".$token."' , '" .mysqli_insert_id($conn). "' , '2', '" .$data. "')";
+        mysqli_query($conn,$q);
         //registrazione effettuata con successo
         session_regenerate_id();
         header("Location: index.php?pag=register&success=1");
         exit();
+    }
+
+    //funzione che cambia stato al verificato
+    if(isset($_POST["pag"]) && $_POST["pag"]=="conferma_email" && !isset($_SESSION["user"])){
+        $q="select * from token where token= '" .$_GET["token"]. "' oder by idTok desc";
+        $ris=mysqli_query($conn,$q);
+        $riga=mysqli_fetch_assoc($ris);
+        $q= "update studenti set verificato =1 where idStu='" .$riga["idTok"]. "'";
+        $res="delete from tokenLogin where token='" .mysqli_real_escape_string($conn, $_GET["token"]) . "' and email='".  mysqli_real_escape_string($conn, $_GET["email"]) . "'";
+        mysqli_query($conn,$q) or die ("verificato non aggiornato");
+        mysqli_query($conn,$res) or die ("tokenLogin non eliminato");;
     }
 
     //funzione di login studente
@@ -539,6 +558,27 @@
         }
         else{
             exit("errore nella funzione di verifica della password");
+        }
+    }
+    //funzione per inviare l'email per verificare l'email
+    function verifica_email_login($email,$token){
+        $mitt="no-reply@savoiacareerday.it"; //mittente
+        $ogg="Conferma login Carreday";
+        include 'verify_email.php';
+        $mess = "ciao"; //generateVerificaEmailLogin($token);  //----------------------------------------------------------------------------------------------------------------
+        $headers = array(
+            'From' => $mitt,
+            'Reply-To' => $mitt,
+            'X-Mailer' => 'PHP/' . phpversion(),
+            'Content-Type' => 'text/html; charset=utf-8'
+        );
+        if(mail($email, $ogg, $mess,$headers)){ // destinatario , oggetto , messaggio , invio
+           // header("Location: index.php?pag=request_reset_pwd&success=1");
+            exit($token);
+        }else{
+            //header('Location:index.php?pag=request_reset_pwd&error=1');
+            //exit();
+            return;
         }
     }
 
@@ -1044,6 +1084,8 @@
             include ("viewcv.php");
         }elseif($_GET["pag"] == "request_elut"){
             include ("request_elut.php");
+        }elseif($_GET["pag"] == "verifica_email"){
+            include("verifica_email.php");
         }else {
             switch($_SESSION["user-type"]){
                 case 1:
