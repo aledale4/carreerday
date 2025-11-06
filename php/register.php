@@ -33,7 +33,7 @@
                     echo "Aziende";
                     break;
             } ?></h1>
-            <?php if(!isset($_GET["success"])|| $_GET["success"]!="1") : ?>
+            <?php if((($env["ENABLE_STUDENT_REGISTER"] == '1' && $_SESSION['user-type'] == 2) || ($env["ENABLE_COMPANY_REGISTER"] == '1' && $_SESSION['user-type'] == 3)) && $_GET["success"] != '1') : ?>
             <form class="input-form" action="index.php" method="post">
                 <?php
                 if ($_SESSION["user-type"] == 2) {
@@ -57,13 +57,19 @@
                     <input type="checkbox" id="policy-privacy" name="policy-privacy" value="" required>
                     <label  class="" for="policy-privacy">Leggi e accetta la politica della privacy <a href="politica_privacy.php" style="color: blue; text-decoration:underline">qui</a>.</label>
                 </p>
-                <input type="submit" value="Registrati">
+              <input type="submit" value="Registrati">
             </form>
             <p class="change-action-link">Oppure <a href="index.php?pag=login">Accedi</a></p>
             <?php endif; ?>
             <?php
+                if($_GET["success"] !="1" && ( ( $env["ENABLE_STUDENT_REGISTER"] != '1' && $_SESSION['user-type'] == 2) || ( $env["ENABLE_COMPANY_REGISTER"] != '1' && $_SESSION['user-type'] == 3 ) ) ){
+                    echo "<p class=\"error\"> Al momento non è possibile registrarsi</p>";
+                    echo "<a href='index.php?pag=login'>Torna al login</a>";
+                }
+            ?>
+            <?php
                 if(isset($_GET["success"]) && $_GET["success"]=="1"){
-                    echo "<p class=\"success\">Account creato con successo</p>";
+                    echo "<p class=\"success\">Abbiamo inviato un email alla tua casella di posta elettronica <br> Verifica la tua identità</p>";
                     echo "<a href='index.php?pag=login'>Torna al login</a>";
                 }
             ?>
@@ -83,6 +89,12 @@
                         break;
                     case 3:
                         echo "Input non validi";
+                        break;
+                    case 4:
+                        echo "Al momento non è possibile registrarsi";
+                        break;
+                    case 5:
+                        echo "Email non autorizzata";
                         break;
                 }
             }
