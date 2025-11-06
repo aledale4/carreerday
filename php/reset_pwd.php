@@ -1,7 +1,3 @@
-<?php
-if(!isset($_GET['success']) || $_GET["success"] == ""){
-?>
-
 <div class="container_reset_pwd">
     <a href="index.php" class="logo"><img src="../static/logo.png" alt="" srcset="" ></a>
     <h1>
@@ -18,14 +14,13 @@ if(!isset($_GET['success']) || $_GET["success"] == ""){
             echo '    <p>Inserisci di nuovo la password:</p>';
             echo '    <input type="password" id="password-confirm" name="password2" placeholder="La tua nuova password" required>';
             echo '    <input type="hidden" name="pag" value="reset_pwd">';
-            echo '    <input type="hidden" name="token" value="<?php echo $_GET["token"]; ?>">';
+            echo '    <input type="hidden" name="token" value="'.$_GET["token"].'">';
             echo '    <input type="submit" value="Reset Password">';
             echo '</form>';
         }
         ?>
         <p class="error">
             <?php
-            }
             if (isset($_GET["error"]) && $_GET["error"] != "") {
                 switch ($_GET["error"]) {
                     case 3:

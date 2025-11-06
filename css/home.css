@@ -87,6 +87,9 @@
     background-color:var(--secondary-color);
     overflow: visible;
 }
+.navbar .right-side .user-pic:has( .gold ){
+    outline: 2px solid gold;
+}
 
 .navbar .right-side .user-pic img {
     width: 100%;          
@@ -229,6 +232,7 @@ section{
     display: flex;
     align-items: center;
     justify-content: center;
+    aspect-ratio: 1.75;
 }
 .scrollable-container .element.empty p{
     margin:0;

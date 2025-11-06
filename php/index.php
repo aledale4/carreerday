@@ -21,8 +21,14 @@
     }
 
     if(isset($_GET["pag"]) && $_GET["pag"]=="eliminaut" && isset($_SESSION["user"])){
-        elimina_utente($_SESSION["user"],$_SESSION["user-type"]);
-        header('Location:index.php?pag=request_reset_pwd&error=3');
+        if (elimina_utente($_SESSION["user"],$_SESSION["user-type"])){
+            session_unset();
+            session_destroy();
+            include("delete_account_ok.php");
+            exit();
+        }else{
+            header('Location:index.php?pag=request_elut&error=1');
+        }
     }
 
     if(isset($_GET["pag"]) && $_GET["pag"] == "download_qr" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 3){
@@ -97,7 +103,7 @@
         $ris= mysqli_query($conn, $q)or die("errore durante la registrazione | ".$q." | ".mysqli_error($conn));
         //registrazione effettuata con successo
         session_regenerate_id();
-        header("Location: index.php?pag=login");
+        header("Location: index.php?pag=register&success=1");
         exit();
     }
 
@@ -284,7 +290,7 @@
         $ris= mysqli_query($conn, $q)or die("errore durante la registrazione | ".$q." | ".mysqli_error($conn));
         //registrazione effettuata con successo
         session_regenerate_id();
-        header("Location: index.php?pag=login");
+        header("Location: index.php?pag=register&success=1");
         exit();
     }
 
@@ -332,8 +338,8 @@
                 header("Location: index.php?pag=request_reset_pwd&success=1");
                 // exit("Email inviata con successo");
             }else{
-                //header('Location:index.php?pag=request_reset_pwd&error=1'); 
-                header('Location:index.php?pag=errori_reset_pwd&err=1&pwdtemp=' .$pwd_random); 
+                header('Location:index.php?pag=request_reset_pwd&error=1'); 
+                // header('Location:index.php?pag=errori_reset_pwd&err=1&pwdtemp=' .$pwd_random); 
                 //echo'<p class="p_error">L&acuteemail non è stata inviata correttamente.</p>';
                 //email non inviata
             }
@@ -595,25 +601,29 @@
     function elimina_utente($user,$us_type){
         global $conn;
         if($us_type == 1){
-            $q = "delete * from admin where idUt='" .$user["idUt"]. "'";
+            $q = "delete from admin where idUt= " .$user["idUt"];
             if(file_exists("../static/pfp/admin-pic/" . $user["idUt"] .".jpeg")){
                 unlink("../static/pfp/admin-pic/" . $user["idUt"] .".jpeg");
             }
         }
         else if($us_type == 2){
-            $q = "delete * from studenti where idStu='" .$user["idStu"]. "'";
+            $q = "delete from studenti where idStu=" .$user["idStu"];
             if (file_exists("../static/pfp/studente-pic/" .$user["idStu"] .".jpeg")){
                 unlink("../static/pfp/studente-pic/" .$user["idStu"] .".jpeg");
             }
         }
         else if($us_type == 3){
-            $q = "delete * from aziende where idAz='" .$user["idAz"]. "'";
+            $q = "delete from aziende where idAz=" .$user["idAz"];
             if(file_exists("../static/pfp/azienda-pic/" .$user["idAz"] .".jpeg")){
                 unlink("../static/pfp/azienda-pic/" .$user["idAz"] .".jpeg");
             }
+        }else{
+            return false;
         }
-        mysqli_query($conn,$q);
-        return;
+        if (!mysqli_query($conn,$q)){
+            return false;
+        }
+        return true;
     }
 
     if(isset($_POST["pag"]) && $_POST["pag"]=="new_event" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 1){
@@ -1022,6 +1032,8 @@
             include("movefile.php");
         }else if ($_GET["pag"] == "viewcv" && $_SESSION["user-type"] == 3){
             include ("viewcv.php");
+        }elseif($_GET["pag"] == "request_elut"){
+            include ("request_elut.php");
         }else {
             switch($_SESSION["user-type"]){
                 case 1:
@@ -1048,14 +1060,12 @@
             include("errori_reset_pwd.php");
         }else if ($_GET["pag"] == "reset_pwd"){
             include ("reset_pwd.php");
-        }elseif($_GET["pag"] == "request_elut"){
-            include ("request_elut.php");
         }else{
             include("homepage.php");
             $_SESSION["next-page"] = $_SERVER['REQUEST_URI'];
         }
     }else{
-        include("homepage.php"); // mettere homepage.php ebbast
+        include("homepage.php");
         $_SESSION["next-page"] = "";
     }
     ?>
