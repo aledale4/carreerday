@@ -128,12 +128,12 @@
         $token = trim(mysqli_escape_string($conn,$_GET["token"]));
         $q="select * from tokenLogin where token= '".$token. "' order by idTok desc";
         $ris=mysqli_query($conn,$q);
-        if (mysqli_num_rows($ris) == 0) die("errore");
+        if (mysqli_num_rows($ris) == 0) header("Location: index.php?pag=login&error=4");
         $riga=mysqli_fetch_assoc($ris);
         $q= "UPDATE studenti SET verificato=1 WHERE idStu = " .$riga["ruser"];
         $res="delete from tokenLogin where token = '" .$token. "' and ruser=".$riga["ruser"];
-        mysqli_query($conn,$q) or die ("verificato non aggiornato");
-        mysqli_query($conn,$res) or die ("tokenLogin non eliminato");
+        mysqli_query($conn,$q) or header("Location: index.php?pag=login&error=4");
+        mysqli_query($conn,$res) or header("Location: index.php?pag=login&error=4");
         header("Location: index.php?pag=login&success=1");
         exit();
     }

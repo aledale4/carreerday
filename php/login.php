@@ -91,6 +91,8 @@
                     case 3:
                         echo'Email non verificata';
                         break;
+                    case 4:
+                        echo "Link non valido";
                 }
             }
             ?></p>
