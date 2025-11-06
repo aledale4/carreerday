@@ -34,7 +34,6 @@
     <div class="users-container">
         <?php
             $usr_type = mysqli_real_escape_string($conn, $_GET['usr-type']);
-            echo $usr_type;
             switch($usr_type){
                 case 1:
                     $q = "select idUt,nomeUt,cognomeUt from admins";
@@ -52,6 +51,30 @@
                         echo '</tr>';
                     }
                     echo '</table>';
+                    echo '<p>Aggiungi un nuovo admin</p>';
+                    echo '<div class="add-admin-form">';
+                    echo '<form action="index.php" method="post" class="add-admin-form">';
+                    echo '<input type="text" name="nomeUt" placeholder="nome" maxlength="30" required>';
+                    echo '<input type="text" name="cognomeUt" placeholder="cognome" maxlength="30" required>';
+                    echo '<input type="text" name="usernameUt" placeholder="username" maxlength="30" required>';
+                    echo '<div class="password-container">';
+                    echo '<input type="password" name="passwordUt" id="password" placeholder="Password*" autocomplete="off" required>';
+                    echo '<div class="occhio">';
+                    echo '<span class="material-symbols-outlined" id="tasto">visibility_off</span>';
+                    echo '</div>';
+                    echo '</div>';
+                    echo '<input type="submit" value="aggiungi nuovo admin">';
+                    echo '<input type="hidden" name="pag" value="add_admin">';
+                    echo '</form>';
+                    echo '</div>';
+                    echo '<div>';
+                    if(isset($_GET["error"]) && $_GET["error"] == 1){
+                        echo '<p class="error-message">Errore: username già esistente.</p>';
+                    }
+                    if(isset($_GET["success"]) && $_GET["success"] == 1){
+                        echo '<p class="success-message">Nuovo admin aggiunto con successo.</p>';
+                    }
+                    echo '</div>';
                     break;
                 case 2:
                     $q = "select idStu,nomeStu,cognomeStu,emailStu from studenti";

@@ -474,6 +474,32 @@
         header("Location: index.php");
     }
 
+    //funzione per aggiungere nuovi admin
+    if(isset($_POST["pag"]) && $_POST["pag"] == "add_admin" && isset($_SESSION["user-type"]) && $_SESSION["user-type"] == 1){
+        //exit("ok");
+        $q = "select * from admins where usernameUt = '".trim(mysqli_real_escape_string($conn,$_POST["usernameUt"]))."'";
+        //exit("ok");
+        $ris = mysqli_query($conn, $q)or die("errore durante la registrazione | ".$q." | ".mysqli_error($conn));
+        //exit("ok");
+        $num = mysqli_num_rows($ris);
+        //die("ok");
+        if ($num > 0){
+            header("Location: index.php?pag=users&usr-type=1&error=1");
+            exit();
+        }
+        else{
+            $nomeUt = trim(mysqli_real_escape_string($conn,$_POST["nomeUt"]));
+            $cognomeUt = trim(mysqli_real_escape_string($conn,$_POST["cognomeUt"]));
+            $usernameUt = trim(mysqli_real_escape_string($conn,$_POST["usernameUt"]));
+            $passwordUt = password_hash(trim($_POST["passwordUt"]), PASSWORD_DEFAULT);
+            $data = date("Y-m-d");
+            $q = "insert into admins (nomeUt, cognomeUt, usernameUt, passwordUt, lastPwdUt, lastLoginUt) values ('".$nomeUt."', '".$cognomeUt."', '".$usernameUt."', '".$passwordUt."', '".$data."', '".$data."')";
+            mysqli_query($conn, $q)or die("errore durante la registrazione | ".$q." | ".mysqli_error($conn));
+            header("Location: index.php?pag=users&usr-type=1&success=1");
+            exit();
+        }
+    }
+
     //funzione per controllare se la password è "scaduta"
     //restituisce un valore booleano:
     //- true se la password è scaduta
