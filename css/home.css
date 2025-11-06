@@ -87,6 +87,9 @@
     background-color:var(--secondary-color);
     overflow: visible;
 }
+.navbar .right-side .user-pic:has( .gold ){
+    outline: 2px solid gold;
+}
 
 .navbar .right-side .user-pic img {
     width: 100%;          

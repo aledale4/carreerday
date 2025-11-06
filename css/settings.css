@@ -78,8 +78,28 @@
     background-color:var(--secondary-color);
     position: relative;
 }
+.card .side .img:has(.gold){
+    outline: 10px solid gold;
+}
+.card .side .img:has(.gold)::before{
+    content: "Developer";
+    opacity: 1;
+    transition: all 0.2s ease-in-out;
+    position: absolute;
+    bottom: 0;
+    right: -10px;
+    width: fit-content;
+    transform: rotateZ(-45deg);
+    height: 10%;
+    pointer-events: none;
+    cursor: pointer;
+    background-color: #005eff;
+    border-radius: var(--buttons-border-radius);
+    padding: 10px;
+}
 .card .side .img a{
     display: block;
+    border-radius: 100px;
 }
 .card .side .img::after{
     content: "";

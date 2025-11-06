@@ -102,13 +102,23 @@
                         $stu = mysqli_fetch_assoc($rStu);
                         echo "<div class='info-stu"." ".($_GET["selected"]==$prenotazione["idPren"]?"expanded":"")."' id='".$prenotazione["idPren"]."'>";
                         $file = '../static/pfp/studente-pic/' . $stu["idStu"] . '.jpeg';
+                        echo '<div class="img">';
                         if (file_exists($file)) {
                             $data = file_get_contents($file); 
                             $base64 = base64_encode($data); 
-                            echo '<img src="data:image/jpeg;base64,' . $base64. '" alt="">';
+                            if($stu["idStu"] >=1 && $stu["idStu"] <= 3){
+                                echo '<img class="gold" src="data:image/jpeg;base64,' . $base64. '" alt="">';
+                            }else {
+                                echo '<img src="data:image/jpeg;base64,' . $base64. '" alt="">';
+                            }
                         } else {
-                            echo "<img src='../static/Default_pfp.svg' alt=''>";
+                            if($stu["idStu"] >=1 && $stu["idStu"] <= 3){
+                                echo "<img class='gold' src='../static/Default_pfp.svg' alt=''>";
+                            }else{
+                                echo "<img src='../static/Default_pfp.svg' alt=''>";
+                            }
                         }
+                        echo '</div>';
                         echo "<div class='dati'>";
                         echo "<p>Posizione lavorativa: <span>".$pos["nomePos"]."</span></p>";
                         echo "<br>";

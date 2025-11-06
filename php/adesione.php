@@ -97,7 +97,7 @@
             </div>
             <?php
                 if($already_signed) {
-                    echo "<p class='success'>Hai già prenotato un colloquio</p>";
+                    echo "<p class='success'>Hai già prenotato un colloquio con questa azienda</p>";
                     echo "<p>Progressivo prenotazione: #".$count."</p>";
                 }else if (!$enabled) echo "<p class='error'>Al momento non è possibile prenotare un colloquio</p>";
             ?>
