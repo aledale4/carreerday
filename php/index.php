@@ -1006,6 +1006,8 @@
             include("event.php");
         }else if ($_GET["pag"] == "new_event" && $_SESSION["user-type"] == 1){
             include ("new_event.php");
+        }else if ($_GET["pag"] == "users" && $_SESSION["user-type"] == 1){
+            include ("users.php");
         }else if ($_GET["pag"] == "edit_event" && $_SESSION["user-type"] == 1){
             include ("edit-event.php");
         }else if ($_GET["pag"] == "adesione" && $_SESSION["user-type"] == 2){
