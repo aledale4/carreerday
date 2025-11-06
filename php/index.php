@@ -62,6 +62,10 @@
 
     //funzione di registrazione studente
     if(isset($_POST["pag"]) && $_POST["pag"]=="register" && !isset($_SESSION["user"])){
+        if ($env["ENABLE_STUDENT_REGISTER"] != '1'){
+            header("Location: index.php?pag=register&error=4");
+            exit();
+        }
         //controllo username
         $required = ["username","email","nome","cognome","password","password2"];
         foreach($required as $r){
@@ -87,6 +91,10 @@
         if($num>0){
             //email già usata
             header("Location: index.php?pag=register&error=1");
+            exit();
+        }
+        if(!str_ends_with($email,$env["STUDENT_EMAIL_SUFFIX"])){
+            header("Location: index.php?pag=register&error=5");
             exit();
         }
         if($_POST["password"]!=$_POST["password2"]){
@@ -234,6 +242,10 @@
 
     //funzione di registrazione aziende
     if(isset($_POST["pag"]) && $_POST["pag"]=="register_soc" && !isset($_SESSION["user"])){
+        if ($env["ENABLE_COMPANY_REGISTER"] != '1'){
+            header("Location: index.php?pag=register&error=4");
+            exit();
+        }
         //controllo username
         $required = ["ragsoc","piva","indirizzo","cap","loc","prov","username","email","nomeRef","cognomeRef","password","password2"];
         foreach($required as $r){
