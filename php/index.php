@@ -145,24 +145,31 @@
         $riga = mysqli_fetch_assoc($ris);
         if($num==1){
             if(verify_pwd_res($riga["idStu"] , 2)){
-                if(password_verify(trim($_POST["password"]),$riga["passwordStu"])){
-                //login effettuato con successo
-                    $_SESSION["user"]=$riga;
-                    $_SESSION["user-type"] = 2;
-                    session_regenerate_id();
-                    $date=date("Y-m-d");
-                    $q="update studenti set lastLoginStu='".$date."' where idStu=".$_SESSION["user"]["idStu"];
-                    $ris=mysqli_query($conn, $q)or die("errore durante il salvataggio della data");
-                    if (isset($_SESSION["next-page"]) && $_SESSION["next-page"] != ""){
-                        header("Location: ".$_SESSION["next-page"]);
+                if (verifica_verificato($riga["idStu"])){
+                    if(password_verify(trim($_POST["password"]),$riga["passwordStu"])){
+                    //login effettuato con successo
+                        $_SESSION["user"]=$riga;
+                        $_SESSION["user-type"] = 2;
+                        session_regenerate_id();
+                        $date=date("Y-m-d");
+                        $q="update studenti set lastLoginStu='".$date."' where idStu=".$_SESSION["user"]["idStu"];
+                        $ris=mysqli_query($conn, $q)or die("errore durante il salvataggio della data");
+                        if (isset($_SESSION["next-page"]) && $_SESSION["next-page"] != ""){
+                            header("Location: ".$_SESSION["next-page"]);
+                        }else{
+                            header("Location: index.php");
+                            exit();
+                        }
                     }else{
-                        header("Location: index.php");
+                        //password errata
+                        header("Location: index.php?pag=login&error=0");
                         exit();
                     }
                 }else{
-                    //password errata
-                    header("Location: index.php?pag=login&error=0");
-                    exit();
+                    //$q="select * from tokenLogin where ruser=".$riga["idStu"]. " and user_type = 2 order by idTok desc";
+                    //$ris=mysqli_query($conn,$q);
+                    //$riga=mysqli_fetch_assoc($ris);
+                    header("Location:index.php?pag=login&error=3");
                 }
             }
             else{
@@ -648,6 +655,18 @@
         $_SESSION["user"] = $user_data;
     }
     
+    // funzione che passatogli un idut vede se ha accettato la richiesta di verifica email o no, da falso se non è stata verificata e vero se è verificata
+    function verifica_verificato($idut){
+        global $conn;
+        $q="select * from studenti where idStu=" .$idut;
+        $ris = mysqli_query($conn,$q) or die ($q);
+        $riga = mysqli_fetch_assoc($ris);
+        if($riga["verificato"] == 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
     
     //fornisci un idutente e il suo usertye e elimina tutti i dati utente
     function elimina_utente($user,$us_type){
