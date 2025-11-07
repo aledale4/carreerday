@@ -5,6 +5,14 @@
             <a href="index.php" class="logo"><img src="../static/logo.png" alt="" srcset=""></a>
             <p>Portale Admin</p>
         </div>
+        <div class="middle-nav">
+            <div class="nav-page selected">
+                <a href="index.php"><p>Home</p></a>
+            </div>
+            <div class="nav-page">
+                <a href="index.php?pag=users&usr-type=1"><p>Utenti</p></a>
+            </div>
+        </div>
         <div class="right-side">
             <p>Benvenuto/a, <span><?php echo $_SESSION["user"]["nomeUt"]; ?></span></p>
             <a>

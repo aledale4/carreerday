@@ -1,0 +1,146 @@
+.sub-menu {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px auto;
+}
+
+.sub-menu .sub-menu-item {
+    display: inline-block;
+    margin-right: 20px;
+    padding: 10px 15px;
+    border-radius: var(--buttons-border-radius);
+    background-color: var(--secondary-color);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.sub-menu .sub-menu-item:hover {
+    background-color: var(--primary-color);
+    box-shadow: 0 0 5px 3px var(--secondary-color);
+}
+
+.sub-menu .sub-menu-item.selected{
+    background-color: var(--primary-color);
+}
+
+.users-container{
+    width: 100%;
+    margin: 20px 0;
+}
+
+.table-container{
+    width: 80%;
+    margin: 0 auto;
+    overflow-x: auto;
+}
+
+.users-container table{
+    width: 100%;
+    margin: 20px auto;
+    border-spacing: 0;
+    border: 1px solid var(--secondary-color);
+    border-radius: var(--buttons-border-radius);
+    overflow: hidden;
+}
+
+.users-container table th, .users-container table td{
+    margin:0;
+    text-align: center;
+    border: 1px solid var(--secondary-color);
+}
+
+.users-container table th{
+    padding: 10px 0;
+}
+
+.users-container .delete{
+    background-color: var(--secondary-color);
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: var(--buttons-border-radius);
+    transition: all .3s ease;
+    text-align: center;
+    margin: 5px 0;
+}
+
+.users-container .delete:hover{
+    background-color: var(--error-color);
+}
+
+.register-admin-container{
+    width: 50%;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.register-admin-container .modulo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.register-admin-container .modulo input{
+    width: 50%;
+    padding: 10px;
+    border: 1px solid var(--secondary-color);
+    border-radius: var(--buttons-border-radius);
+    background-color: var(--background-color);
+    outline: none;
+}
+
+.register-admin-container .modulo .password-container{
+    width: 50%;
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--secondary-color);
+    border-radius: var(--buttons-border-radius);
+    background-color: var(--background-color);
+}
+
+.register-admin-container .modulo .password-container input{
+    width: 100%;
+    border: none;
+    background-color: var(--background-color);
+    outline: none;
+    padding: 10px;
+}
+
+.password-container{
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-container .occhio{
+    position: absolute;
+    right: 9px;
+    top: 8px;
+    cursor: pointer;
+}
+
+.password-container .occhio span{
+    font-size: 18px;
+    color: var(--icon-color-1);
+}
+
+.users-container .container{
+    padding-top: 0;
+}
+
+.users-container .container .centered{
+    padding-top: 0;
+}
+
+.success-message{
+    color: var(--success-color);
+    text-align: center;
+    margin: 20px 0;
+}
+.error-message{
+    color: var(--error-color);
+    text-align: center;
+    margin: 20px 0;
+}

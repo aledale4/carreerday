@@ -9,6 +9,8 @@
   --buttons-border-radius: 10px;
   --icon-color-1: rgb(100,100,100);
   --icon-color-2: rgb(0,0,0);
+  --error-color: rgb(255,0,0);
+  --success-color: rgb(0,200,0);
 
   font-family: "Inter",sans-serif;
   /*user-select: none;*/
