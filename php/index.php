@@ -31,6 +31,26 @@
         }
     }
 
+    if(isset($_GET["pag"]) && $_GET["pag"] == "admin_del_usr" && isset($_SESSION["user-type"]) && $_SESSION["user-type"] == 1){
+        if(isset($_POST["idUsr"]) && isset($_POST["usr-type"])){
+            $idUsr = mysqli_real_escape_string($conn, $_POST["idUsr"]);
+            $usr_type = mysqli_real_escape_string($conn, $_POST["usr-type"]);
+            if(elimina_utente($idUsr,$usr_type)){
+                header("Location: index.php?pag=users&usr-type=".$usr_type."&success=2");
+                exit();
+            }
+            else{
+                header("Location: index.php?pag=users&usr-type=".$usr_type."&error=2");
+                exit();
+            }
+        }
+        else{
+            header("Location: index.php?pag=users&usr-type=".$usr_type."&error=3");
+            exit();
+        }
+    }
+        
+
     if(isset($_GET["pag"]) && $_GET["pag"] == "download_qr" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 3){
         $id = filter_input(INPUT_GET,"id", FILTER_SANITIZE_NUMBER_INT);
         $q = "select * from adesioni where idAd = ".$id;
@@ -1122,6 +1142,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,arrow_back_ios_new,calendar_today,dark_mode,delete_forever,edit,expand_circle_down,light_mode,location_on,logout,visibility,visibility_off" />
     <script src="../js/occhiolino.js"></script>
     <script src="../js/dark-mode.js"></script>
+    <script src="../js/admin-del-usr.js"></script>
     <title>Career Day</title>
 </head>
 <body class>
