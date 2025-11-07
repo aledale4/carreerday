@@ -333,7 +333,7 @@
         $ris= mysqli_query($conn, $q)or die("errore durante la registrazione | ".$q." | ".mysqli_error($conn));
         //registrazione effettuata con successo
         session_regenerate_id();
-        header("Location: index.php?pag=register&success=1");
+        header("Location: index.php?pag=register&success=2");
         exit();
     }
 

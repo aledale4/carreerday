@@ -33,7 +33,7 @@
                     echo "Aziende";
                     break;
             } ?></h1>
-            <?php if((($env["ENABLE_STUDENT_REGISTER"] == '1' && $_SESSION['user-type'] == 2) || ($env["ENABLE_COMPANY_REGISTER"] == '1' && $_SESSION['user-type'] == 3)) && $_GET["success"] != '1') : ?>
+            <?php if((($env["ENABLE_STUDENT_REGISTER"] == '1' && $_SESSION['user-type'] == 2) || ($env["ENABLE_COMPANY_REGISTER"] == '1' && $_SESSION['user-type'] == 3)) && $_GET["success"] == '') : ?>
             <form class="input-form" action="index.php" method="post">
                 <?php
                 if ($_SESSION["user-type"] == 2) {
@@ -62,7 +62,7 @@
             <p class="change-action-link">Oppure <a href="index.php?pag=login">Accedi</a></p>
             <?php endif; ?>
             <?php
-                if($_GET["success"] !="1" && ( ( $env["ENABLE_STUDENT_REGISTER"] != '1' && $_SESSION['user-type'] == 2) || ( $env["ENABLE_COMPANY_REGISTER"] != '1' && $_SESSION['user-type'] == 3 ) ) ){
+                if($_GET["success"] =="" && ( ( $env["ENABLE_STUDENT_REGISTER"] != '1' && $_SESSION['user-type'] == 2) || ( $env["ENABLE_COMPANY_REGISTER"] != '1' && $_SESSION['user-type'] == 3 ) ) ){
                     echo "<p class=\"error\"> Al momento non è possibile registrarsi</p>";
                     echo "<a href='index.php?pag=login'>Torna al login</a>";
                 }
@@ -70,6 +70,10 @@
             <?php
                 if(isset($_GET["success"]) && $_GET["success"]=="1"){
                     echo "<p class=\"success\">Abbiamo inviato un email alla tua casella di posta elettronica <br> Verifica la tua identità</p>";
+                    echo "<a href='index.php?pag=login'>Torna al login</a>";
+                }
+                if(isset($_GET["success"]) && $_GET["success"]=="2"){
+                    echo "<p class=\"success\">Registrazione avvenuta con successo </p>";
                     echo "<a href='index.php?pag=login'>Torna al login</a>";
                 }
             ?>
