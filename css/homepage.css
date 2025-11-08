@@ -26,6 +26,7 @@
     display: block;
     margin: auto;
     width: fit-content;
+    text-align: center;
 }
 
 .homepage-body .navbar{
@@ -71,12 +72,5 @@ section#sect3{
     .homepage-body .homepage-section, section#sect1, section#sect3{
         padding: 200px 10px;
         width: calc(100% - 20px);
-    }
-    .homepage-body .homepage-section p {
-        text-align: left;
-        
-    }
-    .homepage-body .homepage-section h1{
-        margin-left: 0;
     }
 }
