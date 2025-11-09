@@ -1,5 +1,5 @@
 <footer>
-    <p>Progetto realizzato per finalità didattiche</p>
+    <p>Progetto realizzato per finalità didattiche dalla 5BI 2025/2026</p>
 
 <?php if(isset($_SESSION["user"]) && $_SESSION["user-type"]==1) :?>
     <a href="https://forms.gle/gnvmgcyke81DPkPM8">Lascia un feedback alla pagina</a>

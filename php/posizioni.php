@@ -48,7 +48,7 @@
         <div class="posizioni-container">
             <?php
                 while ($posizione = mysqli_fetch_assoc($result)){
-                    echo '<div class="posizione">';
+                    echo '<div class="posizione shadow-m">';
                     echo '<p><strong>'.$posizione['nomePos']."</strong><p>";
                     echo '<p>'.$posizione['descrizionePos']."<p>";
                     echo '<form action="index.php" method="post" class="delete-position-form">';
@@ -59,7 +59,7 @@
                     echo "</div>\n";
                 }
             ?>
-            <div class="posizione">
+            <div class="posizione shadow-m">
                 <form action="index.php" method="post" class="add-position-form">
                     <input type="hidden" name="pag" value="add_position">
                     <input type="text" name="nomePos" maxlength="60" placeholder="Nome Posizione" required>
