@@ -367,6 +367,8 @@
                 element.style.display = "none";
             }
         });
+        document.querySelector(".overview").classList.remove("expanded");
+        document.querySelector(".overview .expanded").classList.remove("expanded");
     }
 
     const select = document.querySelector("#selectEvent");
