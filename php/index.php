@@ -611,6 +611,30 @@
         }
     }
 
+    //funzione per modificare profili admin
+    if(isset($_POST["pag"]) && $_POST["pag"] == "edit_admin2" && isset($_SESSION["user-type"]) && $_SESSION["user-type"] == 1){
+        if(isset($_POST["passwordUt"]) && isset($_POST["nomeUt"]) && isset($_POST["cognomeUt"]) && trim($_POST["passwordUt"]) != ""){
+            if($_POST["passwordUt"] != $_POST["passwordUt2"]){
+                header("Location: index.php?pag=edit_admin&idUsr=".$_POST["idUt"]."&error=1");
+                exit("errore nella modifica dell'admin");
+            }
+            $idUt = filter_input(INPUT_POST, "idUt", FILTER_SANITIZE_NUMBER_INT);
+            $nomeUt = trim(mysqli_real_escape_string($conn,$_POST["nomeUt"]));
+            $cognomeUt = trim(mysqli_real_escape_string($conn,$_POST["cognomeUt"]));
+            $passwordUt = trim(password_hash($_POST["passwordUt"], PASSWORD_DEFAULT));
+            $date = date("Y-m-d");
+            $q = "update admins  set nomeUt = '".$nomeUt."', cognomeUt = '".$cognomeUt."', passwordUt = '".$passwordUt."', lastPwdUt = '".$date."' where idUt = ".$idUt;
+            mysqli_query($conn, $q)or die("errore durante la modifica dell'admin | ".$q." | ".mysqli_error($conn));
+            header("Location: index.php?pag=users&usr-type=1&success=2");
+            exit("");
+        }
+        else{
+            header("Location: index.php?pag=users&usr-type=1&error=3");
+            exit("errore nella modifica dell'admin");
+        }
+        exit("errore nella modifica dell'admin 2");
+    }
+
     //funzione per controllare se la password è "scaduta"
     //restituisce un valore booleano:
     //- true se la password è scaduta
@@ -1248,6 +1272,8 @@
             include ("new_event.php");
         }else if ($_GET["pag"] == "users" && $_SESSION["user-type"] == 1){
             include ("users.php");
+        }else if ($_GET["pag"] == "edit_admin" && $_SESSION["user-type"] == 1){
+            include ("edit_admin.php");
         }else if ($_GET["pag"] == "edit_event" && $_SESSION["user-type"] == 1){
             include ("edit-event.php");
         }else if ($_GET["pag"] == "adesione" && $_SESSION["user-type"] == 2){
