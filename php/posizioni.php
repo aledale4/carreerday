@@ -48,13 +48,16 @@
         <div class="posizioni-container">
             <?php
                 while ($posizione = mysqli_fetch_assoc($result)){
+                    $q = "select * from prenotazioni where rPos = ".$posizione["idPos"];
+                    $qRes = mysqli_query($conn, $q) or die("errore");
+                    $canDelete = mysqli_num_rows($qRes) == 0;
                     echo '<div class="posizione shadow-m">';
                     echo '<p><strong>'.$posizione['nomePos']."</strong><p>";
                     echo '<p>'.$posizione['descrizionePos']."<p>";
                     echo '<form action="index.php" method="post" class="delete-position-form">';
                     echo '<input type="hidden" name="pag" value="delete_position">';
                     echo '<input type="hidden" name="idPos" value="'.$posizione["idPos"].'">';
-                    echo '<input type="submit" class="material-symbols-outlined" value="delete_forever">';
+                    if ($canDelete) echo '<input type="submit" class="material-symbols-outlined" value="delete_forever">';
                     echo '</form>';
                     echo "</div>\n";
                 }
