@@ -113,7 +113,7 @@
                         echo '</div>';
                         echo '<p class="counter">Trovati '.$num.' utenti</p>';
                         echo '<table>';
-                        echo '<tr><th>ID</th><th>Nome</th><th>Cognome</th><th>Email</th><th>Verificato</th><th>Del</th></tr>';
+                        echo '<tr><th>ID</th><th>Nome</th><th>Cognome</th><th>Email</th><th>Verificato</th><th>Elimina</th></tr>';
                         while ($row = mysqli_fetch_assoc($ris)) {
                             echo '<tr>';
                             echo '<td>'.$row["idStu"].'</td>';
@@ -157,7 +157,7 @@
                         echo '</div>';
                         echo '<p class="counter">Trovati '.$num.' utenti</p>';
                         echo '<table>';
-                        echo '<tr><th>ID</th><th>Nome azienda</th><th>Email azienda</th><th>Nome referente</th><th>Cognome refefrente</th><th>Del</th></tr>';
+                        echo '<tr><th>ID</th><th>Nome azienda</th><th>Email azienda</th><th>Nome referente</th><th>Cognome refefrente</th><th>Elimina</th></tr>';
                         while ($row = mysqli_fetch_assoc($ris)) {
                             echo '<tr>';
                             echo '<td>'.$row["idAz"].'</td>';
