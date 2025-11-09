@@ -42,10 +42,25 @@
         <h1>Colloqui Prenotati</h1>
         <div class="colloqui">
             <div class="elenco <?php echo (isset($_GET["selected"])&&$_GET["selected"]!='')?'collapsed':''?>">
+            <select name="evento" id="selectEvent">
+                <option>Tutti</option>
+                <?php 
+                    $adesioni = [];
+                    $q = "select * from adesioni where rAz = ".$_SESSION["user"]["idAz"];
+                    $r = mysqli_query($conn, $q);
+                    $i = 0;
+                    while ($adesione = mysqli_fetch_assoc($r)) {
+                        $qEv = "select * from career_day where idCd = ".$adesione["rCd"];
+                        $rEvPren = mysqli_query($conn, $qEv) or die();
+                        if (mysqli_num_rows($rEvPren) == 0) exit();
+                        $evento = mysqli_fetch_assoc($rEvPren);
+                        echo "<option value='".$i."'>".$evento["nameCd"]."</option>";
+                        $i++;
+                    }
+                ?>
+            </select>
             <?php
-                $adesioni = [];
-                $q = "select * from adesioni where rAz = ".$_SESSION["user"]["idAz"];
-                $r = mysqli_query($conn, $q);
+                mysqli_data_seek($r,0);
                 while ($adesione = mysqli_fetch_assoc($r)) {
                     $qEv = "select * from career_day where idCd = ".$adesione["rCd"];
                     $rEvPren = mysqli_query($conn, $qEv) or die();
@@ -53,6 +68,7 @@
                     $q2 = "select * from prenotazioni where rAd=".$adesione["idAd"]." order by idPren";;
                     $rPren = mysqli_query($conn, $q2) or die();
                     $evento = mysqli_fetch_assoc($rEvPren);
+                    echo "<div class='evento-lista-stu'>";
                     echo "<p class='evento-colloquio'>".$evento["nameCd"]."</p>";
                     echo "<table><tr><th>Completato</th><th>Studente</th></tr>";//<th>Posizione</th><th>Data prenotazione</th>
                     while ($prenotazione = mysqli_fetch_assoc($rPren)) {
@@ -79,7 +95,7 @@
                         echo $nomeStu;
                         echo "</span></td></tr>";
                     }
-                    echo "</table>";
+                    echo "</table></div>";
                 }
             ?>
             </div>
@@ -262,4 +278,14 @@
             });
         });
 
-    </script>
+</script>
+
+<script>
+    const select = document.querySelector("#selectEvent");
+    select.addEventListener("change", (event)=>{
+        console.log(event);
+        console.log(select.value);
+    })
+
+
+</script>
