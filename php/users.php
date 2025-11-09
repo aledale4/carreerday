@@ -94,7 +94,7 @@
                         echo '</div>';
                         break;
                     case 2:
-                        $q = "select idStu,nomeStu,cognomeStu,emailStu,verificato from studenti order by idStu,verificato desc";
+                        $q = "select idStu,nomeStu,cognomeStu,emailStu,verificato from studenti order by verificato desc";
                         $ris = mysqli_query($conn, $q)or die("Errore nella query: ".mysqli_error($conn));
                         $num = mysqli_num_rows($ris);
                         echo '<div>';
