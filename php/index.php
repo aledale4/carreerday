@@ -333,7 +333,7 @@
         $ris= mysqli_query($conn, $q)or die("errore durante la registrazione | ".$q." | ".mysqli_error($conn));
         //registrazione effettuata con successo
         session_regenerate_id();
-        header("Location: index.php?pag=register&success=1");
+        header("Location: index.php?pag=register&success=2");
         exit();
     }
 
@@ -1091,6 +1091,32 @@
         $res = mysqli_query($conn, $q) or die();
         header("Location: index.php?pag=colloqui&selected=".$id);
     }
+    if(isset($_POST["pag"]) && $_POST["pag"]=="valutaColloquio" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 3){
+         if (!isset($_POST["id"]) || !isset($_POST["rating"])){
+            header("Location: index.php?pag=colloqui&error=1");
+            exit();
+        }
+        $id = trim(mysqli_real_escape_string($conn, $_POST["id"]));
+        $val = filter_input(INPUT_POST,"rating", FILTER_SANITIZE_NUMBER_INT);
+        if($val <0 || $val > 5 ){
+            header("Location: index.php?pag=colloqui&error=1");
+            exit();
+        }
+        $q = "select * from prenotazioni inner join adesioni on prenotazioni.rAd = adesioni.idAd where idPren = ".$id;
+        $res = mysqli_query($conn, $q) or die();
+        if (mysqli_num_rows($res) == 0) {
+            header("Location: index.php?pag=colloqui&error=1");
+            exit();
+        }
+        $prenotazione = mysqli_fetch_assoc($res);
+        if ($prenotazione["rAz"] != $_SESSION["user"]["idAz"]){
+            header("Location: index.php?pag=colloqui&error=1");
+            exit();
+        }
+        $q = "UPDATE prenotazioni SET valutazionePren = '".$val."' where idPren = ".$id;
+        $res = mysqli_query($conn, $q) or die();
+        header("Location: index.php?pag=colloqui&selected=".$id);
+    }
 ?>
 
 
@@ -1119,7 +1145,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,arrow_back_ios_new,calendar_today,dark_mode,delete_forever,edit,expand_circle_down,light_mode,location_on,logout,visibility,visibility_off" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,arrow_back_ios_new,calendar_today,dark_mode,delete_forever,edit,expand_circle_down,light_mode,location_on,logout,star_rate,visibility,visibility_off" />
     <script src="../js/occhiolino.js"></script>
     <script src="../js/dark-mode.js"></script>
     <title>Career Day</title>

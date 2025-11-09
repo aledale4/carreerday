@@ -27,6 +27,7 @@ tr.checked{
 .colloqui table tr.selected{
     background-color: var(--primary-color);
     border-radius: var(--buttons-border-radius);
+    box-shadow: var(--shadow-m);
 }
 
 .colloqui table td, .colloqui table th{
@@ -58,7 +59,7 @@ tr.checked{
 
 .colloqui .overview{
     flex: 1;
-    background-color: lightgray;
+    background-color: var(--secondary-color);
     border-radius: var(--buttons-border-radius);
     position: relative;
 }
@@ -73,7 +74,7 @@ tr.checked{
 }
 
 .colloqui .overview .info-stu .img{
-    width: calc(20% + 2rem);
+    width: 20%;
     height: 100%;
     aspect-ratio: 1;
     object-fit: cover;
@@ -123,12 +124,12 @@ tr.checked{
 .info-stu {
     position: relative;
     display: none;
-    width: calc(100% - 4rem);
+    width: 100%;
     text-align: left;
     font-size: 18px;
     padding: 2rem;
     gap: 2rem;
-    background-color: lightgray;
+    background-color: var(--secondary-color);
     border-radius: var(--buttons-border-radius);
     z-index: 2;
     flex-direction: row;
@@ -188,21 +189,23 @@ tr.checked{
     flex-direction: column;
     align-items: end;
     gap: 10px;
+    margin-top: 20px;
 }
 
 .colloqui .overview .feedbackForm textarea{
     resize: none;
-    width: calc(100% - 40px);
+    width: 100%;
     padding: 20px;
     border-radius: var(--buttons-border-radius);
     border: none;
     outline: none;
     height: 100px;
+    background-color: var(--secondary-color);
 }
 .colloqui .overview .feedbackForm textarea:focus{
     outline: 1px solid var(--primary-color);
 }
-.colloqui .overview .feedbackForm input[type="submit"]{
+.colloqui input[type="submit"]{
     border: none;
     background-color: var(--primary-color);
     color: var(--text-color);
@@ -211,6 +214,46 @@ tr.checked{
     border-radius: var(--buttons-border-radius);
     padding: 10px;
 }
+
+.rating-container, .feedback{
+    width: 100%;
+    background-color: white;
+    border-radius: var(--buttons-border-radius);
+    padding: 20px;
+    margin-top: 20px;
+}
+.star-rating {
+    display: inline-block;
+    color: var(--primary-a30); 
+    cursor: pointer;
+    user-select: none;
+}
+
+.star-rating .star {
+    display: inline-block;
+    padding: 0 5px; /* Spazio tra le stelline */
+    font-size: 2rem;
+}
+
+.star-rating .star:hover,.star-rating .star.selected {
+    font-variation-settings:
+        'FILL'1;
+    color: var(--primary-color)
+}
+.rating-container form{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.rating-value {
+    margin-top: 15px;
+    font-size: 1.2em;
+    color: #555;
+}
+
 
 @media screen and (max-width: 1000px) {
     .stu-name button{

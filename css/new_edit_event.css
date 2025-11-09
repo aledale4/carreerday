@@ -25,7 +25,7 @@
     cursor: pointer;
     border-radius: var(--buttons-border-radius);
     /* padding-inline: 10px; */
-    width: calc(50% + 20px);
+    width: 50%;
 }
 
 .event-data-inputs p {
@@ -35,7 +35,7 @@
 }
 
 .event-data-inputs textarea {
-    width: calc(50%);
+    width: 50%;
     margin: 0;
     height: 100px;
     border:none;
@@ -159,11 +159,11 @@ p.sub{
 
 @media screen and (max-width:1000px) {
     .event.edit input[type="text"]{
-        width: calc(100% - 40px);;
+        width: 100%;
         margin-right: 40px;
     }
     .event.edit .event-title input[type="submit"]{
-        width: calc(100% - 80px);;
+        width: 100%;
         margin-inline: 40px;
     }
     .event.edit .event-title{
@@ -186,6 +186,6 @@ p.sub{
         width: 100%;
     }
     .event-data-inputs p input,.event-data-inputs p textarea{
-        width: calc(100% - 20px);
+        width: 100%
     }
 }

@@ -100,7 +100,7 @@
                         $rStu = mysqli_query($conn, $qStu) or die();
                         if (mysqli_num_rows($rStu) == 0) continue;
                         $stu = mysqli_fetch_assoc($rStu);
-                        echo "<div class='info-stu"." ".($_GET["selected"]==$prenotazione["idPren"]?"expanded":"")."' id='".$prenotazione["idPren"]."'>";
+                        echo "<div class='info-stu shadow-l"." ".($_GET["selected"]==$prenotazione["idPren"]?"expanded":"")."' id='".$prenotazione["idPren"]."'>";
                         $file = '../static/pfp/studente-pic/' . $stu["idStu"] . '.jpeg';
                         echo '<div class="img">';
                         if (file_exists($file)) {
@@ -136,13 +136,31 @@
                         echo "<br>";
                         echo "<p>CV: ".(file_exists("../private/cv/".$stu["idStu"].".pdf")?("<a href='index.php?pag=viewcv&id=".$stu["idStu"]."'>Apri</a>"):"<a>No CV</a>")."</p>";
                         echo "<br>";
+                        echo "<div class='feedback shadow-s'>";
                         echo "<p>Aggiungi una nota relativa al colloquio:</p>";
                         echo "<form action='index.php' method='post' class='feedbackForm'>";
                         echo "<input type='hidden' name='pag' value='commPren'>";
                         echo "<input type='hidden' name='id' value='".$prenotazione["idPren"]."'>";
-                        echo "<textarea placeholder=\"Inserisci un commento relativo al colloquio con l'alunno\" maxlength='255' name='feedback'>".$prenotazione["commPren"]."</textarea>";
-                        echo "<input type='submit' value='Salva'>";
+                        echo "<textarea class='shadow-s' placeholder=\"Inserisci un commento relativo al colloquio con l'alunno\" maxlength='255' name='feedback'>".$prenotazione["commPren"]."</textarea>";
+                        echo "<input type='submit' value='Salva' class=\"shadow-s\">";
                         echo "</form>";
+                        echo '</div>';
+                        echo '<div class="rating-container shadow-s">';
+                        echo '<p>Valuta il colloquio</p>';
+                        echo '<form action="index.php" method="post">';
+                        echo '<div class="star-rating">';
+                        echo '<span class="material-symbols-outlined star" data-value="1">star_rate</span>';
+                        echo '<span class="material-symbols-outlined star" data-value="2">star_rate</span>';
+                        echo '<span class="material-symbols-outlined star" data-value="3">star_rate</span>';
+                        echo '<span class="material-symbols-outlined star" data-value="4">star_rate</span>';
+                        echo '<span class="material-symbols-outlined star" data-value="5">star_rate</span>';
+                        echo '</div>';
+                        echo '<input type="hidden" name="rating" class="ratingValue" value="'.$prenotazione["valutazionePren"].'">';
+                        echo '<input type="hidden" name="pag"  value="valutaColloquio">';
+                        echo '<input type="hidden" name="id"  value="'.$prenotazione["idPren"].'">';
+                        echo '<input type="submit" value="Salva" class="shadow-s">';
+                        echo '</form>';
+                        echo '</div>';
                         echo "</div>";
                         echo "</div>";
                     }
@@ -196,3 +214,52 @@
     }
 
 </script>
+
+<script>
+        const starsContainers = document.querySelectorAll(".rating-container");
+
+        function updateStars(container){
+            var stars = container.querySelectorAll('.star-rating .star');
+            var rating = container.querySelector(".ratingValue").value;
+            console.log(rating);
+            stars.forEach(star =>{
+                var starValue = parseInt(star.dataset.value);
+                if (starValue <= rating) {
+                    star.classList.add('selected');
+                } else {
+                    star.classList.remove('selected');
+                }
+            });
+            
+        }
+
+        starsContainers.forEach(container => {
+            updateStars(container);
+            container.addEventListener('click', (event) => {
+                var clickedStar = event.target.closest('.star');
+                if (clickedStar) {
+                    if(container.querySelector(".ratingValue").value == parseInt(clickedStar.dataset.value)){
+                        container.querySelector(".ratingValue").value = 0;
+                    }else{
+                        container.querySelector(".ratingValue").value = parseInt(clickedStar.dataset.value);
+                    }
+                    updateStars(container);
+                }
+            });
+            container.addEventListener("mouseover",(event)=>{
+                var hoveredStar = event.target.closest('.star');
+                var stars = container.querySelectorAll('.star-rating .star');
+                stars.forEach(element => {
+                    if(element.dataset.value <= hoveredStar.dataset.value){
+                        element.classList.add('selected');
+                    } else {
+                        element.classList.remove('selected');
+                    }
+                });
+            });
+            container.addEventListener("mouseout",(event)=>{
+                updateStars(container);
+            });
+        });
+
+    </script>

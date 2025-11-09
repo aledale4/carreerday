@@ -13,7 +13,7 @@
 }
 
 .event .event-main{
-    width: calc(100% - 4rem - 40px);
+    width: 100%;
     padding-inline: calc(2rem + 20px);
     margin-top: 20px;
     display: flex;
@@ -124,7 +124,7 @@
     font-weight: 400;
 }
 .event-participants .participants .participant img{
-    background-color: lightgray;
+    background-color: white;
     width: 100%;
     height: 100%;
     object-fit: scale-down;
@@ -195,7 +195,7 @@ input:checked + .slider:before {
 
 @media screen and (max-width: 600px){
     .event-participants .participants .participant{
-        width: calc(100% - 20px);
+        width: 100%;
     }
 }
 
@@ -213,9 +213,9 @@ input:checked + .slider:before {
         width: 100%;
     }
     .event.company .event-qr{
-        width: calc(100% - 80px);
+        width: 100%;
         margin-top: 20px;
-        margin-inline: 40px;
+        padding-inline: 40px;
     }
     .event .event-info{
         flex-direction: column;

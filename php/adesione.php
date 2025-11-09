@@ -56,7 +56,10 @@
 </div>
 <div class="prenotazione-container">
     <div class="prenotazione">
-        <h1 class="nome-evento"><?php echo $evento["nameCd"]?></h1>
+        <div class="title">
+            <a href="index.php"><span class="material-symbols-outlined">arrow_back_ios_new</span></a>
+            <h1 class="nome-evento"><?php echo $evento["nameCd"]?></h1>
+        </div>
         <p class="subtitle">Prenota il tuo colloquio con <span class="nome-azienda"><?php echo $azienda["ragsoc"]?></span></p>
         <form action="index.php" method="post">
             <input type="hidden" name="pag" value="prenotazione">
