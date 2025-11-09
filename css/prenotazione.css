@@ -18,6 +18,13 @@
     padding: 30px;
 }
 
+.prenotazione .title{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
 .prenotazione form{
     margin-top: 20px;
     display: flex;
@@ -29,6 +36,7 @@
 .prenotazione .nome-evento{
     font-size: 2rem;
     font-weight: 600;
+    margin: 0;
 }
 .prenotazione .subtitle{
     font-size: 1.1rem;
@@ -90,4 +98,5 @@
 .prenotazione input[type="submit"]:disabled{
     background-color: grey;
     cursor: not-allowed;
+    display: none;
 }

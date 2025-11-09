@@ -1,15 +1,17 @@
 .posizioni-container{
     width: 100%;
+    max-width: 800px;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin: auto;
 }
 
 .posizioni-container .posizione{
-    outline: 3px solid var(--primary-color);
+    /* outline: 3px solid var(--primary-color); */
     background-color: lightgrey;
     border-radius: var(--buttons-border-radius);
-    padding: 10px;  
+    padding: 20px;  
 }
 
 .posizione{
@@ -29,9 +31,10 @@
     border-radius: var(--buttons-border-radius);
     padding: 10px;
     height: fit-content;
-    width: calc(100% - 20px);
+    width: 100%;
     outline: none;
     border: none;
+    font-weight: 600;
 }
 
 .add-position-form input[type="submit"]{
@@ -41,6 +44,7 @@
     outline: none;
     cursor: pointer;
     padding: 10px;
+    background-color: var(--primary-color);
 }
 
 .add-position-form textarea{
@@ -48,7 +52,7 @@
     padding: 10px;
     height: 100px;
     resize: none;
-    width: calc(100% - 20px);
+    width: 100%;
     outline: none;
     border: none;
 }

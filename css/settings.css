@@ -154,7 +154,7 @@
     padding: 10px;
 }
 .card p select {
-    width: calc(50% + 20px);
+    width: 50%;
 }
 .card .web-link{
     width: 400px;
@@ -167,7 +167,7 @@
     justify-content: space-between;
 }
 .links-section {
-    width: calc(50% - 10px);
+    width: 50%;
     /*margin: 80px 40px;*/
 }
 

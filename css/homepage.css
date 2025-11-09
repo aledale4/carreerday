@@ -48,7 +48,7 @@
     height: 100%;
     margin: 0;
     padding: 100px 100px;
-    width: calc(100% - 200px);
+    width: 100%;
     color: black;
     background-color: white;
 }
@@ -71,6 +71,6 @@ section#sect3{
 @media screen and (max-width: 1000px){
     .homepage-body .homepage-section, section#sect1, section#sect3{
         padding: 200px 10px;
-        width: calc(100% - 20px);
+        width: 100%;
     }
 }
