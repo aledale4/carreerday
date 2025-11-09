@@ -83,19 +83,19 @@
 }
 .card .side .img:has(.gold)::before{
     content: "Developer";
-    opacity: 1;
-    transition: all 0.2s ease-in-out;
     position: absolute;
-    bottom: 0;
-    right: -10px;
+    bottom: -0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
     width: fit-content;
-    transform: rotateZ(-45deg);
-    height: 10%;
+    height: fit-content;
     pointer-events: none;
     cursor: pointer;
     background-color: #005eff;
     border-radius: var(--buttons-border-radius);
     padding: 10px;
+    font-size: 1rem;
+    box-shadow: var(--shadow-m);
 }
 .card .side .img a{
     display: block;

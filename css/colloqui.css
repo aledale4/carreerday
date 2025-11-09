@@ -96,10 +96,10 @@ tr.checked{
 .colloqui .overview .info-stu .img:has(.gold)::after{
     content: "Developer";
     position: absolute;
-    bottom: 5%;
-    right: 0%;
+    bottom: -0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
     width: fit-content;
-    transform: rotateZ(-45deg);
     height: fit-content;
     pointer-events: none;
     cursor: pointer;
@@ -107,6 +107,7 @@ tr.checked{
     border-radius: var(--buttons-border-radius);
     padding: 10px;
     font-size: 1rem;
+    box-shadow: var(--shadow-m);
 }
 
 .evento-colloquio{
@@ -304,8 +305,8 @@ tr.checked{
     .colloqui .overview .info-stu .dati{
         width: 100%;
     }
-    .colloqui .overview .info-stu img{
-        width: 100%;
+    .colloqui .overview .info-stu .img{
+        width: 50%;
     }
     .colloqui .overview .backbt{
         display: block;
