@@ -42,10 +42,42 @@
         <h1>Colloqui Prenotati</h1>
         <div class="colloqui">
             <div class="elenco <?php echo (isset($_GET["selected"])&&$_GET["selected"]!='')?'collapsed':''?>">
+            <p>Filtra per evento:</p>
+            <select name="evento" id="selectEvent" class="shadow-s">
+                <option value="-1">Tutti</option>
+                <?php 
+                    $q = "select * from adesioni where rAz = ".$_SESSION["user"]["idAz"];
+                    $r = mysqli_query($conn, $q);
+                    $i = 0;
+                    while ($adesione = mysqli_fetch_assoc($r)) {
+                        $qEv = "select * from career_day where idCd = ".$adesione["rCd"];
+                        $rEvPren = mysqli_query($conn, $qEv) or die();
+                        if (mysqli_num_rows($rEvPren) == 0) exit();
+                        $evento = mysqli_fetch_assoc($rEvPren);
+                        echo "<option value='".$i."'>".$evento["nameCd"]."</option>";
+                        $i++;
+                    }
+                ?>
+            </select>
+            <p>Filtra per posizione:</p>
+            <select name="posizione" id="selectPosition" class="shadow-s">
+                <option value="-1">Tutti</option>
+                <?php 
+                    $posQ = "select * from posizioni where rAz = ".$_SESSION["user"]["idAz"];
+                    $posPren = mysqli_query($conn, $posQ) or die();
+                    while ($posizione = mysqli_fetch_assoc($posPren)) {
+                        echo "<option value='".$posizione["idPos"]."'>".$posizione["nomePos"]."</option>";
+                    }
+                ?>
+            </select>
+            <div class="onlyCompletedCheck">
+                <p>Solo completati:</p>
+                <input type="checkbox" id="onlyCompleted">
+            </div>
+            <p>Cerca studente:</p>
+            <input type="text" placeholder="Cerca..." id="searchBar" class="shadow-s">
             <?php
-                $adesioni = [];
-                $q = "select * from adesioni where rAz = ".$_SESSION["user"]["idAz"];
-                $r = mysqli_query($conn, $q);
+                mysqli_data_seek($r,0);
                 while ($adesione = mysqli_fetch_assoc($r)) {
                     $qEv = "select * from career_day where idCd = ".$adesione["rCd"];
                     $rEvPren = mysqli_query($conn, $qEv) or die();
@@ -53,6 +85,7 @@
                     $q2 = "select * from prenotazioni where rAd=".$adesione["idAd"]." order by idPren";;
                     $rPren = mysqli_query($conn, $q2) or die();
                     $evento = mysqli_fetch_assoc($rEvPren);
+                    echo "<div class='evento-lista-stu'>";
                     echo "<p class='evento-colloquio'>".$evento["nameCd"]."</p>";
                     echo "<table><tr><th>Completato</th><th>Studente</th></tr>";//<th>Posizione</th><th>Data prenotazione</th>
                     while ($prenotazione = mysqli_fetch_assoc($rPren)) {
@@ -68,7 +101,7 @@
                         if (mysqli_num_rows($posPren) != 0){
                             $pos = mysqli_fetch_assoc($posPren);
                         }
-                        echo "<tr class='".($prenotazione["completed"]==1?"checked":"")." ".($_GET["selected"]==$prenotazione["idPren"]?"selected":"")."'><td>";
+                        echo "<tr class='studente ".($prenotazione["completed"]==1?"checked":"")." ".($_GET["selected"]==$prenotazione["idPren"]?"selected":"")."' data-pos='".$pos["idPos"]."'><td>";
                         echo "<form action='index.php' method='post'>";
                         echo '<input type="hidden" name="id" value="'.$prenotazione["idPren"].'">';
                         echo '<input type="hidden" name="pag" value="update_prenotazione">';
@@ -79,7 +112,7 @@
                         echo $nomeStu;
                         echo "</span></td></tr>";
                     }
-                    echo "</table>";
+                    echo "</table></div>";
                 }
             ?>
             </div>
@@ -117,6 +150,12 @@
                             }else{
                                 echo "<img src='../static/Default_pfp.svg' alt=''>";
                             }
+                        }
+                        $posQ = "select * from posizioni where idPos = ".$prenotazione["rPos"];
+                        $posPren = mysqli_query($conn, $posQ) or die();
+                        $pos = [];
+                        if (mysqli_num_rows($posPren) != 0){
+                            $pos = mysqli_fetch_assoc($posPren);
                         }
                         echo '</div>';
                         echo "<div class='dati'>";
@@ -262,4 +301,75 @@
             });
         });
 
-    </script>
+</script>
+
+<script>
+    const select = document.querySelector("#selectEvent");
+    select.addEventListener("change", (event)=>{
+        console.log(event);
+        console.log(select.value);
+        const events = document.querySelectorAll(".evento-lista-stu");
+        console.log(events)
+        if (select.value == -1){
+            events.forEach(element => {
+                element.style.display = "block";
+            });
+        }
+        else{
+            events.forEach(element => {
+                element.style.display = "none";
+            });
+            events[select.value].style.display = "block";
+        }
+    });
+    const selectPos = document.querySelector("#selectPosition");
+    selectPos.addEventListener("change", (event)=>{
+        const studenti = document.querySelectorAll("tr.studente");
+        if (selectPos.value == -1){
+            studenti.forEach(element => {
+                element.style.display = "table-row";
+            });
+        }
+        else{
+            studenti.forEach(element => {
+                if(element.dataset.pos == selectPos.value){
+                    element.style.display = "table-row";
+                }
+                else{
+                    element.style.display = "none";
+                }
+            });
+        }
+    });
+    const search = document.querySelector("#searchBar");
+    search.addEventListener("keyup",(event)=>{
+        const studenti = document.querySelectorAll(".stu-name");
+        studenti.forEach(stu=>{
+            var nome = stu.innerHTML;
+            if (nome.toLowerCase().includes(search.value.toLowerCase())){
+                stu.parentNode.parentNode.style.display="table-row";
+            }else{
+                stu.parentNode.parentNode.style.display="none";
+            }
+        })
+    });
+    const checkbox = document.querySelector("#onlyCompleted");
+    checkbox.addEventListener("change",(event)=>{
+        const studenti = document.querySelectorAll("tr.studente");
+        studenti.forEach(stu=>{
+            if(checkbox.checked){
+                if (stu.querySelector("input[type='checkbox'").checked){
+                    stu.style.display="table-row";
+                }else{
+                    stu.style.display="none";
+                }
+            }else{
+                stu.style.display = "table-row";
+            }
+           
+        })
+        
+    })
+
+
+</script>
