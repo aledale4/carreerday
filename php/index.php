@@ -31,6 +31,74 @@
         }
     }
 
+    //funzione per eliminare un utente (solo admin)
+    if(isset($_POST["pag"]) && $_POST["pag"] == "admin_del_usr" && isset($_SESSION["user-type"]) && $_SESSION["user-type"] == 1){
+        if(isset($_POST["idUsr"]) && isset($_POST["usr-type"])){
+            switch($_POST["usr-type"]){
+                case 1:
+                    $idUsr["idUt"] = mysqli_real_escape_string($conn, $_POST["idUsr"]);
+                    break;
+                case 2:
+                    $q = "select * from prenotazioni where rStu = " . mysqli_real_escape_string($conn, $_POST["idUsr"]);
+                    $ris = mysqli_query($conn, $q) or die("errore durante la verifica delle prenotazioni");
+                    $num = mysqli_num_rows($ris);
+                    if($num > 0){
+                        while($riga = mysqli_fetch_assoc($ris)){
+                            if($riga["completed"] != 1){
+                                header("Location: index.php?pag=users&usr-type=".$usr_type."&error=4");
+                                exit("errore durante l'eliminazione dell'utente");
+                            }
+                        }
+                        header("Location: index.php?pag=users&usr-type=".$usr_type."&error=4");
+                        exit("errore durante l'eliminazione dell'utente");
+                    }
+                    else{
+                        $idUsr["idStu"] = mysqli_real_escape_string($conn, $_POST["idUsr"]);
+                    }
+                    break;
+                case 3:
+                    $q = "select * from adesioni where rAz = " . mysqli_real_escape_string($conn, $_POST["idUsr"]);
+                    $ris = mysqli_query($conn, $q) or die("errore durante la verifica delle adesioni");
+                    $num = mysqli_num_rows($ris);
+                    if($num > 0){
+                        while($riga = mysqli_fetch_assoc($ris)){
+                            $q2 = "select * from prenotazioni where rAd = " . $riga["idAd"];
+                            $ris2 = mysqli_query($conn, $q2) or die("errore durante la verifica delle prenotazioni");
+                            $num2 = mysqli_num_rows($ris2);
+                            if($num2 > 0){
+                                header("Location: index.php?pag=users&usr-type=".$usr_type."&error=5");
+                                exit("errore durante l'eliminazione dell'utente");
+                            }
+                            header("Location: index.php?pag=users&usr-type=".$usr_type."&error=4");
+                            exit("errore durante l'eliminazione dell'utente");
+                        }
+                    }
+                    else{
+                        $idUsr["idAz"] = mysqli_real_escape_string($conn, $_POST["idUsr"]);
+                    }
+                    break;
+                default:
+                    header("Location: index.php?pag=users&usr-type=".$usr_type."&error=3");
+                    exit("errore durante l'eliminazione dell'utente");
+            }
+            $usr_type = mysqli_real_escape_string($conn, $_POST["usr-type"]);
+            if(elimina_utente($idUsr,$usr_type)){
+                header("Location: index.php?pag=users&usr-type=".$usr_type."&success=2");
+                exit("errore durante l'eliminazione dell'utente");
+            }
+            else{
+                header("Location: index.php?pag=users&usr-type=".$usr_type."&error=2");
+                exit("errore durante l'eliminazione dell'utente");
+            }
+        }
+        else{
+            header("Location: index.php?pag=users&usr-type=".$usr_type."&error=3");
+            exit("errore durante l'eliminazione dell'utente");
+        }
+        exit("ok");
+    }
+        
+
     if(isset($_GET["pag"]) && $_GET["pag"] == "download_qr" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 3){
         $id = filter_input(INPUT_GET,"id", FILTER_SANITIZE_NUMBER_INT);
         $q = "select * from adesioni where idAd = ".$id;
@@ -1119,7 +1187,6 @@
     }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -1148,6 +1215,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,arrow_back_ios_new,calendar_today,dark_mode,delete_forever,edit,expand_circle_down,light_mode,location_on,logout,star_rate,visibility,visibility_off" />
     <script src="../js/occhiolino.js"></script>
     <script src="../js/dark-mode.js"></script>
+    <script src="../js/admin-del-usr.js"></script>
     <title>Career Day</title>
 </head>
 <body class>

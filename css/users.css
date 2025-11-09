@@ -56,9 +56,10 @@
 }
 
 .users-container .delete{
+    border: none;
     background-color: var(--secondary-color);
     display: inline-block;
-    padding: 5px 10px;
+    padding: 8px 10px 6px 10px;
     border-radius: var(--buttons-border-radius);
     transition: all .3s ease;
     text-align: center;
@@ -67,6 +68,21 @@
 
 .users-container .delete:hover{
     background-color: var(--error-color);
+}
+
+.users-container .modify{
+    border: none;
+    background-color: var(--secondary-color);
+    display: inline-block;
+    padding: 8px 10px 6px 10px;
+    border-radius: var(--buttons-border-radius);
+    transition: all .3s ease;
+    text-align: center;
+    margin: 5px 0;
+}
+
+.users-container .modify:hover{
+    background-color: var(--success-color);
 }
 
 .register-admin-container{
@@ -143,4 +159,26 @@
     color: var(--error-color);
     text-align: center;
     margin: 20px 0;
+}
+
+.verified{
+    display: inline-block;
+    color: var(--success-color);
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    padding: 0 10px;
+    border: 3px solid var(--success-color);
+    border-radius: var(--buttons-border-radius);
+}
+
+.not-verified{
+    display: inline-block;
+    color: var(--error-color);
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    padding: 0 6px;
+    border: 3px solid var(--error-color);
+    border-radius: var(--buttons-border-radius);
 }
