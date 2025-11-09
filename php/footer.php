@@ -9,5 +9,5 @@
     <a href="https://forms.gle/eBn1jxkSumZq2zUaA">Lascia un feedback alla pagina</a>
 <?php endif; ?>
 
-    <p><a target="_blank" href="/php/politica_privacy.php">Politica Privacy</a></p>
+    <p><a href="/php/politica_privacy.php">Politica Privacy</a></p>
 </footer>
