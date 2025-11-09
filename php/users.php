@@ -44,13 +44,13 @@
                         $num = mysqli_num_rows($ris);
                         echo '<div>';
                         if(isset($_GET["error"]) && $_GET["error"] == 2){
-                            echo '<p class="error-message">Errore nell\'eliminazione dell\'utente.</p>';
+                            echo '<p class="error-message">Username già in uso</p>';
                         }
                         else if(isset($_GET["error"]) && $_GET["error"] == 3){
-                            echo '<p class="error-message">Errore nella richiesta di eliminazione</p>';
+                            echo '<p class="error-message">Admin non trovato</p>';
                         }
                         else if(isset($_GET["success"]) && $_GET["success"] == 2){
-                            echo '<p class="success-message">Utente eliminato con successo.</p>';
+                            echo '<p class="success-message">Profilo admin modificato con successo.</p>';
                         }
                         echo '</div>';
                         echo '<p class="counter">Trovati '.$num.' utenti</p>';
@@ -61,7 +61,7 @@
                             echo '<td>'.$row["idUt"].'</td>';
                             echo '<td>'.$row["nomeUt"].'</td>';
                             echo '<td>'.$row["cognomeUt"].'</td>';
-                            echo '<td><a href="#" class="modify"><span class="material-symbols-outlined">edit</span></a></td>';
+                            echo '<td><a class="modify" href="index.php?pag=edit_admin&idUsr='.$row["idUt"].'"><span class="material-symbols-outlined">edit</span></a></td>';
                             echo '</tr>';
                         }
                         echo '</table>';
