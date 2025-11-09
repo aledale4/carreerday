@@ -31,23 +31,39 @@
         }
     }
 
-    if(isset($_GET["pag"]) && $_GET["pag"] == "admin_del_usr" && isset($_SESSION["user-type"]) && $_SESSION["user-type"] == 1){
+    //funzione per eliminare un utente (solo admin)
+    if(isset($_POST["pag"]) && $_POST["pag"] == "admin_del_usr" && isset($_SESSION["user-type"]) && $_SESSION["user-type"] == 1){
+        //exit("ok");
         if(isset($_POST["idUsr"]) && isset($_POST["usr-type"])){
-            $idUsr = mysqli_real_escape_string($conn, $_POST["idUsr"]);
+            switch($_POST["usr-type"]){
+                case 1:
+                    $idUsr["idUt"] = mysqli_real_escape_string($conn, $_POST["idUsr"]);
+                    break;
+                case 2:
+                    $idUsr["idStu"] = mysqli_real_escape_string($conn, $_POST["idUsr"]);
+                    break;
+                case 3:
+                    $idUsr["idAz"] = mysqli_real_escape_string($conn, $_POST["idUsr"]);
+                    break;
+                default:
+                    header("Location: index.php?pag=users&usr-type=".$usr_type."&error=3");
+                    exit("errore durante l'eliminazione dell'utente");
+            }
             $usr_type = mysqli_real_escape_string($conn, $_POST["usr-type"]);
             if(elimina_utente($idUsr,$usr_type)){
                 header("Location: index.php?pag=users&usr-type=".$usr_type."&success=2");
-                exit();
+                exit("errore durante l'eliminazione dell'utente");
             }
             else{
                 header("Location: index.php?pag=users&usr-type=".$usr_type."&error=2");
-                exit();
+                exit("errore durante l'eliminazione dell'utente");
             }
         }
         else{
             header("Location: index.php?pag=users&usr-type=".$usr_type."&error=3");
-            exit();
+            exit("errore durante l'eliminazione dell'utente");
         }
+        exit("ok");
     }
         
 
@@ -1112,7 +1128,6 @@
         header("Location: index.php?pag=colloqui&selected=".$id);
     }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="it">
