@@ -267,8 +267,14 @@
         $q= "select * from aziende where email='".$email."'";
         $ris= mysqli_query($conn, $q)or die("errore durante la verifica dell'email");
         $num= mysqli_num_rows($ris);
-        if($num==1){
+        if($num==1){ 
             $riga = mysqli_fetch_assoc($ris);
+            $q2 = "select * from posizioni where rAz = '". $riga["idAz"]."' and nomePos = 'Generica'";
+            $ris2 = mysqli_query($conn, $q2) or die("errore durante la verifica della posizione generica");
+            if (mysqli_num_rows($ris2) == 0){
+                $q3 = "insert into posizioni (rAz, nomePos, descrizionePos) values ('". $riga["idAz"]."','Generica','Posizione generica')";
+                mysqli_query($conn, $q3) or die("errore durante la creazione della posizione generica");
+            }
             if(verify_pwd_res($riga["idAz"], 3)){
                 if(password_verify(trim($_POST["password"]),$riga["passwordRef"])){
                 //login effettuato con successo
