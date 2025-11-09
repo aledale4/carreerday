@@ -42,25 +42,6 @@
                         $q = "select idUt,nomeUt,cognomeUt from admins";
                         $ris = mysqli_query($conn, $q)or die("Errore nella query: ".mysqli_error($conn));
                         $num = mysqli_num_rows($ris);
-                        echo '<p class="counter">Trovati '.$num.' utenti</p>';
-                        echo '<table>';
-                        echo '<tr><th>ID</th><th>Nome</th><th>Cognome</th><th>Del</th></tr>';
-                        while ($row = mysqli_fetch_assoc($ris)) {
-                            echo '<tr>';
-                            echo '<td>'.$row["idUt"].'</td>';
-                            echo '<td>'.$row["nomeUt"].'</td>';
-                            echo '<td>'.$row["cognomeUt"].'</td>';
-                            echo '<td>';
-                            echo '<form action="index.php" method="post">';
-                            echo '<input type="hidden" name="idUsr" value="'.$row["idUt"].'">';
-                            echo '<input type="hidden" name="usr-type" value="1">';
-                            echo '<input type="hidden" name="pag" value="admin_del_usr">';
-                            echo '<button type="submit" class="delete"><span class="material-symbols-outlined">delete_forever</span></button>';
-                            echo '</form>';
-                            echo '</td>';
-                            echo '</tr>';
-                        }
-                        echo '</table>';
                         echo '<div>';
                         if(isset($_GET["error"]) && $_GET["error"] == 2){
                             echo '<p class="error-message">Errore nell\'eliminazione dell\'utente.</p>';
@@ -72,6 +53,25 @@
                             echo '<p class="success-message">Utente eliminato con successo.</p>';
                         }
                         echo '</div>';
+                        echo '<p class="counter">Trovati '.$num.' utenti</p>';
+                        echo '<table>';
+                        echo '<tr><th>ID</th><th>Nome</th><th>Cognome</th></tr>';
+                        while ($row = mysqli_fetch_assoc($ris)) {
+                            echo '<tr>';
+                            echo '<td>'.$row["idUt"].'</td>';
+                            echo '<td>'.$row["nomeUt"].'</td>';
+                            echo '<td>'.$row["cognomeUt"].'</td>';
+                            echo '</tr>';
+                        }
+                        echo '</table>';
+                        echo '</div>';
+                        echo '<div>';
+                        if(isset($_GET["error"]) && $_GET["error"] == 1){
+                            echo '<p class="error-message">Errore: username già esistente.</p>';
+                        }
+                        if(isset($_GET["success"]) && $_GET["success"] == 1){
+                            echo '<p class="success-message">Nuovo admin aggiunto con successo.</p>';
+                        }
                         echo '</div>';
                         echo '<div class="container">';
                         echo '<div class="centered">';
@@ -91,19 +91,25 @@
                         echo '</form>';
                         echo '</div>';
                         echo '</div>';
-                        echo '<div>';
-                        if(isset($_GET["error"]) && $_GET["error"] == 1){
-                            echo '<p class="error-message">Errore: username già esistente.</p>';
-                        }
-                        if(isset($_GET["success"]) && $_GET["success"] == 1){
-                            echo '<p class="success-message">Nuovo admin aggiunto con successo.</p>';
-                        }
-                        echo '</div>';
                         break;
                     case 2:
                         $q = "select idStu,nomeStu,cognomeStu,emailStu,verificato from studenti order by idStu,verificato desc";
                         $ris = mysqli_query($conn, $q)or die("Errore nella query: ".mysqli_error($conn));
                         $num = mysqli_num_rows($ris);
+                        echo '<div>';
+                        if(isset($_GET["error"]) && $_GET["error"] == 2){
+                            echo '<p class="error-message">Errore nell\'eliminazione dello studente.</p>';
+                        }
+                        else if(isset($_GET["error"]) && $_GET["error"] == 3){
+                            echo '<p class="error-message">Errore nella richiesta di eliminazione</p>';
+                        }
+                        else if(isset($_GET["error"]) && $_GET["error"] == 4){
+                            echo '<p class="error-message">Impossibile eliminare lo studente perché ha delle prenotazioni attive.</p>';
+                        }
+                        else if(isset($_GET["success"]) && $_GET["success"] == 2){
+                            echo '<p class="success-message">Utente eliminato con successo.</p>';
+                        }
+                        echo '</div>';
                         echo '<p class="counter">Trovati '.$num.' utenti</p>';
                         echo '<table>';
                         echo '<tr><th>ID</th><th>Nome</th><th>Cognome</th><th>Email</th><th>Verificato</th><th>Del</th></tr>';
@@ -121,26 +127,33 @@
                             echo '<input type="hidden" name="pag" value="admin_del_usr">';
                             echo '<button type="submit" class="delete"><span class="material-symbols-outlined">delete_forever</span></button>';
                             echo '</form>';
-                            echo '</td>';                            echo '</tr>';
+                            echo '</td>';
+                            echo '</tr>';
                         }
                         echo '</table>';
-                        echo '<div>';
-                        if(isset($_GET["error"]) && $_GET["error"] == 2){
-                            echo '<p class="error-message">Errore nell\'eliminazione dell\'utente.</p>';
-                        }
-                        else if(isset($_GET["error"]) && $_GET["error"] == 3){
-                            echo '<p class="error-message">Errore nella richiesta di eliminazione</p>';
-                        }
-                        else if(isset($_GET["success"]) && $_GET["success"] == 2){
-                            echo '<p class="success-message">Utente eliminato con successo.</p>';
-                        }
-                        echo '</div>';
                         echo '</div>';
                         break;
                     case 3:
                         $q = "select idAz,ragsoc,email,nomeRef,cognomeRef from aziende";
                         $ris = mysqli_query($conn, $q)or die("Errore nella query: ".mysqli_error($conn));
                         $num = mysqli_num_rows($ris);
+                        echo '<div>';
+                        if(isset($_GET["error"]) && $_GET["error"] == 2){
+                            echo '<p class="error-message">Errore nell\'eliminazione dell\'azienda.</p>';
+                        }
+                        else if(isset($_GET["error"]) && $_GET["error"] == 3){
+                            echo '<p class="error-message">Errore nella richiesta di eliminazione</p>';
+                        }
+                        else if(isset($_GET["error"]) && $_GET["error"] == 4){
+                            echo '<p class="error-message">Impossibile eliminare l\'azienda perché ha aderito a uno o più eventi.</p>';
+                        }
+                        else if(isset($_GET["error"]) && $_GET["error"] == 5){
+                            echo '<p class="error-message">Impossibile eliminare l\'azienda perché ha dei colloqui prenotati.</p>';
+                        }
+                        else if(isset($_GET["success"]) && $_GET["success"] == 2){
+                            echo '<p class="success-message">Azienda eliminata con successo.</p>';
+                        }
+                        echo '</div>';
                         echo '<p class="counter">Trovati '.$num.' utenti</p>';
                         echo '<table>';
                         echo '<tr><th>ID</th><th>Nome azienda</th><th>Email azienda</th><th>Nome referente</th><th>Cognome refefrente</th><th>Del</th></tr>';
@@ -162,17 +175,6 @@
                             echo '</tr>';
                         }
                         echo '</table>';
-                        echo '<div>';
-                        if(isset($_GET["error"]) && $_GET["error"] == 2){
-                            echo '<p class="error-message">Errore nell\'eliminazione dell\'utente.</p>';
-                        }
-                        else if(isset($_GET["error"]) && $_GET["error"] == 3){
-                            echo '<p class="error-message">Errore nella richiesta di eliminazione</p>';
-                        }
-                        else if(isset($_GET["success"]) && $_GET["success"] == 2){
-                            echo '<p class="success-message">Utente eliminato con successo.</p>';
-                        }
-                        echo '</div>';
                         echo '</div>';
                         break;
                     default:

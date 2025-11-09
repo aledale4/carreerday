@@ -33,17 +33,49 @@
 
     //funzione per eliminare un utente (solo admin)
     if(isset($_POST["pag"]) && $_POST["pag"] == "admin_del_usr" && isset($_SESSION["user-type"]) && $_SESSION["user-type"] == 1){
-        //exit("ok");
         if(isset($_POST["idUsr"]) && isset($_POST["usr-type"])){
             switch($_POST["usr-type"]){
                 case 1:
                     $idUsr["idUt"] = mysqli_real_escape_string($conn, $_POST["idUsr"]);
                     break;
                 case 2:
-                    $idUsr["idStu"] = mysqli_real_escape_string($conn, $_POST["idUsr"]);
+                    $q = "select * from prenotazioni where rStu = " . mysqli_real_escape_string($conn, $_POST["idUsr"]);
+                    $ris = mysqli_query($conn, $q) or die("errore durante la verifica delle prenotazioni");
+                    $num = mysqli_num_rows($ris);
+                    if($num > 0){
+                        while($riga = mysqli_fetch_assoc($ris)){
+                            if($riga["completed"] != 1){
+                                header("Location: index.php?pag=users&usr-type=".$usr_type."&error=4");
+                                exit("errore durante l'eliminazione dell'utente");
+                            }
+                        }
+                        header("Location: index.php?pag=users&usr-type=".$usr_type."&error=4");
+                        exit("errore durante l'eliminazione dell'utente");
+                    }
+                    else{
+                        $idUsr["idStu"] = mysqli_real_escape_string($conn, $_POST["idUsr"]);
+                    }
                     break;
                 case 3:
-                    $idUsr["idAz"] = mysqli_real_escape_string($conn, $_POST["idUsr"]);
+                    $q = "select * from adesioni where rAz = " . mysqli_real_escape_string($conn, $_POST["idUsr"]);
+                    $ris = mysqli_query($conn, $q) or die("errore durante la verifica delle adesioni");
+                    $num = mysqli_num_rows($ris);
+                    if($num > 0){
+                        while($riga = mysqli_fetch_assoc($ris)){
+                            $q2 = "select * from prenotazioni where rAd = " . $riga["idAd"];
+                            $ris2 = mysqli_query($conn, $q2) or die("errore durante la verifica delle prenotazioni");
+                            $num2 = mysqli_num_rows($ris2);
+                            if($num2 > 0){
+                                header("Location: index.php?pag=users&usr-type=".$usr_type."&error=5");
+                                exit("errore durante l'eliminazione dell'utente");
+                            }
+                            header("Location: index.php?pag=users&usr-type=".$usr_type."&error=4");
+                            exit("errore durante l'eliminazione dell'utente");
+                        }
+                    }
+                    else{
+                        $idUsr["idAz"] = mysqli_real_escape_string($conn, $_POST["idUsr"]);
+                    }
                     break;
                 default:
                     header("Location: index.php?pag=users&usr-type=".$usr_type."&error=3");
