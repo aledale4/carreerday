@@ -55,12 +55,13 @@
                         echo '</div>';
                         echo '<p class="counter">Trovati '.$num.' utenti</p>';
                         echo '<table>';
-                        echo '<tr><th>ID</th><th>Nome</th><th>Cognome</th></tr>';
+                        echo '<tr><th>ID</th><th>Nome</th><th>Cognome</th><th>Modifica</th></tr>';
                         while ($row = mysqli_fetch_assoc($ris)) {
                             echo '<tr>';
                             echo '<td>'.$row["idUt"].'</td>';
                             echo '<td>'.$row["nomeUt"].'</td>';
                             echo '<td>'.$row["cognomeUt"].'</td>';
+                            echo '<td><a href="#" class="modify"><span class="material-symbols-outlined">edit</span></a></td>';
                             echo '</tr>';
                         }
                         echo '</table>';
