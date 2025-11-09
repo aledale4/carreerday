@@ -13,11 +13,16 @@ tr.checked{
     display: flex;
     flex-direction: row;
     flex: 1;
-    gap: 10px;
+    gap: 20px;
 }
 .colloqui table{
     width: 100%;
     text-align: center;
+    border-spacing: 0;
+    border: 1px solid var(--secondary-color);
+    border-radius: var(--buttons-border-radius);
+    padding: 10px;
+    margin-top: 10px;
 }
 
 .colloqui table tr{
@@ -280,6 +285,30 @@ tr.checked{
 #onlyCompleted{
     width: fit-content;
     display: inline-block;
+}
+.starFilter{
+    width: 100%;
+    display: flex;
+    align-items: start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 20px;
+    margin-top: 5px;
+}
+.starFilter .startFilterBt label{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+.starFilter .startFilterBt input{
+    display: none;
+}
+.starFilter .startFilterBt input:checked + label span{
+    font-variation-settings: 
+        'FILL' 1;
+    color: var(--primary-color);
 }
 
 @media screen and (max-width: 1000px) {

@@ -74,6 +74,33 @@
                 <p>Solo completati:</p>
                 <input type="checkbox" id="onlyCompleted">
             </div>
+            <p>Filtra per valutazione</p>
+            <div class="starFilter">
+                <div class="startFilterBt">
+                    <input type="radio" id="0starfilter" name="star-filter" data-value="0">
+                    <label for="0starfilter"><span class="material-symbols-outlined star" data-value="1">star_rate</span> Tutti</label>
+                </div>
+                <div class="startFilterBt">
+                    <input type="radio" id="1starfilter" name="star-filter" data-value="1">
+                    <label for="1starfilter"><span class="material-symbols-outlined star" data-value="1">star_rate</span> 1+</label>
+                </div>
+                <div class="startFilterBt">
+                    <input type="radio" id="2starfilter" name="star-filter" data-value="2">
+                    <label for="2starfilter"><span class="material-symbols-outlined star" data-value="1">star_rate</span> 2+</label>
+                </div>
+                <div class="startFilterBt">
+                    <input type="radio" id="3starfilter" name="star-filter" data-value="3">
+                    <label for="3starfilter"><span class="material-symbols-outlined star" data-value="1">star_rate</span> 3+</label>
+                </div>
+                <div class="startFilterBt">
+                    <input type="radio" id="4starfilter" name="star-filter" data-value="4">
+                    <label for="4starfilter"><span class="material-symbols-outlined star" data-value="1">star_rate</span> 4+</label>
+                </div>
+                <div class="startFilterBt">
+                    <input type="radio" id="5starfilter" name="star-filter" data-value="5">
+                    <label for="5starfilter"><span class="material-symbols-outlined star" data-value="1">star_rate</span> 5</label>
+                </div>
+            </div>
             <p>Cerca studente:</p>
             <input type="text" placeholder="Cerca..." id="searchBar" class="shadow-s">
             <?php
@@ -101,7 +128,7 @@
                         if (mysqli_num_rows($posPren) != 0){
                             $pos = mysqli_fetch_assoc($posPren);
                         }
-                        echo "<tr class='studente ".($prenotazione["completed"]==1?"checked":"")." ".($_GET["selected"]==$prenotazione["idPren"]?"selected":"")."' data-pos='".$pos["idPos"]."'><td>";
+                        echo "<tr class='studente ".($prenotazione["completed"]==1?"checked":"")." ".($_GET["selected"]==$prenotazione["idPren"]?"selected":"")."' data-pos='".$pos["idPos"]."' data-val='".$prenotazione["valutazionePren"]."'><td>";
                         echo "<form action='index.php' method='post'>";
                         echo '<input type="hidden" name="id" value="'.$prenotazione["idPren"].'">';
                         echo '<input type="hidden" name="pag" value="update_prenotazione">';
@@ -287,14 +314,16 @@
             });
             container.addEventListener("mouseover",(event)=>{
                 var hoveredStar = event.target.closest('.star');
-                var stars = container.querySelectorAll('.star-rating .star');
-                stars.forEach(element => {
-                    if(element.dataset.value <= hoveredStar.dataset.value){
-                        element.classList.add('selected');
-                    } else {
-                        element.classList.remove('selected');
-                    }
-                });
+                if (hoveredStar){
+                    var stars = container.querySelectorAll('.star-rating .star');
+                    stars.forEach(element => {
+                        if(element.dataset.value <= hoveredStar.dataset.value){
+                            element.classList.add('selected');
+                        } else {
+                            element.classList.remove('selected');
+                        }
+                    });
+                }
             });
             container.addEventListener("mouseout",(event)=>{
                 updateStars(container);
@@ -304,13 +333,17 @@
 </script>
 
 <script>
-    const select = document.querySelector("#selectEvent");
-    select.addEventListener("change", (event)=>{
-        console.log(event);
-        console.log(select.value);
+    var eventFilter = -1;
+    var positionFilter = -1;
+    var nameFilter = "";
+    var valFilter = false;
+    var starFilter = 0;
+
+    function updateFilter(){
         const events = document.querySelectorAll(".evento-lista-stu");
-        console.log(events)
-        if (select.value == -1){
+        const studenti = document.querySelectorAll("tr.studente");
+
+        if (parseInt(eventFilter) == -1){
             events.forEach(element => {
                 element.style.display = "block";
             });
@@ -319,57 +352,52 @@
             events.forEach(element => {
                 element.style.display = "none";
             });
-            events[select.value].style.display = "block";
+            events[eventFilter].style.display = "block";
         }
+
+        studenti.forEach(element => {
+            var cond1 = (element.dataset.pos == positionFilter || positionFilter == -1);
+            var cond2 = element.innerHTML.toLowerCase().includes(nameFilter.toLowerCase());
+            var cond3 =  !valFilter || (valFilter && element.querySelector("input[type='checkbox']").checked);
+            var cond4 = parseInt(element.dataset.val) >= parseInt(starFilter);
+            if(cond1&&cond2&&cond3&&cond4){
+                element.style.display = "table-row";
+            }
+            else{
+                element.style.display = "none";
+            }
+        });
+    }
+
+    const select = document.querySelector("#selectEvent");
+    select.addEventListener("change", (event)=>{
+        console.log(event);
+        console.log(select.value);
+        eventFilter = select.value;
+        updateFilter();
     });
     const selectPos = document.querySelector("#selectPosition");
     selectPos.addEventListener("change", (event)=>{
-        const studenti = document.querySelectorAll("tr.studente");
-        if (selectPos.value == -1){
-            studenti.forEach(element => {
-                element.style.display = "table-row";
-            });
-        }
-        else{
-            studenti.forEach(element => {
-                if(element.dataset.pos == selectPos.value){
-                    element.style.display = "table-row";
-                }
-                else{
-                    element.style.display = "none";
-                }
-            });
-        }
+        positionFilter = selectPos.value;
+        updateFilter();
     });
     const search = document.querySelector("#searchBar");
     search.addEventListener("keyup",(event)=>{
         const studenti = document.querySelectorAll(".stu-name");
-        studenti.forEach(stu=>{
-            var nome = stu.innerHTML;
-            if (nome.toLowerCase().includes(search.value.toLowerCase())){
-                stu.parentNode.parentNode.style.display="table-row";
-            }else{
-                stu.parentNode.parentNode.style.display="none";
-            }
-        })
+        nameFilter = search.value; 
+        updateFilter();
     });
     const checkbox = document.querySelector("#onlyCompleted");
     checkbox.addEventListener("change",(event)=>{
-        const studenti = document.querySelectorAll("tr.studente");
-        studenti.forEach(stu=>{
-            if(checkbox.checked){
-                if (stu.querySelector("input[type='checkbox'").checked){
-                    stu.style.display="table-row";
-                }else{
-                    stu.style.display="none";
-                }
-            }else{
-                stu.style.display = "table-row";
-            }
-           
-        })
-        
-    })
-
+        valFilter = checkbox.checked;
+        updateFilter();
+    });
+    const starsFilterInputs = document.querySelectorAll(".startFilterBt input");
+    starsFilterInputs.forEach(element => {
+        element.addEventListener("change", event=>{
+            starFilter = element.dataset.value;
+            updateFilter();
+        });
+    });
 
 </script>
