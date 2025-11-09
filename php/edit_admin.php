@@ -9,7 +9,10 @@
 ?>
 <div class="container">
     <div class="centered">
-        <h1>Modifica dell' Admin n. <?php echo $row["idUt"]?></h1>
+        <div class="title">
+            <a href="index.php?pag=users&usr-type=1"><span class="material-symbols-outlined">arrow_back_ios_new</span></a>
+            <h1>Modifica dell' Admin n. <?php echo $row["idUt"]?></h1>
+        </div>
         <?php
         if(isset($_GET["error"]) && $_GET["error"] == 1){
             echo '<p class="error-message">Le password non coincidono</p>';
