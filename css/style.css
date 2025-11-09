@@ -131,6 +131,10 @@ footer a{
   color:black;
 }
 
+input[type="checkbox"]:checked{
+  accent-color: var(--primary-color);
+}
+
 @media  screen and (max-width: 1000px) {
   footer{
     flex-direction: column;
