@@ -45,11 +45,11 @@
                     if($num > 0){
                         while($riga = mysqli_fetch_assoc($ris)){
                             if($riga["completed"] != 1){
-                                header("Location: index.php?pag=users&usr-type=".$usr_type."&error=4");
+                                header("Location: index.php?pag=users&usr-type=2&error=4");
                                 exit("errore durante l'eliminazione dell'utente");
                             }
                         }
-                        header("Location: index.php?pag=users&usr-type=".$usr_type."&error=4");
+                        header("Location: index.php?pag=users&usr-type=2&error=4");
                         exit("errore durante l'eliminazione dell'utente");
                     }
                     else{
@@ -66,10 +66,10 @@
                             $ris2 = mysqli_query($conn, $q2) or die("errore durante la verifica delle prenotazioni");
                             $num2 = mysqli_num_rows($ris2);
                             if($num2 > 0){
-                                header("Location: index.php?pag=users&usr-type=".$usr_type."&error=5");
+                                header("Location: index.php?pag=users&usr-type=3&error=5");
                                 exit("errore durante l'eliminazione dell'utente");
                             }
-                            header("Location: index.php?pag=users&usr-type=".$usr_type."&error=4");
+                            header("Location: index.php?pag=users&usr-type=3&error=4");
                             exit("errore durante l'eliminazione dell'utente");
                         }
                     }
@@ -78,21 +78,21 @@
                     }
                     break;
                 default:
-                    header("Location: index.php?pag=users&usr-type=".$usr_type."&error=3");
+                    header("Location: index.php?pag=users&usr-type=3&error=3");
                     exit("errore durante l'eliminazione dell'utente");
             }
             $usr_type = mysqli_real_escape_string($conn, $_POST["usr-type"]);
             if(elimina_utente($idUsr,$usr_type)){
-                header("Location: index.php?pag=users&usr-type=".$usr_type."&success=2");
-                exit("errore durante l'eliminazione dell'utente");
+                header("Location: index.php?pag=users&usr-type=3&success=2");
+                exit("");
             }
             else{
-                header("Location: index.php?pag=users&usr-type=".$usr_type."&error=2");
+                header("Location: index.php?pag=users&usr-type=3&error=2");
                 exit("errore durante l'eliminazione dell'utente");
             }
         }
         else{
-            header("Location: index.php?pag=users&usr-type=".$usr_type."&error=3");
+            header("Location: index.php?pag=users&usr-type=3&error=3");
             exit("errore durante l'eliminazione dell'utente");
         }
         exit("ok");
@@ -844,12 +844,28 @@
             if (file_exists("../static/pfp/studente-pic/" .$user["idStu"] .".jpeg")){
                 unlink("../static/pfp/studente-pic/" .$user["idStu"] .".jpeg");
             }
+            if (file_exists("../private/cv/" .$user["idStu"] .".pdf")){
+                unlink("../private/cv/" .$user["idStu"] .".pdf");
+            }
+            $qPrenotazioni = "delete from prenotazioni where rStu = ".$user["idStu"];
+            if(!mysqli_query($conn,$qPrenotazioni)) return false;
+            
         }
         else if($us_type == 3){
             $q = "delete from aziende where idAz=" .$user["idAz"];
             if(file_exists("../static/pfp/azienda-pic/" .$user["idAz"] .".jpeg")){
                 unlink("../static/pfp/azienda-pic/" .$user["idAz"] .".jpeg");
             }
+            $q2 = "select * from adesioni where rAz = ".$user["idAz"];
+            $resQ2 = mysqli_query($conn, $q2);
+            while($ad = mysqli_fetch_assoc($resQ2)){
+                $qPrenotazioni = "delete from prenotazioni where rAd = ".$ad["idAd"];
+                if(!mysqli_query($conn,$qPrenotazioni)) return false;
+            }
+            $qAdesioni = "delete from adesioni where rAz = ".$user["idAz"];
+            if(!mysqli_query($conn,$qAdesioni)) return false;
+            $qAdesioni = "delete from posizioni where rAz = ".$user["idAz"];
+            if(!mysqli_query($conn,$qAdesioni)) return false;
         }else{
             return false;
         }
@@ -976,12 +992,12 @@
         $q = "select * from prenotazioni where rPos = ".$id;
         $ris = mysqli_query($conn, $q) or die("c'è stato un problema nel controllare le prenotazioni associate a questa posizione");
         $num = mysqli_num_rows($ris);
-        if($num > 0){
+        if($num == 0){
             if(!$id) exit();
             $q = "delete from posizioni where idPos = ".$id;
             $result = mysqli_query($conn, $q) or die();
-            header("Location: index.php?pag=posizioni");
         }
+        header("Location: index.php?pag=posizioni");
     }
     if(isset($_POST["pag"]) && $_POST["pag"]=="add_position" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 3){
         $nome = trim(mysqli_real_escape_string($conn, $_POST["nomePos"]));

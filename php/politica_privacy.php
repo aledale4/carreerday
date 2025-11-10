@@ -11,7 +11,6 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
         rel="stylesheet">
-    </body>
     <style>
         :root {
             font-family: "Inter", sans-serif;
@@ -25,13 +24,35 @@
         a{
             display: flex;
             width:100%;
+            color: black;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+        .title{
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            justify-content: start;
+            width: fit-content;
+            gap: 10px;
         }
     </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_back_ios_new" />
 </head>
 
 <body>
     <a href="index.php" class="logo"><img src="../static/logo.png" alt="" srcset="" ></a>
-    <h1>Privacy</h1>
+    <div class="title">
+        <a href="index.php"><span class="material-symbols-outlined">arrow_back_ios_new</span></a>
+        <h1>Privacy</h1>
+    </div>
     <p>Nella realizzazione di questo sito sono stati utilizzati esclusivamente cookie tecnici necessari esclusivamente alla gestione delle sessioni PHP. I dati raccolti verranno usati esclusivamente per uso tecnico e non per scopi di terze parti.</p>
     <h2>Informativa sul trattamento dei dati (privacy policy)</h2>
     <h3>I dati raccolti possono essere trattati per le seguenti finalità:</h3>
