@@ -1240,21 +1240,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../static/favicon.svg" type="image/x-icon">
-    <link rel="stylesheet" href="../css/users.css?<?php echo rand(0,1000000); ?>">
-    <link rel="stylesheet" href="../css/style.css?<?php echo rand(0,1000000); ?>">
-    <link rel="stylesheet" href="../css/login_register.css?<?php echo rand(0,1000000); ?>">
-    <link rel="stylesheet" href="../css/home.css?<?php echo rand(0,1000000); ?>">
-    <link rel="stylesheet" href="../css/settings.css?<?php echo rand(0,1000000); ?>">
-    <link rel="stylesheet" href="../css/event.css?<?php echo rand(0,1000000); ?>">
-    <link rel="stylesheet" href="../css/new_edit_event.css?<?php echo rand(0,1000000); ?>">
-    <link rel="stylesheet" href="../css/settings.css?<?php echo rand(0,1000000); ?>">
-    <link rel="stylesheet" href="../css/send_mail.css?<?php echo rand(0,1000000); ?>">
-    <link rel="stylesheet" href="../css/reset_password.css?<?php echo rand(0,1000000); ?>">
-    <link rel="stylesheet" href="../css/colloqui.css?<?php echo rand(0,1000000); ?>">
-    <link rel="stylesheet" href="../css/posizioni.css?<?php echo rand(0,1000000); ?>">
-    <link rel="stylesheet" href="../css/prenotazione.css?<?php echo rand(0,1000000); ?>">
-    <link rel="stylesheet" href="../css/movepfp.css?<?php echo rand(0,1000000); ?>">
-    <link rel="stylesheet" href="../css/homepage.css?<?php echo rand(0,1000000); ?>">
+    <link rel="stylesheet" href="../css/users.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/login_register.css">
+    <link rel="stylesheet" href="../css/home.css">
+    <link rel="stylesheet" href="../css/settings.css">
+    <link rel="stylesheet" href="../css/event.css">
+    <link rel="stylesheet" href="../css/new_edit_event.css">
+    <link rel="stylesheet" href="../css/settings.css">
+    <link rel="stylesheet" href="../css/send_mail.css">
+    <link rel="stylesheet" href="../css/reset_password.css">
+    <link rel="stylesheet" href="../css/colloqui.css">
+    <link rel="stylesheet" href="../css/posizioni.css">
+    <link rel="stylesheet" href="../css/prenotazione.css">
+    <link rel="stylesheet" href="../css/movepfp.css">
+    <link rel="stylesheet" href="../css/homepage.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
