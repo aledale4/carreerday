@@ -29,6 +29,7 @@
     $countQ = "select * from prenotazioni where rAd = ".$id." order by idPren";
     $countRes = mysqli_query($conn, $countQ) or die("");
     $count = 0;
+    $total = mysqli_num_rows($countRes);
     while ($position = mysqli_fetch_assoc($countRes)) {
         $count++;
         if ($position["rStu"] == $_SESSION["user"]["idStu"]) break;
@@ -91,21 +92,29 @@
                     }
                     while($position = mysqli_fetch_assoc($resPosQ)){
                         if ($position["idPos"] == $selected){
-                            echo "<p class='selected'>".$position["descrizionePos"]."</p>\n";
+                            echo "<p class='selected' data-val='".$position["idPos"]."'>".$position["descrizionePos"]."</p>\n";
                         }else {
-                            echo "<p>".$position["descrizionePos"]."</p>\n";
+                            echo "<p data-val='".$position["idPos"]."'>".$position["descrizionePos"]."</p>\n";
                         }
                     }
                 ?>
             </div>
-            <?php
-                if($already_signed) {
-                    echo "<p class='success'>Hai già prenotato un colloquio con questa azienda</p>";
-                    echo "<p>Progressivo prenotazione: #".$count."</p>";
-                }else if (!$enabled) echo "<p class='error'>Al momento non è possibile prenotare un colloquio</p>";
-            ?>
             <input type="submit" value="Prenotati ora" <?php echo ($already_signed||!$enabled)?"disabled title='Già prenotato'":""?> >
         </form>
+        <?php
+            if($already_signed) {
+                echo "<p class='success'>Hai un colloquio prenotato con questa azienda</p>";
+                echo "<p>Progressivo prenotazione: #".$count." / ".$total."</p>";
+            }else if (!$enabled) echo "<p class='error'>Al momento non è possibile prenotare un colloquio</p>";
+            else{
+                $total = 14;
+                if($total <= $env["MAX_SEATS"]*0.4) $color = "green";
+                else if ($total <= $env["MAX_SEATS"]*0.8) $color = "yellow";
+                else $color = "red";
+                echo '<p class="available-seats ">Posti attualmente prenotati: <span class="'.$color.'">'.$total.' / 10</span></p>';
+                echo '<p class="desc">Attenzione: Ogni prenotazione successiva alla '.$env["MAX_SEATS"].'ᵃ non è garantita</p>';
+            }
+        ?>
     </div>
 </div>
 
@@ -116,7 +125,8 @@
     select.addEventListener("change", (e) => {
         descrizioni.forEach((desc) => {
             desc.classList.remove("selected");
-            if (desc.innerText === descrizioni[select.selectedIndex].innerText) {
+            console.log(desc.dataset.val,descrizioni[select.selectedIndex])
+            if (desc.dataset.val === select.value) {
                 desc.classList.add("selected");
             }
         });
