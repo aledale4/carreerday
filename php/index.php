@@ -269,7 +269,7 @@
         $num= mysqli_num_rows($ris);
         if($num==1){ 
             $riga = mysqli_fetch_assoc($ris);
-            $q2 = "select * from posizioni where rAz = '". $riga["idAz"]."' and nomePos = 'Generica'";
+            $q2 = "select * from posizioni where rAz = '". $riga["idAz"]."' and nomePos = 'Colloquio Conoscitivo'";
             $ris2 = mysqli_query($conn, $q2) or die("errore durante la verifica della posizione generica");
             if (mysqli_num_rows($ris2) == 0){
                 $q3 = "insert into posizioni (rAz, nomePos, descrizionePos) values ('". $riga["idAz"]."','Colloquio Conoscitivo','Posizione generica')";

@@ -57,7 +57,7 @@
                     echo '<form action="index.php" method="post" class="delete-position-form">';
                     echo '<input type="hidden" name="pag" value="delete_position">';
                     echo '<input type="hidden" name="idPos" value="'.$posizione["idPos"].'">';
-                    if ($canDelete) echo '<input type="submit" class="material-symbols-outlined" value="delete_forever">';
+                    if($posizione["nomePos"] != "Colloquio Conoscitivo") if ($canDelete) echo '<input type="submit" class="material-symbols-outlined" value="delete_forever">';
                     echo '</form>';
                     echo "</div>\n";
                 }
