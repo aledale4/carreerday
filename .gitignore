@@ -6,3 +6,4 @@ static/pfp/stu/*
 php/phpqrcode/cache/
 static/qrcodes/*
 private/cv/*
+php.ini

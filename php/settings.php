@@ -19,7 +19,7 @@
                     <p>Nome: <input type="text" name="nome" id="" placeholder="Nome" required value="<?php echo $_SESSION["user"]["nomeStu"]?>" maxlength="30"></p>
                     <p>Cognome:<input type="text" name="cognome" id="" placeholder="Cognome" required value="<?php echo $_SESSION["user"]["cognomeStu"]?>" maxlength="30"></p>
                     <p>Username:<input type="text" name="username" id="" placeholder="Username" required value="<?php echo $_SESSION["user"]["usernameStu"]?>" maxlength="30"></p>
-                    <p>Email:<input type="email" name="email" id="" placeholder="Email" required value="<?php echo $_SESSION["user"]["emailStu"]?>" maxlength="100"></p>
+                    <p style="display: none;">Email:<input type="email" name="email" id="" placeholder="Email" required value="<?php echo $_SESSION["user"]["emailStu"]?>" maxlength="100"></p>
                     <p>Password Esistente:
                         <div class="password-container">
                             <input type="password" name="password" id="password" placeholder="Password" maxlength="30" autocomplete="off">
@@ -100,6 +100,10 @@
                         case 6:
                             echo "La password corrente è errata";
                             break;
+                        case 7:
+                            echo "La nuova email non è valida";
+                            break;
+                        
                     }
                 }
             ?></p>
