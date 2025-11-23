@@ -272,7 +272,7 @@
             $q2 = "select * from posizioni where rAz = '". $riga["idAz"]."' and nomePos = 'Generica'";
             $ris2 = mysqli_query($conn, $q2) or die("errore durante la verifica della posizione generica");
             if (mysqli_num_rows($ris2) == 0){
-                $q3 = "insert into posizioni (rAz, nomePos, descrizionePos) values ('". $riga["idAz"]."','Generica','Posizione generica')";
+                $q3 = "insert into posizioni (rAz, nomePos, descrizionePos) values ('". $riga["idAz"]."','Colloquio Conoscitivo','Posizione generica')";
                 mysqli_query($conn, $q3) or die("errore durante la creazione della posizione generica");
             }
             if(verify_pwd_res($riga["idAz"], 3)){
@@ -407,7 +407,20 @@
         $ris= mysqli_query($conn, $q)or die("errore durante la registrazione | ".$q." | ".mysqli_error($conn));
         //registrazione effettuata con successo
         session_regenerate_id();
-        header("Location: index.php?pag=register&success=2");
+
+        $mitt="no-reply@savoiacareerday.it"; //mittente
+        $ogg="Account creato con successo";
+        include 'account_confirm_company.php';
+        $mess = generateWelcomeEmail($ragsoc);
+        $headers = array(
+            'From' => $mitt,
+            'Reply-To' => $mitt,
+            'X-Mailer' => 'PHP/' . phpversion(),
+            'Content-Type' => 'text/html; charset=utf-8'
+        );
+        mail($_POST["email"], $ogg, $mess,$headers);
+        mail($env["EMAIL_FORWARD"], $ogg, $mess,$headers);
+        header("Location: index.php?pag=register&success=2");  
         exit();
     }
 
@@ -480,8 +493,6 @@
         $num = mysqli_num_rows($ris);
 
         $riga=mysqli_fetch_assoc($ris);
-        echo $_POST["token"] . " \ ";
-        echo $q;
         if($num == 1){
             if(days_counter($riga["created"]) <=2){ //per vedere se sono passati piu di 2 giorni
                 $tipopwd="";
@@ -1029,6 +1040,10 @@
         $resultCheckEmail = mysqli_query($conn,$qCheckEmail) or die();
         if (mysqli_num_rows($resultCheckEmail) !=0){
             header("Location: index.php?pag=settings&error=2");
+            exit();
+        }
+        if(!str_ends_with($email,$env["STUDENT_EMAIL_SUFFIX"])){
+            header("Location: index.php?pag=settings&error=7");
             exit();
         }
 
