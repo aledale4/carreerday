@@ -114,7 +114,8 @@
                     $evento = mysqli_fetch_assoc($rEvPren);
                     echo "<div class='evento-lista-stu'>";
                     echo "<p class='evento-colloquio'>".$evento["nameCd"]."</p>";
-                    echo "<table><tr><th>Completato</th><th>Studente</th></tr>";//<th>Posizione</th><th>Data prenotazione</th>
+                    echo "<table><tr><th>Completato</th><th>Studente</th><th>Posizione</th></tr>";//<th>Posizione</th><th>Data prenotazione</th>
+                    $progressivo = 1;
                     while ($prenotazione = mysqli_fetch_assoc($rPren)) {
                         $qStu = "select * from studenti where idStu = ".$prenotazione["rStu"];
                         $rStu = mysqli_query($conn, $qStu) or die();
@@ -137,7 +138,8 @@
                         echo "</td><td onclick='showOverview(\"".$prenotazione["idPren"]."\")'>";
                         echo "<span class='stu-name'>";
                         echo $nomeStu;
-                        echo "</span></td></tr>";
+                        echo "</td><td>".$progressivo."</td></span></tr>";
+                        $progressivo++;
                     }
                     echo "</table></div>";
                 }
