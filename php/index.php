@@ -653,22 +653,22 @@
     }
 
     if(!isset($_GET["pag"]) &&isset($_POST["pag"]) && $_POST["pag"] == "edit_colloqui" && isset($_SESSION["user-type"]) && $_SESSION["user-type"] == 1){
-        prenotazione_colloqui($_POST["idaz"]);
+        prenotazione_colloqui($_POST["rcd"]);
         header ("Location:index.php/pag=event");
     }
 
     // funzione per abilitare o disabilitare la prenotazione ai colloqui
-    function prenotazione_colloqui($idaz){
+    function prenotazione_colloqui($rcd){
         global $conn;
-        $q = "select * from adesioni where raz = " . $idaz;
+        $q = "select * from adesioni where raz = " . $rcd;
         $ris = mysqli_query($conn, $q) or die("errore query verifica");
         $num = mysqli_num_rows($ris);
         $riga = mysqli_fetch_assoc($ris);
         for ($i=0; $i<$num; $i++){
             if($riga["enablePren"] == 1){
-                $q1 = "update adesioni set enablePren = 0 where raz = " . $idaz;
+                $q1 = "update adesioni set enablePren = 0 where raz = " . $rcd;
             } else {
-                $q1 = "update adesioni set enablePren = 1 where raz = " . $idaz;
+                $q1 = "update adesioni set enablePren = 1 where raz = " . $rcd;
             }
             mysqli_query($conn, $q1) or die("errore query modifica enablePren");
         }
