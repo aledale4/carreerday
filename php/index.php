@@ -654,7 +654,7 @@
 
     if(!isset($_GET["pag"]) &&isset($_POST["pag"]) && $_POST["pag"] == "edit_colloqui" && isset($_SESSION["user-type"]) && $_SESSION["user-type"] == 1){
         prenotazione_colloqui($_POST["rcd"]);
-        header ("Location:index.php/pag=event");
+        header ("Location:index.php?pag=event");
     }
 
     // funzione per abilitare o disabilitare la prenotazione ai colloqui
@@ -666,9 +666,9 @@
         $riga = mysqli_fetch_assoc($ris);
         for ($i=0; $i<$num; $i++){
             if($riga["enablePren"] == 1){
-                $q1 = "update adesioni set enablePren = 0 where raz = " . $rcd;
+                $q1 = "update adesioni set enablePren = 0 where rCd = " . $rcd;
             } else {
-                $q1 = "update adesioni set enablePren = 1 where raz = " . $rcd;
+                $q1 = "update adesioni set enablePren = 1 where rCd = " . $rcd;
             }
             mysqli_query($conn, $q1) or die("errore query modifica enablePren");
         }
