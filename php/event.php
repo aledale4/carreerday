@@ -79,6 +79,8 @@
             <?php if ($_SESSION["user-type"] == 1) {
                 echo '<a href="index.php?pag=edit_event&id=' . $id . '"><span class="material-symbols-outlined">edit</span></a>';
             } ?>
+            <p class="button">Disabilita colloqui</p>
+            <p class="button">Abilita colloqui</p>
         </div>
         <div class="event-main">
             <div class="event-info">
