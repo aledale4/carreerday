@@ -653,7 +653,7 @@
     }
 
     if(!isset($_GET["pag"]) &&isset($_POST["pag"]) && $_POST["pag"] == "edit_colloqui" && isset($_SESSION["user-type"]) && $_SESSION["user-type"] == 1){
-        prenotazione_colloqui($_POST["rcd"],_POST["enable"]);
+        prenotazione_colloqui($_POST["rcd"],$_POST["enable"]);
         header ("Location:index.php?pag=event");
     }
 
