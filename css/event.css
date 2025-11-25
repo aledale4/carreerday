@@ -64,6 +64,10 @@
     font-weight: 600;
 }
 
+.event .event-title .button{
+    /*fare la classe del butone*/
+}
+
 .event .event-info{
     display: flex;
     flex-direction: row;
