@@ -886,6 +886,20 @@
         return true;
     }
 
+    if(isset($_GET["id"]) && isset($_GET["pag"]) && $_GET["pag"]=="no_prenotazioni" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 1){
+        $q = "update adesioni set enablePren = 0 where rCd = ".filter_input(INPUT_GET,"id", FILTER_SANITIZE_NUMBER_INT);
+        mysqli_query($conn, $q)or die("errore nella modifica delle impostazioni di prenotazione");
+        header("Location: index.php?pag=event&id=".filter_input(INPUT_GET,"id", FILTER_SANITIZE_NUMBER_INT));
+        exit();
+    }
+
+    if(isset($_GET["id"]) && isset($_GET["pag"]) && $_GET["pag"]=="si_prenotazioni" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 1){
+        $q = "update adesioni set enablePren = 1 where rCd = ".filter_input(INPUT_GET,"id", FILTER_SANITIZE_NUMBER_INT);
+        mysqli_query($conn, $q)or die("errore nella modifica delle impostazioni di prenotazione");
+        header("Location: index.php?pag=event&id=".filter_input(INPUT_GET,"id", FILTER_SANITIZE_NUMBER_INT));
+        exit();
+    }
+
     if(isset($_POST["pag"]) && $_POST["pag"]=="new_event" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 1){
         $required = ["nome","descrizione","date","start_time","end_time","pos"];
         foreach($required as $r){
