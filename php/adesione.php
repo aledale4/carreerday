@@ -107,7 +107,6 @@
                 echo "<p>Progressivo prenotazione: #".$count." / ".$total."</p>";
             }else if (!$enabled) echo "<p class='error'>Al momento non è possibile prenotare un colloquio</p>";
             else{
-                $total = 14;
                 if($total <= $env["MAX_SEATS"]*0.4) $color = "green";
                 else if ($total <= $env["MAX_SEATS"]*0.8) $color = "yellow";
                 else $color = "red";
