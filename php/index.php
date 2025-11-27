@@ -83,8 +83,14 @@
             }
             $usr_type = mysqli_real_escape_string($conn, $_POST["usr-type"]);
             if(elimina_utente($idUsr,$usr_type)){
-                header("Location: index.php?pag=users&usr-type=3&success=2");
-                exit("");
+                if($usr_type == 3){
+                    header("Location: index.php?pag=users&usr-type=3&success=2");
+                    exit("");
+                }
+                else if($usr_type == 2){
+                    header("Location: index.php?pag=users&usr-type=2&success=2");
+                    exit("");
+                }
             }
             else{
                 header("Location: index.php?pag=users&usr-type=3&error=2");

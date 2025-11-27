@@ -68,6 +68,7 @@
 
 .users-container .delete:hover{
     background-color: var(--error-color);
+    cursor: pointer;
 }
 
 .users-container .modify{
