@@ -43,6 +43,14 @@
             width: fit-content;
             gap: 10px;
         }
+        footer{
+            background-color: transparent;
+            padding: 3rem;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
     </style>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_back_ios_new" />
 </head>
@@ -163,6 +171,8 @@
     <p>Le modifiche entreranno in vigore alla pubblicazione sul sito web.</p>
     <h3>12. Data di entrata in vigore</h3>
     <p>La presente informativa è valida a partire dal 1° novembre 2025.</p>
+
+    <?php include 'footer.php'; ?>
 </body>
 
 </html>

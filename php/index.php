@@ -433,8 +433,11 @@
         if($tipo== 2){
             $q= "select * from studenti where emailstu='".trim(mysqli_real_escape_string($conn,$_POST["email"]))."'";
         }
-        if($tipo== 3){
+        else if($tipo== 3){
             $q= "select * from aziende where email='".trim(mysqli_real_escape_string($conn,$_POST["email"]))."'";
+        }else{
+            header('Location:index.php?pag=request_reset_pwd&error=2');
+            exit();
         }
         $ris= mysqli_query($conn, $q)or die("queri don't work");
         $num = mysqli_num_rows($ris);
@@ -479,7 +482,7 @@
             //echo'<p class="p_error">L&acuteemail inserita non è stata registrata.</p>';
             // ce piu di un utente
         } 
-
+        exit("ok");
     }
 
 
@@ -662,8 +665,9 @@
     // ritorna 2 / 3 in ordine agli identificativi
     function tipo_utente($email){
         global $conn;
-        $q = "select * from utenti where emailStu = " . $email;
-        $q1 = "select * from aziende where email = " . $email;
+        $email = trim(mysqli_real_escape_string($conn, $email));
+        $q = "select * from studenti where emailStu = '" . $email . "'";
+        $q1 = "select * from aziende where email = '" . $email . "'";
         $ris1 = mysqli_query($conn, $q) or die("errore query verifica");
         $ris2 = mysqli_query($conn, $q1) or die("errore query verifica");
         $num1 = mysqli_num_rows($ris1);
@@ -1307,6 +1311,7 @@
     <link rel="stylesheet" href="../css/prenotazione.css">
     <link rel="stylesheet" href="../css/movepfp.css">
     <link rel="stylesheet" href="../css/homepage.css">
+    <link rel="stylesheet" href="../css/faq.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
@@ -1319,7 +1324,10 @@
 <body class>
     <main>
     <?php
-    if(isset($_SESSION["user"])){
+    if(isset($_GET["pag"]) && $_GET["pag"]=="faq"){
+        include("faq.php");
+    }
+    else if(isset($_SESSION["user"])){
         if(pwd_expired() && $_GET["pag"]!="pwdUpdate"){
             header("Location: index.php?pag=pwdUpdate");
         }
