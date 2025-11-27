@@ -435,11 +435,15 @@
     // funzione di reset password da login
     if(isset($_POST["pag"]) && $_POST["pag"]=="request_reset_pwd" && !isset($_SESSION["user"])){
         $q="";
-        if($_SESSION["user-type"]== 2){
+        $tipo = tipo_utente($_POST ["email"]);
+        if($tipo== 2){
             $q= "select * from studenti where emailstu='".trim(mysqli_real_escape_string($conn,$_POST["email"]))."'";
         }
-        if($_SESSION["user-type"]== 3){
+        else if($tipo== 3){
             $q= "select * from aziende where email='".trim(mysqli_real_escape_string($conn,$_POST["email"]))."'";
+        }else{
+            header('Location:index.php?pag=request_reset_pwd&error=2');
+            exit();
         }
         $ris= mysqli_query($conn, $q)or die("queri don't work");
         $num = mysqli_num_rows($ris);
@@ -447,13 +451,13 @@
             $riga = mysqli_fetch_assoc($ris);
             $token_random = random_ascii_string(32);
             $pwd_random = random_ascii_string(32);
-            if($_SESSION["user-type"] == 2){
+            if($tipo == 2){
                 $q="update studenti set passwordstu = '".password_hash($pwd_random,PASSWORD_DEFAULT). "' where idStu='" . $riga["idStu"]. "'";
-                $q2="insert into token (ruser,token,user_type,created) values('" . $riga["idStu"]. "' , '".$token_random."' , '" .$_SESSION["user-type"]."','" .date('Y-m-d H:i:s')."')";
+                $q2="insert into token (ruser,token,user_type,created) values('" . $riga["idStu"]. "' , '".$token_random."' , '" .$tipo."','" .date('Y-m-d H:i:s')."')";
             }
-            if($_SESSION["user-type"] == 3){
+            if($tipo == 3){
                 $q="update aziende set passwordRef = '".password_hash($pwd_random,PASSWORD_DEFAULT). "' where idAz='" . $riga["idAz"]. "'";
-                $q2="insert into token (ruser,token,user_type,created) values('".$riga["idAz"]."' , '".$token_random."' , '" .$_SESSION["user-type"]."','" .date('Y-m-d H:i:s')."')";
+                $q2="insert into token (ruser,token,user_type,created) values('".$riga["idAz"]."' , '".$token_random."' , '" .$tipo."','" .date('Y-m-d H:i:s')."')";
                 //echo $q2;
             }
             mysqli_query($conn,$q) or die("errore cambio password");
@@ -484,7 +488,7 @@
             //echo'<p class="p_error">L&acuteemail inserita non è stata registrata.</p>';
             // ce piu di un utente
         } 
-
+        exit("ok");
     }
 
 
@@ -655,8 +659,45 @@
             header("Location: index.php?pag=users&usr-type=1&error=3");
             exit("errore nella modifica dell'admin");
         }
-        exit("errore nella modifica dell'admin 2");
+
     }
+
+    if(!isset($_GET["pag"]) &&isset($_POST["pag"]) && $_POST["pag"] == "edit_colloqui" && isset($_SESSION["user-type"]) && $_SESSION["user-type"] == 1){
+        prenotazione_colloqui($_POST["rcd"],$_POST["enable"]);
+        header ("Location:index.php?pag=event");
+    }
+
+    // funzione per vedere se si è azienda o admin
+    // ritorna 2 / 3 in ordine agli identificativi
+    function tipo_utente($email){
+        global $conn;
+        $email = trim(mysqli_real_escape_string($conn, $email));
+        $q = "select * from studenti where emailStu = '" . $email . "'";
+        $q1 = "select * from aziende where email = '" . $email . "'";
+        $ris1 = mysqli_query($conn, $q) or die("errore query verifica");
+        $ris2 = mysqli_query($conn, $q1) or die("errore query verifica");
+        $num1 = mysqli_num_rows($ris1);
+        $num2 = mysqli_num_rows($ris2);
+        if ($num1 != 0){
+            return 2;
+        }else if ($num2 != 0){
+            return 3;
+        }else {
+            return 0;
+        }
+    }
+
+    // funzione per abilitare o disabilitare la prenotazione ai colloqui
+    function prenotazione_colloqui($rcd,$enable){
+        global $conn;
+            if($enable == 1){
+                $q1 = "update adesioni set enablePren = 0 where rCd = " . filter_input(INPUT_GET ,$rcd , FILTER_SANITIZE_NUMBER_INT);
+            } else {
+                $q1 = "update adesioni set enablePren = 1 where rCd = " . filter_input(INPUT_GET ,$rcd , FILTER_SANITIZE_NUMBER_INT);
+            }
+            mysqli_query($conn, $q1) or die("errore query modifica enablePren");
+    }
+
 
     //funzione per controllare se la password è "scaduta"
     //restituisce un valore booleano:
@@ -1290,6 +1331,7 @@
     <link rel="stylesheet" href="../css/prenotazione.css">
     <link rel="stylesheet" href="../css/movepfp.css">
     <link rel="stylesheet" href="../css/homepage.css">
+    <link rel="stylesheet" href="../css/faq.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
@@ -1302,7 +1344,10 @@
 <body class>
     <main>
     <?php
-    if(isset($_SESSION["user"])){
+    if(isset($_GET["pag"]) && $_GET["pag"]=="faq"){
+        include("faq.php");
+    }
+    else if(isset($_SESSION["user"])){
         if(pwd_expired() && $_GET["pag"]!="pwdUpdate"){
             header("Location: index.php?pag=pwdUpdate");
         }

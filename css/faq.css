@@ -1,0 +1,26 @@
+.faq {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 2rem;
+    gap: 2rem;
+}
+.faq h1 {
+    margin: 0;
+}
+.logofaq {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+.logofaq img{
+  width: 100%;
+  max-width: 10rem;
+  margin: auto;
+}
+
+.faq-container{
+    margin-bottom: 3rem;
+}
