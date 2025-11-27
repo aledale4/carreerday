@@ -65,7 +65,16 @@
 }
 
 .event .event-title .button{
-    /*fare la classe del butone*/
+    font-size: var(--text-size);
+    padding: 10px;
+    border-radius: var(--buttons-border-radius);
+    background-color: var(--secondary-color);
+    border: none;
+}
+
+.event .event-title .button:hover{
+    background-color: var(--primary-color);
+    cursor: pointer;
 }
 
 .event .event-info{
