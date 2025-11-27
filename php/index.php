@@ -103,7 +103,6 @@
         }
         exit("ok");
     }
-        
 
     if(isset($_GET["pag"]) && $_GET["pag"] == "download_qr" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 3){
         $id = filter_input(INPUT_GET,"id", FILTER_SANITIZE_NUMBER_INT);
@@ -430,7 +429,44 @@
         exit();
     }
 
-
+    // funzione di reset password da admin
+    if(isset($_GET["pag"]) && isset($_GET["usr-type"]) && isset($_GET["id"]) && $_GET["pag"]=="resetPWD" && $_SESSION["user-type"]==1){
+        $usr_type = filter_input(INPUT_GET,"usr-type", FILTER_VALIDATE_INT);
+        $id = filter_input(INPUT_GET,"id", FILTER_SANITIZE_NUMBER_INT);
+        $token_random = random_ascii_string(32);
+        $pwd_random = random_ascii_string(32);
+        if($usr_type == 2){
+            $q="update studenti set passwordstu = '".password_hash($pwd_random,PASSWORD_DEFAULT). "' where idStu='" . $id. "'";
+            $q2="insert into token (ruser,token,user_type,created) values('" . $id. "' , '".$token_random."' , '" .$usr_type."','" .date('Y-m-d H:i:s')."')";
+        }
+        else if($usr_type == 3){
+            $q="update aziende set passwordRef = '".password_hash($pwd_random,PASSWORD_DEFAULT). "' where idAz='" . $id. "'";
+            $q2="insert into token (ruser,token,user_type,created) values('".$id."' , '".$token_random."' , '" .$usr_type."','" .date('Y-m-d H:i:s')."')";
+        }
+        else{
+            header('Location:index.php?pag=users&usr-type='.$usr_type.'&error=3');
+            exit();
+        }
+        mysqli_query($conn,$q) or die("errore cambio password");
+        mysqli_query($conn,$q2) or die("errore cambio token: " . mysqli_error($conn));
+        $mitt="no-reply@savoiacareerday.it"; //mittente
+        $ogg="Reset password Carreday";
+        include 'reset_pwd_email.php';
+        $mess = generateResetPasswordEmail($pwd_random, $token_random);
+        $headers = array(
+            'From' => $mitt,
+            'Reply-To' => $mitt,
+            'X-Mailer' => 'PHP/' . phpversion(),
+            'Content-Type' => 'text/html; charset=utf-8'
+        );
+        if(mail($_POST["email"], "Reset password Carreday", $mess,$headers)){ // destinatario , oggetto , messaggio , invio
+                header("Location: index.php?pag=users&usr-type=".$usr_type."&success=3");
+                exit();
+            }else{
+                header('Location:index.php?pag=users&usr-type='.$usr_type.'&error=7');
+                exit();
+            }
+    }
 
     // funzione di reset password da login
     if(isset($_POST["pag"]) && $_POST["pag"]=="request_reset_pwd" && !isset($_SESSION["user"])){
