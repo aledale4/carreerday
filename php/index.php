@@ -435,13 +435,24 @@
         $id = filter_input(INPUT_GET,"id", FILTER_SANITIZE_NUMBER_INT);
         $token_random = random_ascii_string(32);
         $pwd_random = random_ascii_string(32);
+        $q="";
+        $q="";
+        $email = "";
         if($usr_type == 2){
             $q="update studenti set passwordstu = '".password_hash($pwd_random,PASSWORD_DEFAULT). "' where idStu='" . $id. "'";
             $q2="insert into token (ruser,token,user_type,created) values('" . $id. "' , '".$token_random."' , '" .$usr_type."','" .date('Y-m-d H:i:s')."')";
+            $qEmail = "select emailStu from studenti where idStu='" . $id. "'";
+            $risEmail = mysqli_query($conn, $qEmail) or die("errore recupero email");
+            $rigaEmail = mysqli_fetch_assoc($risEmail);
+            $email = $rigaEmail["emailStu"];
         }
         else if($usr_type == 3){
             $q="update aziende set passwordRef = '".password_hash($pwd_random,PASSWORD_DEFAULT). "' where idAz='" . $id. "'";
             $q2="insert into token (ruser,token,user_type,created) values('".$id."' , '".$token_random."' , '" .$usr_type."','" .date('Y-m-d H:i:s')."')";
+            $qEmail = "select email from aziende where idAz='" . $id. "'";
+            $risEmail = mysqli_query($conn, $qEmail) or die("errore recupero email");
+            $rigaEmail = mysqli_fetch_assoc($risEmail);
+            $email = $rigaEmail["email"];
         }
         else{
             header('Location:index.php?pag=users&usr-type='.$usr_type.'&error=3');
@@ -459,7 +470,7 @@
             'X-Mailer' => 'PHP/' . phpversion(),
             'Content-Type' => 'text/html; charset=utf-8'
         );
-        if(mail($_POST["email"], "Reset password Carreday", $mess,$headers)){ // destinatario , oggetto , messaggio , invio
+        if(mail($email, "Reset password Carreday", $mess,$headers)){ // destinatario , oggetto , messaggio , invio
                 header("Location: index.php?pag=users&usr-type=".$usr_type."&success=3");
                 exit();
             }else{
