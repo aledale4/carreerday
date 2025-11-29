@@ -64,6 +64,21 @@
     font-weight: 600;
 }
 
+.event .event-title .button{
+    font-size: var(--text-size);
+    font-weight: 600;
+    padding: 10px;
+    border-radius: var(--buttons-border-radius);
+    background-color: var(--secondary-color);
+    border: none;
+    transition: all .3s ease;
+}
+
+.event .event-title .button:hover{
+    background-color: var(--primary-color);
+    cursor: pointer;
+}
+
 .event .event-info{
     display: flex;
     flex-direction: row;

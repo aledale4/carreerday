@@ -83,8 +83,14 @@
             }
             $usr_type = mysqli_real_escape_string($conn, $_POST["usr-type"]);
             if(elimina_utente($idUsr,$usr_type)){
-                header("Location: index.php?pag=users&usr-type=3&success=2");
-                exit("");
+                if($usr_type == 3){
+                    header("Location: index.php?pag=users&usr-type=3&success=2");
+                    exit("");
+                }
+                else if($usr_type == 2){
+                    header("Location: index.php?pag=users&usr-type=2&success=2");
+                    exit("");
+                }
             }
             else{
                 header("Location: index.php?pag=users&usr-type=3&error=2");
@@ -97,7 +103,6 @@
         }
         exit("ok");
     }
-        
 
     if(isset($_GET["pag"]) && $_GET["pag"] == "download_qr" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 3){
         $id = filter_input(INPUT_GET,"id", FILTER_SANITIZE_NUMBER_INT);
@@ -424,7 +429,44 @@
         exit();
     }
 
-
+    // funzione di reset password da admin
+    if(isset($_GET["pag"]) && isset($_GET["usr-type"]) && isset($_GET["id"]) && $_GET["pag"]=="resetPWD" && $_SESSION["user-type"]==1){
+        $usr_type = filter_input(INPUT_GET,"usr-type", FILTER_VALIDATE_INT);
+        $id = filter_input(INPUT_GET,"id", FILTER_SANITIZE_NUMBER_INT);
+        $token_random = random_ascii_string(32);
+        $pwd_random = random_ascii_string(32);
+        if($usr_type == 2){
+            $q="update studenti set passwordstu = '".password_hash($pwd_random,PASSWORD_DEFAULT). "' where idStu='" . $id. "'";
+            $q2="insert into token (ruser,token,user_type,created) values('" . $id. "' , '".$token_random."' , '" .$usr_type."','" .date('Y-m-d H:i:s')."')";
+        }
+        else if($usr_type == 3){
+            $q="update aziende set passwordRef = '".password_hash($pwd_random,PASSWORD_DEFAULT). "' where idAz='" . $id. "'";
+            $q2="insert into token (ruser,token,user_type,created) values('".$id."' , '".$token_random."' , '" .$usr_type."','" .date('Y-m-d H:i:s')."')";
+        }
+        else{
+            header('Location:index.php?pag=users&usr-type='.$usr_type.'&error=3');
+            exit();
+        }
+        mysqli_query($conn,$q) or die("errore cambio password");
+        mysqli_query($conn,$q2) or die("errore cambio token: " . mysqli_error($conn));
+        $mitt="no-reply@savoiacareerday.it"; //mittente
+        $ogg="Reset password Carreday";
+        include 'reset_pwd_email.php';
+        $mess = generateResetPasswordEmail($pwd_random, $token_random);
+        $headers = array(
+            'From' => $mitt,
+            'Reply-To' => $mitt,
+            'X-Mailer' => 'PHP/' . phpversion(),
+            'Content-Type' => 'text/html; charset=utf-8'
+        );
+        if(mail($_POST["email"], "Reset password Carreday", $mess,$headers)){ // destinatario , oggetto , messaggio , invio
+                header("Location: index.php?pag=users&usr-type=".$usr_type."&success=3");
+                exit();
+            }else{
+                header('Location:index.php?pag=users&usr-type='.$usr_type.'&error=7');
+                exit();
+            }
+    }
 
     // funzione di reset password da login
     if(isset($_POST["pag"]) && $_POST["pag"]=="request_reset_pwd" && !isset($_SESSION["user"])){
@@ -927,6 +969,20 @@
         return true;
     }
 
+    if(isset($_GET["id"]) && isset($_GET["pag"]) && $_GET["pag"]=="no_prenotazioni" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 1){
+        $q = "update adesioni set enablePren = 0 where rCd = ".filter_input(INPUT_GET,"id", FILTER_SANITIZE_NUMBER_INT);
+        mysqli_query($conn, $q)or die("errore nella modifica delle impostazioni di prenotazione");
+        header("Location: index.php?pag=event&id=".filter_input(INPUT_GET,"id", FILTER_SANITIZE_NUMBER_INT));
+        exit();
+    }
+
+    if(isset($_GET["id"]) && isset($_GET["pag"]) && $_GET["pag"]=="si_prenotazioni" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 1){
+        $q = "update adesioni set enablePren = 1 where rCd = ".filter_input(INPUT_GET,"id", FILTER_SANITIZE_NUMBER_INT);
+        mysqli_query($conn, $q)or die("errore nella modifica delle impostazioni di prenotazione");
+        header("Location: index.php?pag=event&id=".filter_input(INPUT_GET,"id", FILTER_SANITIZE_NUMBER_INT));
+        exit();
+    }
+
     if(isset($_POST["pag"]) && $_POST["pag"]=="new_event" && isset($_SESSION["user"]) && $_SESSION["user-type"] == 1){
         $required = ["nome","descrizione","date","start_time","end_time","pos"];
         foreach($required as $r){
@@ -1315,7 +1371,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,arrow_back_ios_new,calendar_today,dark_mode,delete_forever,edit,expand_circle_down,light_mode,location_on,logout,star_rate,visibility,visibility_off" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=add,arrow_back_ios_new,calendar_today,dark_mode,delete_forever,edit,expand_circle_down,light_mode,location_on,logout,mail_lock,star_rate,visibility,visibility_off" />
     <script src="../js/occhiolino.js"></script>
     <script src="../js/dark-mode.js"></script>
     <script src="../js/admin-del-usr.js"></script>

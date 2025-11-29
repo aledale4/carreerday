@@ -107,13 +107,22 @@
                         else if(isset($_GET["error"]) && $_GET["error"] == 4){
                             echo '<p class="error-message">Impossibile eliminare lo studente perché ha delle prenotazioni attive.</p>';
                         }
+                        else if(isset($_GET["error"]) && $_GET["error"] == 6){
+                            echo '<p class="error-message">Impossibile effettuare l\'operazione</p>';
+                        }
+                        else if(isset($_GET["error"]) && $_GET["error"] == 7){
+                            echo '<p class="error-message">Impossibile inviare la mail</p>';
+                        }
                         else if(isset($_GET["success"]) && $_GET["success"] == 2){
                             echo '<p class="success-message">Utente eliminato con successo.</p>';
+                        }
+                        else if(isset($_GET["success"]) && $_GET["success"] == 3){
+                            echo '<p class="success-message">Email inviata con successo.</p>';
                         }
                         echo '</div>';
                         echo '<p class="counter">Trovati '.$num.' utenti</p>';
                         echo '<table>';
-                        echo '<tr><th>ID</th><th>Nome</th><th>Cognome</th><th>Email</th><th>Verificato</th><th>Elimina</th></tr>';
+                        echo '<tr><th>ID</th><th>Nome</th><th>Cognome</th><th>Email</th><th>Verificato</th><th>Reset PWD</th><th>Elimina</th></tr>';
                         while ($row = mysqli_fetch_assoc($ris)) {
                             echo '<tr>';
                             echo '<td>'.$row["idStu"].'</td>';
@@ -121,6 +130,12 @@
                             echo '<td>'.$row["cognomeStu"].'</td>';
                             echo '<td>'.$row["emailStu"].'</td>';
                             echo '<td>'.($row["verificato"] ? '<p class="verified">si</p>':'<p class="not-verified">no').'</td>';
+                            if($row["verificato"] == 1){
+                                echo '<td><a href="index.php?pag=resetPWD&usr-type=2&id='.$row["idStu"].'" class="modify"><span class="material-symbols-outlined">mail_lock</span></a></td>';
+                            }
+                            else{
+                                echo '<td><a class="no-modify"><span class="material-symbols-outlined">mail_lock</span></a></td>';
+                            }
                             echo '<td>';
                             echo '<form action="index.php" method="post">';
                             echo '<input type="hidden" name="idUsr" value="'.$row["idStu"].'">';
@@ -151,13 +166,22 @@
                         else if(isset($_GET["error"]) && $_GET["error"] == 5){
                             echo '<p class="error-message">Impossibile eliminare l\'azienda perché ha dei colloqui prenotati.</p>';
                         }
+                        else if(isset($_GET["error"]) && $_GET["error"] == 6){
+                            echo '<p class="error-message">Impossibile effettuare l\'operazione</p>';
+                        }
+                        else if(isset($_GET["error"]) && $_GET["error"] == 7){
+                            echo '<p class="error-message">Impossibile inviare la mail</p>';
+                        }
                         else if(isset($_GET["success"]) && $_GET["success"] == 2){
                             echo '<p class="success-message">Azienda eliminata con successo.</p>';
+                        }
+                        else if(isset($_GET["success"]) && $_GET["success"] == 3){
+                            echo '<p class="success-message">Email inviata con successo.</p>';
                         }
                         echo '</div>';
                         echo '<p class="counter">Trovati '.$num.' utenti</p>';
                         echo '<table>';
-                        echo '<tr><th>ID</th><th>Nome azienda</th><th>Email azienda</th><th>Nome referente</th><th>Cognome refefrente</th><th>Elimina</th></tr>';
+                        echo '<tr><th>ID</th><th>Nome azienda</th><th>Email azienda</th><th>Nome referente</th><th>Cognome refefrente</th><th>Reset PWD</th><th>Elimina</th></tr>';
                         while ($row = mysqli_fetch_assoc($ris)) {
                             echo '<tr>';
                             echo '<td>'.$row["idAz"].'</td>';
@@ -165,6 +189,7 @@
                             echo '<td>'.$row["email"].'</td>';
                             echo '<td>'.$row["nomeRef"].'</td>';
                             echo '<td>'.$row["cognomeRef"].'</td>';
+                            echo '<td><a href="index.php?pag=resetPWD&usr-type=3&id='.$row["idAz"].'" class="modify"><span class="material-symbols-outlined">mail_lock</span></a></td>';
                             echo '<td>';
                             echo '<form action="index.php" method="post">';
                             echo '<input type="hidden" name="idUsr" value="'.$row["idAz"].'">';
