@@ -20,6 +20,12 @@
         header("Location: index.php");
     }
 
+    // if($env["PAY"] == true){
+    //     mysqli_close($conn);
+    //     include("pay.php");
+    //     exit();
+    // }
+
     if(isset($_GET["pag"]) && $_GET["pag"]=="eliminaut" && isset($_SESSION["user"])){
         if (elimina_utente($_SESSION["user"],$_SESSION["user-type"])){
             session_unset();
@@ -185,9 +191,7 @@
         $ris= mysqli_query($conn, $q)or die("errore durante la registrazione | ".$q." | ".mysqli_error($conn));
         //invio email di sicurezza
         $token = random_ascii_string(32);
-        echo"ci sono";
         verifica_email_login($email,$token);
-        echo' \n2';
         $q="insert into tokenLogin (token,ruser,user_type,created) values('".$token."' , '" .mysqli_insert_id($conn). "' , '2', '" .$data. "')";
         mysqli_query($conn,$q);
         //registrazione effettuata con successo

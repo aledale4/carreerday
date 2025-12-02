@@ -93,6 +93,11 @@
   justify-content: center;
 }
 
+.centered .success, .centered p{
+  text-align: center;
+  margin: 10px 0;
+}
+
 .change-action-link{
   margin-top: 15px;
   color: var(--secondary-color);

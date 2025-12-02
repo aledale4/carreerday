@@ -69,7 +69,9 @@
             ?>
             <?php
                 if(isset($_GET["success"]) && $_GET["success"]=="1"){
-                    echo "<p class=\"success\">Abbiamo inviato un email alla tua casella di posta elettronica <br> Verifica la tua identità</p>";
+                    echo "<p class=\"success\">Abbiamo inviato un email alla tua casella di posta elettronica</p>";
+                    echo "<p>Verifica la tua identità cliccando sul pulsante nel messaggio ricevuto</p>";
+                    echo "<p>Se non trovi l'email controlla nella cartella spam</p>";
                     echo "<a href='index.php?pag=login'>Torna al login</a>";
                 }
                 if(isset($_GET["success"]) && $_GET["success"]=="2"){
