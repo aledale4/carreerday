@@ -53,6 +53,8 @@ function generateVerificaEmailLogin($tok) {
     <div class="reset-pwd-email-container">
         <img src="https://careerday.altervista.org/static/logo.png" alt="Logo" >
         <h1>Verifica Email</h1>
+        <p>Ciao, <?php echo $_SESSION["user"]["nomeStu"] ?>.</p>
+        <p>Ti ringraziamo per esserti registrato sul nostro sito</p>
         <p>Per verificare il tuo account, clicca sul link sottostante:</p>
         <a target="_blank" href="https://careerday.altervista.org/php/index.php?pag=conferma_email&token=<?php echo $tok; ?>">VERIFICA</a>
         <p>Se non hai creato un account, ignora questa email.</p>
