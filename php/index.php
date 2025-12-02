@@ -191,7 +191,7 @@
         $ris= mysqli_query($conn, $q)or die("errore durante la registrazione | ".$q." | ".mysqli_error($conn));
         //invio email di sicurezza
         $token = random_ascii_string(32);
-        verifica_email_login($email,$token);
+        verifica_email_login($email,$nome,$token);
         $q="insert into tokenLogin (token,ruser,user_type,created) values('".$token."' , '" .mysqli_insert_id($conn). "' , '2', '" .$data. "')";
         mysqli_query($conn,$q);
         //registrazione effettuata con successo
@@ -806,11 +806,11 @@
         }
     }
     //funzione per inviare l'email per verificare l'email
-    function verifica_email_login($email,$token){
+    function verifica_email_login($email,$nome,$token){
         $mitt="no-reply@savoiacareerday.it"; //mittente
         $ogg="Conferma account Carreday";
         include 'verifica_email.php';
-        $mess = generateVerificaEmailLogin($token);  //----------------------------------------------------------------------------------------------------------------
+        $mess = generateVerificaEmailLogin($nome,$token);  //----------------------------------------------------------------------------------------------------------------
         $headers = array(
             'From' => $mitt,
             'Reply-To' => $mitt,
