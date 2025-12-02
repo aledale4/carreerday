@@ -79,6 +79,7 @@
 
 .container a{
   text-align: center;
+  text-decoration: underline;
 }
 
 .centered{
