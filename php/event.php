@@ -78,9 +78,9 @@
             <p>Eventi / <?php echo $event["nameCd"] ?></p>
             <?php if ($_SESSION["user-type"] == 1) {
                 echo '<a href="index.php?pag=edit_event&id=' . $id . '"><span class="material-symbols-outlined">edit</span></a>';
+                echo '<a href="index.php?pag=no_prenotazioni&id=<?php echo $id ?>" class="button shadow-m">Disabilita colloqui</a>';
+                echo '<a href="index.php?pag=si_prenotazioni&id=<?php echo $id ?>" class="button shadow-m">Abilita colloqui</a>';
             } ?>
-            <a href="index.php?pag=no_prenotazioni&id=<?php echo $id ?>" class="button shadow-m">Disabilita colloqui</a>
-            <a href="index.php?pag=si_prenotazioni&id=<?php echo $id ?>" class="button shadow-m">Abilita colloqui</a>
         </div>
         <div class="event-main">
             <div class="event-info">
